@@ -1,0 +1,72 @@
+/* Importa la fuente Fredoka desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka&display=swap');
+
+/* Estilo para el título principal */
+h2 {
+    font-family: 'Fredoka', sans-serif;
+    text-align: center;
+    font-size: clamp(1.5rem, 4vw, 2.5rem); /* Tamaño adaptable */
+    margin: 2rem auto;
+    max-width: 90%;
+    line-height: 1.2;
+    }
+
+/* Importa la fuente Roboto desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+/* Estilo para el párrafo principal */
+p {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    font-size: clamp(1rem, 2.5vw, 1.25rem); /* Tamaño adaptable */
+    margin: 1.5rem auto;
+    max-width: 90%;
+    line-height: 1.6;
+}
+
+/* Características de las tarjetas de /Nuestra misión y valores/ */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.valores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    font-family: 'Roboto', sans-serif;
+}
+
+.card {
+    background-color: #faf4e9;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 0.8rem;
+    max-width: 360px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.card img {
+    display: block;
+    margin: 0 auto 1rem auto;
+    width: 40px;
+    height: 40px;
+}
+
+.card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.card p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+
