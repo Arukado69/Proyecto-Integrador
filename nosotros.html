@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros | BARF Canina</title>
     <!--ENLACE PARA BOOTSTRAP-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <!--SCRIPT PARA CSS-->
@@ -10,10 +11,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;700&display=swap" rel="stylesheet">
     <!--Enlace para iconos estrellas puntuación-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="nosotros.css" />
+    <!--USO DE GOOGLE FONT PARA FREDOKA-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    
+    <!--USO DE GOOGLE FONT PARA ROBOTO-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Fredoka:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Inicio</title>
 </head>
 <body>
- <!--BARRA DE NAVEGACION-->
+<!--BARRA DE NAVEGACION-->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#"><img src="./imagenes/logo_sin_fondo.png" alt="" width="60rem" height="60rem"></a>
@@ -35,7 +46,7 @@
             <a class="nav-link" href="./blog.html">Blog</a>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="./contacto.html">Contacto</a>
+            <a class="nav-link" href="./contact/index.html">Contacto</a>
             </li>
             <li class="nav-item">
             <a class="nav-link" href="./carrito.html">Carrito</a>
@@ -70,216 +81,259 @@
 
     </main>
 
-<!--flip cards sobre nosotros-->
 
-<div class="container mt-5">
-  <h1 class="text-center mb-5">Nuestro Equipo</h1>
 
-  <div class="row">
-
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
-              <h3>Nombre Apellido</h3>
-              <p>Cargo del Integrante</p>
-            </div>
-            <div class="flip-card-back">
-              <h4>Más sobre mí</h4>
-              <p>Descripción o datos de contacto del primer integrante.</p>
-
-              <div class="star-rating">
-                <p>Habilidad:</p>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star-half-stroke"></i> </div>
-            </div>
-          </div>
+        <!--BARRA DE NAVEGACION-->
+<header>
+            <!-- 🔹 HERO -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+        <h1>Nosotros: </h1>
+        <h2>Conoce qué hay detrás de Woof & BARF.</h2>
         </div>
-      </div>
-    
-      
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
-              <h3>Nombre Apellido</h3>
-              <p>Cargo del Integrante</p>
+    </section>
+</header>
+    <main>
+        <section>
+                <!-- Seccion de nuestro compromiso -->
+            <div class="card compromiso-card">
+                <div class="row g-0 align-items-center">
+                    <div class="col-md-6">
+                        <img src="/imagenes/Imagenes_Acerca_de/perro-compromiso.jpg" alt="Perro - Nuestro Compromiso" class="compromiso-img">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body compromiso-body">
+                            <h3 class="card-title">Nuestro Compromiso</h3>
+                            <p class="card-text">
+                                Creemos firmemente que una dieta cruda biológicamente apropiada (BARF) es la forma más
+                                natural y saludable
+                                de alimentar a nuestros perros. En “Woof & BARF”, nos comprometemos a utilizar solo los
+                                mejores ingredientes,
+                                asegurando que cada comida esté llena de los nutrientes que tu perro necesita para
+                                prosperar. Desde la granja
+                                hasta el plato de tu perro, mantenemos los más altos estándares de calidad y seguridad.
+                            </p>
+                            <a href="catalogo.html" class="btn btn-compromiso mt-3">Descubre nuestros menús</a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="flip-card-back">
-              <h4>Más sobre mí</h4>
-              <p>Descripción o datos de contacto del segundo integrante.</p>
+        </section>
+        
+        <section>
+                      <!--flip cards sobre nosotros-->
 
-              <div class="star-rating">
-                <p>Habilidad:</p>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star-half-stroke"></i> </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            <div class="container mt-5">
+              <h1 class="text-center mb-5">Nuestro Equipo</h1>
 
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
-              <h3>Nombre Apellido</h3>
-              <p>Cargo del Integrante</p>
-            </div>
-            <div class="flip-card-back">
-              <h4>Más sobre mí</h4>
-              <p>Descripción o datos de contacto del tercer integrante.</p>
+              <div class="row">
 
-              <div class="star-rating">
-                <p>Habilidad:</p>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star-half-stroke"></i> </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="flip-card">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                          <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
+                          <h3>Nombre Apellido</h3>
+                          <p>Cargo del Integrante</p>
+                        </div>
+                        <div class="flip-card-back">
+                          <h4>Más sobre mí</h4>
+                          <p>Descripción o datos de contacto del primer integrante.</p>
 
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
-              <h3>Nombre Apellido</h3>
-              <p>Cargo del Integrante</p>
-            </div>
-            <div class="flip-card-back">
-              <h4>Más sobre mí</h4>
-              <p>Descripción o datos de contacto del cuarto integrante.</p>
+                          <div class="star-rating">
+                            <p>Habilidad:</p>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-              <div class="star-rating">
-                <p>Habilidad:</p>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star-half-stroke"></i> </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-  </div>
 
-  <div class="row">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="flip-card">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                          <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
+                          <h3>Nombre Apellido</h3>
+                          <p>Cargo del Integrante</p>
+                        </div>
+                        <div class="flip-card-back">
+                          <h4>Más sobre mí</h4>
+                          <p>Descripción o datos de contacto del segundo integrante.</p>
 
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
-              <h3>Nombre Apellido</h3>
-              <p>Cargo del Integrante</p>
-            </div>
-            <div class="flip-card-back">
-              <h4>Más sobre mí</h4>
-              <p>Descripción o datos de contacto del quinto integrante.</p>
-                
-              <div class="star-rating">
-                <p>Habilidad:</p>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star-half-stroke"></i> </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
-              <h3>Nombre Apellido</h3>
-              <p>Cargo del Integrante</p>
-            </div>
-            <div class="flip-card-back">
-              <h4>Más sobre mí</h4>
-              <p>Descripción o datos de contacto del sexto integrante.</p>
+                          <div class="star-rating">
+                            <p>Habilidad:</p>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-              <div class="star-rating">
-                <p>Habilidad:</p>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star-half-stroke"></i> </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="flip-card">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                          <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
+                          <h3>Nombre Apellido</h3>
+                          <p>Cargo del Integrante</p>
+                        </div>
+                        <div class="flip-card-back">
+                          <h4>Más sobre mí</h4>
+                          <p>Descripción o datos de contacto del tercer integrante.</p>
 
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
-              <h3>Nombre Apellido</h3>
-              <p>Cargo del Integrante</p>
-            </div>
-            <div class="flip-card-back">
-              <h4>Más sobre mí</h4>
-              <p>Descripción o datos de contacto del séptimo integrante.</p>
+                          <div class="star-rating">
+                            <p>Habilidad:</p>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-              <div class="star-rating">
-                <p>Habilidad:</p>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star-half-stroke"></i> </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="flip-card">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                          <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
+                          <h3>Nombre Apellido</h3>
+                          <p>Cargo del Integrante</p>
+                        </div>
+                        <div class="flip-card-back">
+                          <h4>Más sobre mí</h4>
+                          <p>Descripción o datos de contacto del cuarto integrante.</p>
 
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
-              <h3>Nombre Apellido</h3>
-              <p>Cargo del Integrante</p>
-            </div>
-            <div class="flip-card-back">
-              <h4>Más sobre mí</h4>
-              <p>Descripción o datos de contacto del octavo integrante.</p>
+                          <div class="star-rating">
+                            <p>Habilidad:</p>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-              <div class="star-rating">
-                <p>Habilidad:</p>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star"></i>
-                <i class="fa-solid fa-star-half-stroke"></i> </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    
-  </div> 
-</div> 
+              </div>
 
+              <div class="row">
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="flip-card">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                          <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
+                          <h3>Nombre Apellido</h3>
+                          <p>Cargo del Integrante</p>
+                        </div>
+                        <div class="flip-card-back">
+                          <h4>Más sobre mí</h4>
+                          <p>Descripción o datos de contacto del quinto integrante.</p>
+
+                          <div class="star-rating">
+                            <p>Habilidad:</p>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="flip-card">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                          <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
+                          <h3>Nombre Apellido</h3>
+                          <p>Cargo del Integrante</p>
+                        </div>
+                        <div class="flip-card-back">
+                          <h4>Más sobre mí</h4>
+                          <p>Descripción o datos de contacto del sexto integrante.</p>
+
+                          <div class="star-rating">
+                            <p>Habilidad:</p>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="flip-card">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                          <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
+                          <h3>Nombre Apellido</h3>
+                          <p>Cargo del Integrante</p>
+                        </div>
+                        <div class="flip-card-back">
+                          <h4>Más sobre mí</h4>
+                          <p>Descripción o datos de contacto del séptimo integrante.</p>
+
+                          <div class="star-rating">
+                            <p>Habilidad:</p>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="flip-card">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                          <img src="https://via.placeholder.com/150" alt="Foto de [Nombre]" class="team-img">
+                          <h3>Nombre Apellido</h3>
+                          <p>Cargo del Integrante</p>
+                        </div>
+                        <div class="flip-card-back">
+                          <h4>Más sobre mí</h4>
+                          <p>Descripción o datos de contacto del octavo integrante.</p>
+
+                          <div class="star-rating">
+                            <p>Habilidad:</p>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star-half-stroke"></i> </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+              </div> 
+            </div> 
+        </section>
+    </main>
     <footer></footer>
 
 <!--SCRIPT PARA BOOTSTRAP-->
+    <script src="nosotros.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!--SCRIPT PARA BOOTSTRAP-->
 </body>

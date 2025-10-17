@@ -85,3 +85,66 @@
   border: 4px solid white;
   margin-bottom: 1rem;
 }
+/* Estilos para la sección de compromiso */
+/* Apariencia de la tarjeta de compromiso */
+.compromiso-card {
+    background-color: #fff;
+    border: none;
+    border-radius: 30px;
+    overflow: hidden;
+    max-width: 1700px;
+    margin: 60px auto;
+}
+
+/* Estilos para la imagen dentro de la tarjeta */
+.compromiso-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Estilos para el cuerpo de la tarjeta */
+.compromiso-body {
+    padding: 3rem;
+}
+
+/* Estilos para el título */
+.compromiso-body h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para el texto*/
+.compromiso-body p {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.7;
+    font-size: 18px;
+}
+
+/* Estilos para el botón */
+.btn-compromiso {
+    background-color: #f2a413;
+    color: #000;
+    font-weight: 600;
+    border-radius: 25px;
+    padding: 10px 24px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+/* Efecto hover para el botón */
+.btn-compromiso:hover {
+    background-color: #f2a413;
+    color: #000;
+}
+
+/* Estilos responsivos ajusta el diseno a celulares y tablets */
+@media (max-width: 768px) {
+    .compromiso-body {
+        padding: 2rem 1.5rem;
+    }
+}
+/* Estilos para la sección de compromiso */
