@@ -37,7 +37,7 @@ p {
     font-family: 'Roboto', sans-serif;
 }
 
-.card {
+.cardRichi {
     background-color: #faf4e9;
     border-radius: 50px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
@@ -48,24 +48,24 @@ p {
     cursor: pointer;
 }
 
-.card img {
+.cardRichi img {
     display: block;
     margin: 0 auto 1rem auto;
     width: 40px;
     height: 40px;
 }
 
-.card h3 {
+.cardRichi h3 {
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
 }
 
-.card p {
+.cardRichi p {
     font-size: 1rem;
     line-height: 1.5;
 }
 
-.card:hover {
+.cardRichi:hover {
     transform: scale(1.05);
 }
 

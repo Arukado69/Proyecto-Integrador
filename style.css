@@ -141,6 +141,9 @@
     color: #000;
 }
 
+#margin-cardCompromiso{
+  margin-left: 0px;
+}
 /* Estilos responsivos ajusta el diseno a celulares y tablets */
 @media (max-width: 768px) {
     .compromiso-body {
