@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Confirmación de pedido | Woof & Barf</title>
+
+  <!-- Fuentes elegidas: Fredoka (títulos) + Roboto (texto) -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../styles/confirmacion.css">
+  <script defer src="../scripts/confirmacion.js"></script>
+</head>
+<body>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="container">
+      <a class="brand" href="./index.html" aria-label="Ir al inicio">Woof &amp; Barf</a>
+      <nav class="mini-nav" aria-label="Enlaces de utilidad">
+        <a href="./catalogo.html">Catálogo</a>
+        <a href="./blog.html">Blog</a>
+        <a href="./contacto.html">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Tarjeta de éxito (estilo modal centrado) -->
+    <section class="confirm-card" role="status" aria-live="polite">
+      <button class="close" id="closeCard" aria-label="Cerrar aviso">&times;</button>
+
+      <div class="icon-wrap" aria-hidden="true">
+        <!-- Check animado -->
+        <svg class="check" viewBox="0 0 48 48">
+          <circle class="ring" cx="24" cy="24" r="22"></circle>
+          <path class="tick" d="M14 25.5l6 6 14-14"></path>
+        </svg>
+      </div>
+
+      <h1>¡Pedido confirmado!</h1>
+      <p class="lead">
+        Gracias, <span id="customerName">Cliente</span>. Tu orden
+        <strong>#<span id="orderId"></span></strong> fue recibida el
+        <span id="orderDate"></span>.
+      </p>
+
+      <div class="summary">
+        <div class="summary-row">
+          <div>
+            <span class="label">Total</span>
+            <span class="value" id="orderTotal">$—</span>
+          </div>
+          <div>
+            <span class="label">Método de pago</span>
+            <span class="value" id="orderPay">Tarjeta</span>
+          </div>
+          <div>
+            <span class="label">Entrega estimada</span>
+            <span class="value" id="orderEta">—</span>
+          </div>
+        </div>
+
+        <div class="cta">
+          <a class="btn btn-primary" id="btnVer">Ver detalles del pedido</a>
+          <button class="btn btn-ghost" id="btnSeguir">Seguir comprando</button>
+          <button class="btn btn-outline" id="btnImprimir">Imprimir recibo</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Paso/Progreso -->
+    <section class="steps" aria-label="Progreso de compra">
+      <div class="container">
+        <ol class="stepper">
+          <li class="done">Carrito</li>
+          <li class="done">Datos</li>
+          <li class="done">Pago</li>
+          <li class="current">Confirmación</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Recomendaciones (placeholders) -->
+    <section class="reco">
+      <div class="container">
+        <h2>También te puede interesar</h2>
+        <div class="grid">
+          <article class="card">
+            <div class="ph"></div>
+            <h3>Snack natural</h3>
+            <p>Bolsa 250 g</p>
+            <button class="btn btn-mini">Agregar</button>
+          </article>
+          <article class="card">
+            <div class="ph"></div>
+            <h3>Mix BARF</h3>
+            <p>Paquete semanal</p>
+            <button class="btn btn-mini">Agregar</button>
+          </article>
+          <article class="card">
+            <div class="ph"></div>
+            <h3>Vitaminas</h3>
+            <p>Omega + probióticos</p>
+            <button class="btn btn-mini">Agregar</button>
+          </article>
+          <article class="card">
+            <div class="ph"></div>
+            <h3>Premios</h3>
+            <p>Deshidratados</p>
+            <button class="btn btn-mini">Agregar</button>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>&copy; <span id="year"></span> Woof &amp; Barf — Más vida en cada bocado</small>
+    </div>
+  </footer>
+</body>
+</html>
