@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navbar Personalizado</title>
+
+  <!-- Fuente Fredoka -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos externos -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar-center">
+    <div class="container">
+
+      <!-- Logo -->
+      <a class="navbar-brand" href="#">
+        <img src="imagenes/logo-default.png" alt="Logo" id="logo" class="logo">
+      </a>
+
+      <!-- Botón hamburguesa para móvil -->
+      <button class="navbar-toggler-custom" type="button"data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon-custom"></span>
+        <span class="navbar-toggler-icon-custom"></span>
+        <span class="navbar-toggler-icon-custom"></span>
+      </button>
+
+      <!-- Nav Links -->
+      <ul class="navbar-nav-custom">
+        <li><a class="nav-link-custom active" href="#">Blog</a></li>
+        <li><a class="nav-link-custom" href="#">Tienda</a></li>
+        <li><a class="nav-link-custom" href="#">Nosotros</a></li>
+        <li><a class="nav-link-custom" href="#">Contacto</a></li>
+      </ul>
+
+      <!-- Botón de usuario -->
+       <div class="iconos-header">
+      <button class="user-btn" id="userBtn">
+        <img src="imagenes/user-dark.png" alt="Usuario" id="userIcon">
+      </button>
+      <!-- Botón de compras -->
+      <button class="user-btn" id="comprasBtn">
+        <img src="imagenes/compras-dark.png" alt="Compras" id="comprasIcon">
+      </button>
+    </div>
+    </div>
+  </nav>
+
+
+
+  <!-- ICONOS SOCIALES -->
+  <div class="icon-buttons">
+    <button class="icon-btn"><img src="imagenes/facebook.png" alt="Facebook"></button>
+    <button class="icon-btn"><img src="imagenes/linkedin.png" alt="LinkedIn"></button>
+    <button class="icon-btn"><img src="imagenes/tiktok.png" alt="Tiktok"></button>
+    <button class="icon-btn"><img src="imagenes/twitter.png" alt="Twitter"></button>
+    <button class="icon-btn"><img src="imagenes/instagram.png" alt="Instagram"></button>
+  </div>
+
+  <!-- EJEMPLO DE HEADINGS Y PÁRRAFOS -->
+  <h1 class="h1">Título H1</h1>
+  <h2 class="h2">Título H2</h2>
+  <h3 class="h3">Título H3</h3>
+  <h4 class="h4">Título H4</h4>
+  <h5 class="h5">Título H5</h5>
+  <h6 class="h6">Título H6</h6>
+
+  <p class="p-xl">Párrafo extra-large</p>
+  <p class="p-lg">Párrafo large</p>
+  <p class="p-md">Párrafo medium</p>
+  <p class="p-sm">Párrafo regular</p>
+  <p class="p-xs">Párrafo xs</p>
+
+  <!-- Scripts -->
+  <script src="scripts.js"></script>
+</body>
+</html>

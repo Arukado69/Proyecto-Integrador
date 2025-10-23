@@ -1,0 +1,108 @@
+
+.catalogo-main-padding{
+    margin-left: 83px;
+    margin-right: 83px;
+}
+
+.catalogo-bg-sidebar{
+    background-color: white;
+    height: 700px;
+    
+}
+
+
+.catalogo-div-card{
+    height: 100%;
+    padding-bottom: 3rem;
+    padding-top: 0rem;
+    
+}
+
+.catalogo-img-size{
+    width: 100%;  
+    padding: 15px;
+    height: 20rem;  
+    object-fit: cover;
+}
+.catalogo-body-color{
+    background-color: #f8f7F5;
+}
+.catalogo-primary-button-color{
+    background-color: #F3A412;
+}
+.catalogo-secundary-button-color{
+    background-color: #FDEDD0;
+    color: #F3A515;
+}
+.catalogo-price-color{
+    color: #F3A412;
+}
+
+.catalogo-header-size{
+    width: 100%;
+    height: auto;
+    min-height: 150px;
+}
+
+.catalogo-h4-color{
+    color: #8A7C60;
+}
+
+/* Cambia el color del radio button cuando está seleccionado */
+.form-check-input:checked {
+  background-color: #F3A412;
+  border-color: #F3A412;
+}
+
+/* Cambia el color del "foquito" al hacerle focus */
+.form-check-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(243, 164, 18, 0.25);
+}
+
+/*GOOGLE FONTS*/
+
+.catalogo-fredoka-h1 {
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 48px;
+  font-weight:600;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.catalogo-fredoka-h4 {
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+
+.catalogo-roboto-h4 {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.catalogo-roboto-primary-label {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+.catalogo-roboto-secundary-label {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
