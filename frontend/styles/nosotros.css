@@ -197,7 +197,15 @@ body {
 .hero {
   position: relative;
   height: 80vh;
+<<<<<<< HEAD
   background: url("../assets/imagenes/perritos-varios/husky\ \ hero.jpg") no-repeat center center/cover;
+=======
+<<<<<<< HEAD
+  background: url("/frontend/assets/imagenes/perritos-varios/husky\ \ hero.jpg") no-repeat center center/cover;
+=======
+  background: url("../assets/imagenes/perritos-varios/husky\ \ hero.jpg") no-repeat center center/cover;
+>>>>>>> main
+>>>>>>> rick
   display: flex;
   align-items: center;
   justify-content: flex-start; 
