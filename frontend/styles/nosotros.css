@@ -1,3 +1,184 @@
+/* ===============================================
+== INICIO: Contenido de style.css
+===============================================
+*/
+
+/* Estilos para el efecto Flip Card */
+.flip-card {
+  background-color: transparent;
+  width: 100%;
+  height: 350px; /* ajustar la altura */
+  perspective: 1000px; /* Efecto 3D */
+  margin-bottom: 2rem; /* Espacio inferior */
+  font-family: 'Fredoka', sans-serif;
+}
+
+/* Contenedor interno que se mueve con la transición */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+/* Efecto al pasar el mouse por encima */
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Posicionamiento de la cara frontal y trasera */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Para Safari */
+  backface-visibility: hidden;
+  border-radius: 0.25rem; /* Bordes redondeados como las cards de Bootstrap */
+}
+
+/* Estilo de la cara frontal */
+.flip-card-front {
+  background-color: rgb(248, 244, 245); /* Un gris claro */
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilo de la cara trasera */
+.flip-card-back {
+  background-color: #aab845; /* Azul primario de Bootstrap */
+  /*color: white;*/
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Pone el título (h4) en blanco */
+.flip-card-back h4 {
+  color: white; /* O #FFFFFF */
+}
+
+/* Pone el párrafo (p) en negro */
+.flip-card-back p {
+  font-family: 'Roboto', sans-serif;
+  color: black; /* O #000000 */
+  /* También nos aseguramos de que los párrafos de estrellas se vean bien */
+}
+
+.star-rating {
+  margin-top: auto; /* Empuja las estrellas hacia abajo */
+  padding-top: 15px; /* Un poco de espacio para que no se pegue al texto */
+  width: 100%;
+  text-align: center; /* Centra el contenido */
+}
+
+.star-rating p {
+  margin-bottom: 5px; /* Pequeño espacio entre el texto y las estrellas */
+}
+
+.star-rating i {
+  color: #FFD700; /* Color dorado clásico para las estrellas */
+  font-size: 1.3rem; /* Ajusta el tamaño */
+  margin: 0 2px; /* Un pequeño espacio horizontal entre ellas */
+}
+
+.team-img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 4px solid white;
+  margin-bottom: 1rem;
+}
+/* Estilos para la sección de compromiso */
+/* Apariencia de la tarjeta de compromiso */
+.compromiso-card {
+    background-color: #fff;
+    border: none;
+    border-radius: 30px;
+    overflow: hidden;
+    max-width: 1700px;
+    margin: 60px auto;
+}
+
+/* Estilos para la imagen dentro de la tarjeta */
+.compromiso-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Estilos para el cuerpo de la tarjeta */
+.compromiso-body {
+    padding: 3rem;
+}
+
+/* Estilos para el título */
+.compromiso-body h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+/* Estilos para el texto*/
+.compromiso-body p {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.7;
+    font-size: 18px;
+    /* ❗️ NOTA: mision.css quería centrar todos los 'p'. 
+       Esta regla es más específica, así que el texto de "Compromiso" NO se centrará. */
+    text-align: left; /* Aseguramos que no se centre */
+}
+
+/* Estilos para el botón */
+.btn-compromiso {
+    background-color: #f2a413;
+    color: #000;
+    font-weight: 600;
+    border-radius: 25px;
+    padding: 10px 24px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+/* Efecto hover para el botón */
+.btn-compromiso:hover {
+    background-color: #f2a413;
+    color: #000;
+}
+
+#margin-cardCompromiso{
+  margin-left: 0px;
+}
+/* Estilos responsivos ajusta el diseno a celulares y tablets */
+@media (max-width: 768px) {
+    .compromiso-body {
+        padding: 2rem 1.5rem;
+    }
+}
+/* Estilos para la sección de compromiso */
+
+/* ===============================================
+== FIN: Contenido de style.css
+===============================================
+*/
+
+
+/* ===============================================
+== INICIO: Contenido de nosotros.css
+===============================================
+*/
+
 /* ======== ESTILOS GENERALES ======== */
 * {
   margin: 0;
@@ -51,6 +232,9 @@ body {
   font-size: 1.3rem;
   font-weight: 400;
   color: #f9d592;
+  /* ❗️ NOTA: mision.css quería centrar todos los 'h2'. 
+     Esta regla es más específica, así que el h2 del Hero NO se centrará. */
+  text-align: left; /* Aseguramos que no se centre */
 }
 
 /* ======== ANIMACIÓN ======== */
@@ -75,12 +259,131 @@ body {
     text-align: center;
     padding: 0 5%;
   }
-
+  
   .hero-content h1 {
     font-size: 2rem;
   }
 
   .hero-content h2 {
     font-size: 1rem;
+    text-align: center; /* En móvil sí lo centramos */
   }
 }
+
+/* ===============================================
+== FIN: Contenido de nosotros.css
+===============================================
+*/
+
+
+/* ===============================================
+== INICIO: Contenido de mision.css (MODIFICADO)
+===============================================
+*/
+
+/* NOTA: Los @import de Google Fonts se eliminaron 
+  porque tu HTML ya los carga con <link>,
+  lo cual es más rápido y eficiente.
+*/
+
+/* Sección de historia con fondo blanco */
+.historia-section {
+    background-color: #ffffff;
+    padding: 3rem 1rem;
+}
+
+.historia-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Sección de misión sin fondo (transparente) */
+.mision-section {
+    padding: 3rem 1rem;
+}
+
+.mision-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ❗️ MODIFICACIÓN CLAVE ❗️
+  Se agregaron .historia-section y .mision-section 
+  para que estos estilos no afecten a otras partes 
+  de la página (como el Hero o las Flip Cards).
+*/
+
+/* Estilo para el título principal (MODIFICADO) */
+.historia-section h2,
+.mision-section h2 {
+    font-family: 'Fredoka', sans-serif;
+    text-align: center;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    margin: 0 0 1.5rem 0;
+    line-height: 1.2;
+    color: #000000;
+}
+
+/* Estilo para el párrafo principal (MODIFICADO) */
+.historia-section p,
+.mision-section p {
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    margin: 0 0 2rem 0;
+    line-height: 1.6;
+    color: #333333;
+}
+
+/* Características de las tarjetas de /Nuestra misión y valores/ */
+.valores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.cardRichi {
+    background-color: #faf4e9;
+    border-radius: 50px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+    padding: 2rem 1.5rem;
+    max-width: 360px;
+    flex: 1;
+    min-width: 280px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.cardRichi img {
+    display: block;
+    margin: 0 auto 1rem auto;
+    width: 50px;
+    height: 50px;
+}
+
+.cardRichi h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 1.25rem;
+    margin: 0 0 0.8rem 0;
+    color: #000000;
+}
+
+.cardRichi p {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+}
+
+.cardRichi:hover {
+    transform: scale(1.05);
+}
+
+/* ===============================================
+== FIN: Contenido de mision.css
+===============================================
+*/
