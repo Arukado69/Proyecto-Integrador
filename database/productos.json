@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "nombre": "Pollo",
+        "contenido": 500,
+        "precio": 399,
+        "descripcion": "Descripcion de pollo 500 gramos a $399",
+        "imagen": "pollo-500.jpg"
+    },
+    {
+        "id": 2,
+        "nombre": "Pollo",
+        "contenido": 1000,
+        "precio": 899,
+        "descripcion": "Descripcion de pollo 1000 gramos a $899",
+        "imagen": "pollo-1000.jpg"
+    },
+    {
+        "id": 3,
+        "nombre": "Pollo",
+        "contenido": 2000,
+        "precio": 1299,
+        "descripcion": "Descripcion de pollo 2000 gramos a $1299",
+        "imagen": "pollo-2000.jpg"
+    },
+    {
+        "id": 4,
+        "nombre": "Res",
+        "contenido": 500,
+        "precio": 399,
+        "descripcion": "Descripcion de res 500 gramos a $399",
+        "imagen": "res-500.jpg"
+    },
+    {
+        "id": 5,
+        "nombre": "Res",
+        "contenido": 1000,
+        "precio": 899,
+        "descripcion": "Descripcion de res 1000 gramos a $899",
+        "imagen": "res-1000.jpg"
+    },
+    {
+        "id": 6,
+        "nombre": "Res",
+        "contenido": 2000,
+        "precio": 1299,
+        "descripcion": "Descripcion de res 2000 gramos a $1299",
+        "imagen": "res-2000.jpg"
+    },
+    {
+        "id": 7,
+        "nombre": "Cerdo",
+        "contenido": 500,
+        "precio": 399,
+        "descripcion": "Descripcion de cerdo 500 gramos a $399",
+        "imagen": "res-500.jpg"
+    }
+]
