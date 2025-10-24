@@ -2,16 +2,16 @@
 const logo = document.getElementById("logo");
 
 logo.addEventListener("mouseenter", () => { 
-  logo.src = "imagenes/logo-hover.png"; 
+  logo.src = "../assets/imagenes/iconos/logo-hover.png"; 
 });
 logo.addEventListener("mouseleave", () => { 
-  logo.src = "imagenes/logo-default.png"; 
+  logo.src = "../assets/imagenes/iconos/logo-default.png"; 
 });
 logo.addEventListener("mousedown", () => { 
-  logo.src = "imagenes/logo-click.png"; 
+  logo.src = "../assets/imagenes/iconos/logo-click.png"; 
 });
 logo.addEventListener("mouseup", () => { 
-  logo.src = "imagenes/logo-hover.png"; 
+  logo.src = "../assets/imagenes/iconos/logo-hover.png"; 
 });
 
 // ---------------- BOTÓN DE USUARIO ----------------
@@ -23,10 +23,10 @@ userBtn.addEventListener('click', () => {
   usuarioActivo = !usuarioActivo;
   if (usuarioActivo) {
     userBtn.style.backgroundColor = 'var(--amarillo-400)';
-    userIcon.src = 'imagenes/user-light.png';
+    userIcon.src = '../assets/imagenes/iconos/user-light.png';
   } else {
     userBtn.style.backgroundColor = 'transparent';
-    userIcon.src = 'imagenes/user-dark.png';
+    userIcon.src = '../assets/imagenes/iconos/user-dark.png';
   }
 });
 
@@ -39,20 +39,13 @@ comprasBtn.addEventListener('click', () => {
   compraActiva = !compraActiva;
   if (compraActiva) {
     comprasBtn.style.backgroundColor = 'var(--amarillo-400)';
-    comprasIcon.src = 'imagenes/compras-light.png';
+    comprasIcon.src = '../assets/imagenes/iconos/compras-light.png';
   } else {
     comprasBtn.style.backgroundColor = 'transparent';
-    comprasIcon.src = 'imagenes/compras-dark.png';
+    comprasIcon.src = '../assets/imagenes/iconos/compras-dark.png';
   }
 });
 
-// ---------------- BOTÓN HAMBURGUESA ----------------
-const toggler = document.querySelector('.navbar-toggler-custom');
-const navMenu = document.querySelector('.navbar-nav-custom');
-
-toggler.addEventListener('click', () => {
-  navMenu.classList.toggle('show');
-});
 
 // ---------------- ICONOS SOCIALES ----------------
 const iconButtons = document.querySelectorAll(".icon-btn");
@@ -60,7 +53,7 @@ const iconButtons = document.querySelectorAll(".icon-btn");
 iconButtons.forEach(btn => {
   btn.addEventListener("click", () => {
     btn.classList.add("active");
-    setTimeout(() => { btn.classList.remove("active"); }, 200);
+    setTimeout(() => { btn.classList.remove("active"); }, 300);
   });
 });
 
@@ -71,5 +64,31 @@ window.addEventListener("scroll", function() {
     navbar.classList.add("navbar-scrolled");
   } else {
     navbar.classList.remove("navbar-scrolled");
+  }
+});
+
+
+
+// ---------------- BOTÓN HAMBURGUESA ----------------
+const toggler = document.querySelector('.navbar-toggler-custom');
+const navMenu = document.querySelector('.navbar-nav-custom');
+let menuAbierto = false;
+
+// Abrir/cerrar menú al hacer clic en la hamburguesa
+toggler.addEventListener('click', (e) => {
+  menuAbierto = !menuAbierto;
+  if (menuAbierto) {
+    navMenu.classList.add('show');
+  } else {
+    navMenu.classList.remove('show');
+  }
+  e.stopPropagation();
+});
+
+// Cerrar menú si se hace clic fuera
+document.addEventListener('click', (e) => {
+  if (!navMenu.contains(e.target) && !toggler.contains(e.target) && menuAbierto) {
+    navMenu.classList.remove('show');
+    menuAbierto = false;
   }
 });
