@@ -32,10 +32,7 @@
 }
 .catalogo-secundary-button-color{
     background-color: #FDEDD0;
-<<<<<<< HEAD
-=======
     color: #F3A515;
->>>>>>> main
 }
 .catalogo-price-color{
     color: #F3A412;
@@ -45,6 +42,8 @@
     width: 100%;
     height: auto;
     min-height: 150px;
+    margin-left: 83px;
+    margin-right: 83px;
 }
 
 .catalogo-h4-color{
@@ -61,8 +60,6 @@
 .form-check-input:focus {
   box-shadow: 0 0 0 0.25rem rgba(243, 164, 18, 0.25);
 }
-<<<<<<< HEAD
-=======
 
 /*GOOGLE FONTS*/
 
@@ -111,4 +108,3 @@
   font-variation-settings:
     "wdth" 100;
 }
->>>>>>> main
