@@ -9,16 +9,42 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <!-- Tu hoja de estilos (la que te pasé) debe ir después de Bootstrap -->
   <link rel="stylesheet" href="../styles/carrito.css">
+  <link rel="stylesheet" href="../assets/components/Navbar.css">
 </head>
 <body>
-
-  <!-- 🔙 Barra de retorno + título -->
-  <section class="nav-retorno">
-    <a href="#" class="btn-regresar" aria-label="Regresar">
-      <span>&larr;</span> Lorem
+  <!-- NAVBAR -->
+<nav class="navbar-center">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand" href="../index.html">
+      <img id="logo" class="logo" src="../assets/imagenes/iconos/logo-default.png" alt="Logo Woof & Barf">
     </a>
-    <h1 class="titulo-pagina m-0">Lorem Ipsum</h1>
-  </section>
+
+    <!-- Navegación -->
+    <ul class="navbar-nav-custom">
+      <li><a href="../pages/inicio.html" class="nav-link-custom">Inicio</a></li>
+      <li><a href="../pages/catalogo.html" class="nav-link-custom">Catálogo</a></li>
+      <li><a href="../pages/acercade.html" class="nav-link-custom">Acerca de</a></li>
+      <li><a href="../pages/contacto.html" class="nav-link-custom">Contáctanos</a></li>
+    </ul>
+
+    <!-- Iconos de usuario / compras / menú -->
+    <div class="iconos-hamburguesa">
+      <button id="userBtn" class="user-btn">
+        <img id="userIcon" src="../assets/imagenes/iconos/user-dark.png" alt="Usuario">
+      </button>
+      <button id="comprasBtn" class="user-btn">
+        <img id="comprasIcon" src="../assets/imagenes/iconos/compras-dark.png" alt="Compras">
+      </button>
+      <button class="navbar-toggler-custom">
+        <span class="navbar-toggler-icon-custom"></span>
+        <span class="navbar-toggler-icon-custom"></span>
+        <span class="navbar-toggler-icon-custom"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
 
   <!-- 🛍️ Contenedor principal del carrito -->
   <main class="contenedor-carrito">
@@ -146,5 +172,6 @@
   <!-- Bootstrap bundle + tu JS del carrito -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   <script src="../scripts/carrito.js"></script>
+  <script src="../assets/components/Navbar.js"></script>
 </body>
 </html>
