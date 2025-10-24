@@ -18,60 +18,58 @@
     <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Fredoka:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/nosotros.css">
+    <link rel="stylesheet" href="../components/Navbar.css">
     <title>Inicio</title>
 </head>
 <body>
 <header>
-<!--BARRA DE NAVEGACION-->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="assets/imagenes/logo_sin_fondo.png" alt="" width="60rem" height="60rem"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="inicio.html">Inicio</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="catalogo.html">Catálogo</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="nosotros.html">Nosotros</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="blog.html">Blog</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="contacto.html">Contacto</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="carrito.html">Carrito</a>
-            </li>
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-            </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
+ <!-- NAVBAR -->
+    <nav class="navbar-center">
+        <div class="container">
+
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="../assets/imagenes/iconos/logo-default.png" alt="Logo" id="logo" class="logo">
+        </a>
+
+        
+
+        <!-- Nav Links -->
+        <ul class="navbar-nav-custom" id="navbarNav">
+            <li><a class="nav-link-custom" href="./inicio.html">Inicio</a></li>
+            <li><a class="nav-link-custom" href="./catalogo.html">Tienda</a></li>
+            <li><a class="nav-link-custom" href="./nosotros.html">Nosotros</a></li>
+            <li><a class="nav-link-custom" href="./blog.html">Blog</a></li>        
+            <li><a class="nav-link-custom" href="./contacto.html">Contactanos</a></li>
         </ul>
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+
+        <!-- Botón hamburguesa para móvil -->
+        <div class="iconos-hamburguesa">
+
+        <button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon-custom"></span>
+        <span class="navbar-toggler-icon-custom"></span>
+        <span class="navbar-toggler-icon-custom"></span>
+        </button>
+
+        <!-- Botón de usuario -->
+        
+            <a href="./micuenta.html">
+                <button class="user-btn" id="userBtn">
+            <img src="../assets/imagenes/iconos/user-dark.png" alt="Usuario" id="userIcon">
+        </button>
+        </a>
+        <!-- Botón de compras -->
+        <a href="./carrito.html">
+        <button class="user-btn" id="comprasBtn">
+            <img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" id="comprasIcon">
+        </button>
+        </a>
         </div>
-    </div>
+        </div>
     </nav>
-<!--BARRA DE NAVEGACION--> 
 </header>
 <main>
             <!-- 🔹 HERO -->
@@ -368,6 +366,7 @@
 
 <!--SCRIPT PARA BOOTSTRAP-->
     <script src="../scripts/nosotros.js"></script>
+    <script src="../components/Navbar.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <!--SCRIPT PARA BOOTSTRAP-->
 </body>
