@@ -32,6 +32,10 @@
 }
 .catalogo-secundary-button-color{
     background-color: #FDEDD0;
+<<<<<<< HEAD
+=======
+    color: #F3A515;
+>>>>>>> main
 }
 .catalogo-price-color{
     color: #F3A412;
@@ -57,3 +61,54 @@
 .form-check-input:focus {
   box-shadow: 0 0 0 0.25rem rgba(243, 164, 18, 0.25);
 }
+<<<<<<< HEAD
+=======
+
+/*GOOGLE FONTS*/
+
+.catalogo-fredoka-h1 {
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-size: 48px;
+  font-weight:600;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.catalogo-fredoka-h4 {
+  font-family: "Fredoka", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+
+.catalogo-roboto-h4 {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+
+.catalogo-roboto-primary-label {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: bold;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+.catalogo-roboto-secundary-label {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+}
+>>>>>>> main

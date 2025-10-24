@@ -1,0 +1,221 @@
+/* 🎨 VARIABLES DE COLOR */
+:root {
+  --amarillo-0: #fffef0;
+  --amarillo-50: #fff8cc;
+  --amarillo-100: #fff176;
+  --amarillo-400: #f2a413;
+  --amarillo-500: #fbc02d;
+  --amarillo-600: #f9a825;
+  --amarillo-800: #f57f17;
+  --neutral-800: #2e2e2e;
+
+  --font-fredoka: 'Fredoka', sans-serif;
+}
+
+/* BODY */
+body {
+  margin: 0;
+  background: #f7f7f700;
+  font-family: var(--font-fredoka);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/*Contenedor padre NAVBAR*/
+/* ===================== NAVBAR ===================== */
+
+/* Contenedor padre NAVBAR */
+.navbar-center {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  transition: background-color 0.4s ease, box-shadow 0.3s ease;
+}
+
+.navbar-center.navbar-scrolled {
+  background-color: var(--amarillo-400); 
+  box-shadow: 0 2px 12px rgba(224, 241, 71, 0.479);
+}
+
+.navbar-center .container {
+  max-width: 1200px;       
+  margin: 0 auto;          
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  padding: 1px 2px;
+}
+
+/* LOGO */
+.navbar-brand img.logo {
+  width: 140px;
+  height: auto;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* NAV LINKS */
+.navbar-nav-custom {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.nav-link-custom {
+  color: var(--neutral-800);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 0%;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.nav-link-custom:hover {
+  color: var(--amarillo-0);
+  text-shadow: 0 0 6px var(--amarillo-400),
+               0 0 12px var(--amarillo-400),
+               0 0 24px var(--amarillo-400);
+  transform: translateY(-1px);
+}
+
+.nav-link-custom:active {
+  color: var(--amarillo-0);
+  text-shadow: 0 0 8px var(--amarillo-400),
+               0 0 16px var(--amarillo-400);
+  transform: scale(0.97);
+}
+
+/* ===================== BOTONES ===================== */
+
+/* BOTÓN DE USUARIO y COMPRAS */
+.user-btn {
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 16px;
+  background-color: transparent;
+  gap: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.user-btn img {
+  width: 28px;
+  height: 28px;
+  transition: all 0.3s ease;
+}
+
+.user-btn:hover {
+  background-color: var(--amarillo-400);
+  box-shadow: 0 2px 8px var(--amarillo-600);
+}
+
+.user-btn:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.user-btn:active {
+  background-color: var(--amarillo-50);
+  box-shadow: 0 2px 8px var(--amarillo-800);
+  transform: scale(0.95);
+}
+
+/* ===================== HAMBURGUESA ===================== */
+
+.navbar-toggler-custom {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 6px;
+}
+
+.navbar-toggler-icon-custom {
+  width: 26px;
+  height: 3px;
+  background-color: var(--neutral-800);
+  display: block;
+  margin: 4px 0;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Contenedor de hamburguesa + iconos */
+.iconos-hamburguesa {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative; /* importante para el menú desplegable */
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 650px) {
+  .navbar-toggler-custom {
+    display: flex; /* mostramos la hamburguesa */
+  }
+
+  /* Ajuste contenedor iconos */
+  .iconos-hamburguesa {
+    justify-content: flex-end;
+  }
+
+  /* MENÚ DESPLEGABLE */
+  .navbar-nav-custom {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;          /* debajo del botón hamburguesa */
+    right: 0;           /* pegado al lado derecho */
+    background-color: rgba(255, 255, 255, 0.164);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    border-radius: 10px;
+    padding: 10px;
+    width: 180px;
+    z-index: 20;
+  }
+
+  .navbar-nav-custom.show {
+    display: flex;
+  }
+
+  .navbar-nav-custom li {
+    text-align: right;
+  }
+
+  .navbar-nav-custom a {
+    display: block;
+    padding: 8px 10px;
+    text-decoration: none;
+    color: var(--neutral-800);
+    border-radius: 8px;
+    transition: background 0.3s;
+  }
+
+  .navbar-nav-custom a:hover {
+    background-color: var(--amarillo-200);
+    color: var(--neutral-900);
+  }
+}
+
+/* Opcional: fondo semitransparente tipo glass */
+@media (max-width: 650px) {
+  .navbar-nav-custom {
+    /* background-color: rgba(255,255,255,0.9);
+       backdrop-filter: blur(6px); */
+  }
+}
+
+
