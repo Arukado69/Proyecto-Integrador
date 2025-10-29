@@ -1,431 +1,94 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-    line-height: 1.8;
-}
-
-/* Tipografía */
-h1, h2, h3, h4 {
-    font-family: 'Fredoka', sans-serif;
-}
-
-/* Artículo principal */
-.blog-article {
-    max-width: 900px;
-    margin: 0 auto;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Header del artículo */
-.article-header {
-    padding: 40px 40px 20px;
-}
-
-.breadcrumb {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 20px;
-}
-
-.breadcrumb a {
-    color: #ffc107;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.breadcrumb a:hover {
-    color: #ffb300;
-}
-
-.article-title {
-    font-size: 42px;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    line-height: 1.3;
-}
-
-.article-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    font-size: 14px;
-    color: #666;
-    padding-bottom: 20px;
-    border-bottom: 2px solid #f0f0f0;
-}
-
-.article-meta span {
-    display: flex;
-    align-items: center;
-}
-
-/* Imagen destacada */
-.featured-image {
-    width: 100%;
-    height: 400px;
-    overflow: hidden;
-}
-
-.featured-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Contenido del artículo */
-.article-content {
-    padding: 50px 40px;
-}
-
-.intro-section {
-    margin-bottom: 40px;
-}
-
-.lead {
-    font-size: 20px;
-    line-height: 1.7;
-    color: #555;
-    font-weight: 400;
-}
-
-.content-section {
-    margin-bottom: 50px;
-}
-
-.content-section h2 {
-    font-size: 32px;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 20px;
-}
-
-.content-section h3 {
-    font-size: 24px;
-    font-weight: 600;
-    color: #34495e;
-    margin-bottom: 15px;
-}
-
-.content-section h4 {
-    font-size: 20px;
-    font-weight: 500;
-    color: #34495e;
-    margin-bottom: 10px;
-}
-
-.content-section p {
-    font-size: 17px;
-    margin-bottom: 20px;
-    color: #444;
-}
-
-.content-section ul {
-    margin-left: 30px;
-    margin-bottom: 20px;
-}
-
-.content-section li {
-    font-size: 17px;
-    margin-bottom: 10px;
-    color: #444;
-}
-
-/* Caja destacada */
-.highlight-box {
-    background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
-    border-left: 4px solid #ffc107;
-    padding: 30px;
-    margin: 30px 0;
-    border-radius: 8px;
-}
-
-.highlight-box h3 {
-    color: #d68910;
-    margin-bottom: 15px;
-}
-
-.percentage-list {
-    list-style: none;
-    margin-left: 0;
-}
-
-.percentage-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(255, 193, 7, 0.2);
-}
-
-.percentage-list li:last-child {
-    border-bottom: none;
-}
-
-/* Grid de beneficios */
-.benefits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-    margin: 30px 0;
-}
-
-.benefit-card {
-    background: white;
-    border: 2px solid #f0f0f0;
-    border-radius: 12px;
-    padding: 25px;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.benefit-card:hover {
-    transform: translateY(-5px);
-    border-color: #ffc107;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
-.benefit-icon {
-    font-size: 48px;
-    margin-bottom: 15px;
-}
-
-.benefit-card h4 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #2c3e50;
-}
-
-.benefit-card p {
-    font-size: 15px;
-    color: #666;
-    margin-bottom: 0;
-}
-
-/* Caja de advertencia */
-.warning-box {
-    background: #fff5f5;
-    border-left: 4px solid #e74c3c;
-    padding: 30px;
-    margin: 30px 0;
-    border-radius: 8px;
-}
-
-.warning-box h3 {
-    color: #c0392b;
-    margin-bottom: 15px;
-}
-
-.warning-box ul {
-    list-style: none;
-    margin-left: 0;
-}
-
-.warning-box li {
-    padding: 10px 0;
-    padding-left: 25px;
-    position: relative;
-}
-
-.warning-box li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: #e74c3c;
-    font-size: 24px;
-}
-
-/* Ejemplo de calculadora */
-.calculator-example {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    padding: 25px;
-    margin: 25px 0;
-}
-
-.calculator-example h4 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-
-.calculator-example p {
-    margin-bottom: 15px;
-}
-
-.calculator-example ul {
-    list-style: none;
-    margin-left: 20px;
-}
-
-.calculator-example li {
-    padding: 5px 0;
-}
-
-/* Lista de pasos */
-.steps-list {
-    margin: 30px 0;
-}
-
-.step {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 30px;
-    padding: 25px;
-    background: #f8f9fa;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-}
-
-.step:hover {
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.step-number {
-    width: 50px;
-    height: 50px;
-    background: #ffc107;
-    color: #333;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    font-weight: 700;
-    font-family: 'Fredoka', sans-serif;
-    flex-shrink: 0;
-}
-
-.step-content h4 {
-    margin-bottom: 8px;
-}
-
-.step-content p {
-    margin-bottom: 0;
-    font-size: 16px;
-}
-
-/* Sección de fuentes */
-.sources-section {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 30px;
-    margin-top: 50px;
-}
-
-.sources-section h3 {
-    font-size: 20px;
-    color: #2c3e50;
-    margin-bottom: 15px;
-}
-
-.sources-list {
-    list-style: none;
-    margin-left: 0;
-}
-
-.sources-list li {
-    font-size: 14px;
-    padding: 8px 0;
-    padding-left: 20px;
-    position: relative;
-    color: #666;
-}
-
-.sources-list li::before {
-    content: "📚";
-    position: absolute;
-    left: 0;
-}
-
-/* Navegación del artículo */
-.article-navigation {
-    display: flex;
-    justify-content: space-between;
-    padding: 30px 40px;
-    border-top: 2px solid #f0f0f0;
-    gap: 20px;
-}
-
-.nav-button {
-    padding: 15px 30px;
-    background: #ffc107;
-    color: #333;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    font-family: 'Fredoka', sans-serif;
-}
-
-.nav-button:hover {
-    background: #ffb300;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
-}
-
-.nav-button.back {
-    background: #e0e0e0;
-    color: #666;
-}
-
-.nav-button.back:hover {
-    background: #d0d0d0;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .article-header {
-        padding: 30px 20px 15px;
-    }
-
-    .article-title {
-        font-size: 32px;
-    }
-
-    .article-meta {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .featured-image {
-        height: 250px;
-    }
-
-    .article-content {
-        padding: 30px 20px;
-    }
-
-    .lead {
-        font-size: 18px;
-    }
-
-    .content-section h2 {
-        font-size: 26px;
-    }
-
-    .content-section p,
-    .content-section li {
-        font-size: 16px;
-    }
-
-    .benefits-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .article-navigation {
-        flex-direction: column;
-        padding: 20px;
-    }
-
-    .nav-button {
-        text-align: center;
-        width: 100%;
-    }
-}
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa; 
+        }
+
+        /* ----- Estilos de Marca "Woof & Barf" ----- */
+        :root {
+            --wb-primary:  #aab845; /* CÁMBIALO POR TU COLOR DE MARCA */
+            --wb-dark: #black;   /* CÁMBIALO POR TU COLOR OSCURO */
+        }
+
+        .text-brand {
+            color: var(--wb-primary);
+        }
+
+        .alert-brand {
+            background-color: #f0f7f2; 
+            border-color: var(--wb-primary);
+            color: var(--wb-dark);
+        }
+
+        .alert-brand .alert-heading {
+            color: inherit;
+        }
+
+        .section-title {
+            color: var(--wb-dark);
+            border-bottom: 3px solid var(--wb-primary);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .step-card {
+            border: 1px solid #ddd;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border-radius: 0.5rem; /* Bordes redondeados */
+        }
+        .step-card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .step-card .card-title {
+            color: var(--wb-dark);
+        }
+
+        /* Estilo para las listas dentro de las tarjetas */
+        .card-list {
+            list-style-type: none; /* Quitamos los puntos de la lista */
+            padding-left: 0;
+            text-align: left; /* Alineamos el texto de la lista a la izquierda */
+            font-size: 0.95rem; /* Tamaño de letra ligeramente más pequeño */
+        }
+        .card-list li {
+            position: relative;
+            padding-left: 28px; /* Espacio para el ícono */
+            margin-bottom: 10px;
+        }
+        .card-list li::before {
+            /* Ícono de check de Bootstrap */
+            font-family: 'bootstrap-icons';
+            content: '\F26A'; /* Código del ícono 'bi-check-circle' */
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--wb-primary); /* Color del ícono */
+            font-weight: bold;
+        }
+
+.breadcrumb-item a {
+            color: var(--wb-primary); /* Color de marca para el enlace */
+            text-decoration: none;
+            font-weight: 700;
+        }
+        .breadcrumb-item a:hover {
+            color: var(--wb-dark);
+        }
+        .breadcrumb-item.active {
+            color: #6c757d; /* Color gris estándar de Bootstrap */
+        }
+
+        /* Estilo para la Meta-Información del Artículo */
+        .article-meta {
+            color: #6c757d; /* Texto gris */
+            font-size: 0.9rem;
+        }
+        .article-meta span {
+            display: inline-block;
+            margin-right: 1.5rem; /* Espacio entre los elementos */
+            vertical-align: middle;
+        }
+        .article-meta i {
+            margin-right: 0.35rem; /* Espacio entre ícono y texto */
+            color: var(--wb-primary); /* Color de íconos */
+        }
