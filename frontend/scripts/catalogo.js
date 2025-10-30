@@ -3,7 +3,7 @@ const productRow = document.getElementById('product-row');
 // 3. Función para generar el HTML de una tarjeta
 function createProductCard(item) {
     return `
-    <div class="col-md-4 d-flex justify-content-center align-items-center catalogo-div-card">
+    <div class="col-xl-4 d-flex justify-content-center align-items-center catalogo-div-card">
         <div class="card rounded-5">
             <div class="card-body text-center">
                 <img src="${item.imageURL}" class="catalogo-img-size rounded-5 mb-3" alt="${item.name}">
