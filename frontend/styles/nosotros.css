@@ -232,8 +232,6 @@ body {
   font-size: 1.3rem;
   font-weight: 400;
   color: #f9d592;
-  /* ❗️ NOTA: mision.css quería centrar todos los 'h2'. 
-     Esta regla es más específica, así que el h2 del Hero NO se centrará. */
   text-align: left; /* Aseguramos que no se centre */
 }
 

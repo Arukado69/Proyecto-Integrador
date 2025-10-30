@@ -54,5 +54,29 @@
         "precio": 399,
         "descripcion": "Descripcion de cerdo 500 gramos a $399",
         "imagen": "res-500.jpg"
+    },
+    {
+        "id": 8,
+        "nombre": "Cerdo",
+        "contenido": 1000,
+        "precio": 899,
+        "descripcion": "Descripcion de cerdo 1000 gramos a $899",
+        "imagen": "res-1000.jpg"
+    },
+    {
+        "id": 9,
+        "nombre": "Cerdo",
+        "contenido": 2000,
+        "precio": 1299,
+        "descripcion": "Descripcion de cerdo 2000 gramos a $1299",
+        "imagen": "res-2000.jpg"
+    },
+    {
+        "id": 10,
+        "nombre": "Pelota",
+        "contenido": 1,
+        "precio": 100,
+        "descripcion": "Descripcion de pelota Woof & BARF $100",
+        "imagen": "pelota.jpg"
     }
 ]
