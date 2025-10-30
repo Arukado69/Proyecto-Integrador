@@ -1,15 +1,19 @@
 
-.catalogo-main-padding{
-    margin-left: 83px;
-    margin-right: 83px;
-}
 
 .catalogo-bg-sidebar{
     background-color: white;
     height: 700px;
     
 }
+.catalogo-main-padding{
+  padding-left: 83px;
+  padding-right: 83px;
+} 
+.catalogo-header-size{
 
+  padding-left: 83px;
+  padding-right: 83px;
+}
 
 .catalogo-div-card{
     height: 100%;
@@ -19,7 +23,8 @@
 }
 
 .catalogo-img-size{
-    width: 100%;  
+    width: 100%; 
+    min-width: 350px; 
     padding: 15px;
     height: 20rem;  
     object-fit: cover;
@@ -42,8 +47,7 @@
     width: 100%;
     height: auto;
     min-height: 150px;
-    margin-left: 83px;
-    margin-right: 83px;
+
 }
 
 .catalogo-h4-color{
