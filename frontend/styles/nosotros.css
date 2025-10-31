@@ -197,7 +197,7 @@ body {
 .hero {
   position: relative;
   height: 80vh;
-  background: url("../assets/imagenes/perritos-varios/husky\ \ hero.jpg") no-repeat center center/cover;
+  background: url("../assets/imagenes/perritos-varios/nosotros-hero.jpg") no-repeat center center/cover;
   display: flex;
   align-items: center;
   justify-content: flex-start; 
@@ -232,8 +232,6 @@ body {
   font-size: 1.3rem;
   font-weight: 400;
   color: #f9d592;
-  /* ❗️ NOTA: mision.css quería centrar todos los 'h2'. 
-     Esta regla es más específica, así que el h2 del Hero NO se centrará. */
   text-align: left; /* Aseguramos que no se centre */
 }
 

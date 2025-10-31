@@ -1,27 +1,34 @@
 /* ===== Contacto: tokens y scope ===== */
-:root{
-  --contact-bg: #F4F6E8;        /* crema del fondo */
-  --contact-green: #1B3B32;     /* títulos/botón */
+:root {
+  --contact-bg: #F4F6E8; /* crema del fondo */
+  --contact-green: #1B3B32; /* títulos/botón */
   --contact-green-600: #294D40; /* hover */
-  --contact-accent: #E35F2F;    /* links naranja */
+  --contact-accent: #E35F2F; /* links naranja */
   --contact-card-radius: 14px;
   --contact-shadow: 0 6px 16px rgba(0,0,0,.08);
 }
 
-.contact-page{ background: var(--contact-bg); color: var(--contact-green); }
+body {
+  background-color: var(--contact-bg);
+}
+
+.contact-page { 
+  background: var(--contact-bg); 
+  color: var(--contact-green); 
+}
 
 /* Encabezado */
-.contact-page .contact-title{ font-weight: 700; }
-.contact-page .contact-subtitle{ color: #6b756f; }
+.contact-page .contact-title { font-weight: 700; }
+.contact-page .contact-subtitle { color: #6b756f; }
 
 /* Cards y layout fino (calcado a la maqueta) */
-.contact-page .contact-card{
+.contact-page .contact-card {
   border-radius: var(--contact-card-radius);
   box-shadow: var(--contact-shadow);
 }
 
 /* Íconos de la card de info */
-.contact-page .contact-icon{
+.contact-page .contact-icon {
   font-size: 1.15rem;
   color: var(--contact-accent);
   line-height: 1;
@@ -29,31 +36,31 @@
 }
 
 /* Links acento (tel/email) */
-.contact-page .contact-accent{ color: var(--contact-accent); }
-.contact-page .contact-accent:hover{ text-decoration: underline; }
+.contact-page .contact-accent { color: var(--contact-accent); }
+.contact-page .contact-accent:hover { text-decoration: underline; }
 
 /* Botón principal */
-.contact-page .btn-forest{
+.contact-page .btn-forest {
   background: var(--contact-green);
   color: #fff;
   border: none;
   padding: .875rem 1rem;
   border-radius: 999px;
 }
-.contact-page .btn-forest:hover{ background: var(--contact-green-600); }
+.contact-page .btn-forest:hover { background: var(--contact-green-600); }
 
 /* Inputs */
-.contact-page .form-control{
+.contact-page .form-control {
   border-radius: 8px;
 }
 
 /* Social */
-.contact-page .social-link{
+.contact-page .social-link {
   font-size: 1.35rem;
   color: var(--contact-green);
   transition: transform .2s ease, color .2s ease, opacity .2s ease;
 }
-.contact-page .social-link:hover{
+.contact-page .social-link:hover {
   color: var(--contact-green-600);
   transform: translateY(-2px);
   opacity: .9;
@@ -62,19 +69,19 @@
 /* Animación sutil al entrar (requisito) */
 @keyframes contact-fade {
   from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .contact-page .card,
-.contact-page header{
+.contact-page header {
   animation: contact-fade .6s ease-out both;
 }
-.contact-page .card:nth-of-type(1){ animation-delay: .05s; }
-.contact-page .card:nth-of-type(2){ animation-delay: .12s; }
+.contact-page .card:nth-of-type(1) { animation-delay: .05s; }
+.contact-page .card:nth-of-type(2) { animation-delay: .12s; }
 
 /* Responsivo fino (tablet/móvil) */
-@media (max-width: 991.98px){ /* < lg */
-  .contact-page .contact-card{ border-radius: 12px; }
+@media (max-width: 991.98px) { /* < lg */
+  .contact-page .contact-card { border-radius: 12px; }
 }
-@media (max-width: 575.98px){ /* < sm */
-  .contact-page .btn-forest{ padding: .8rem 1rem; }
+@media (max-width: 575.98px) { /* < sm */
+  .contact-page .btn-forest { padding: .8rem 1rem; }
 }

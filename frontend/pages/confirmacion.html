@@ -10,19 +10,57 @@
 
   <link rel="stylesheet" href="../styles/confirmacion.css">
   <script defer src="../scripts/confirmacion.js"></script>
+  <link rel="stylesheet" href="../components/Navbar.css">
 </head>
 <body>
-  <!-- Topbar -->
-  <header class="topbar">
+  <!-- NAVBAR -->
+  <nav class="navbar-center">
     <div class="container">
-      <a class="brand" href="./index.html" aria-label="Ir al inicio">Woof &amp; Barf</a>
-      <nav class="mini-nav" aria-label="Enlaces de utilidad">
-        <a href="./catalogo.html">Catálogo</a>
-        <a href="./blog.html">Blog</a>
-        <a href="./contacto.html">Contacto</a>
-      </nav>
+
+      <!-- Logo -->
+      <a class="navbar-brand" href="#">
+        <img src="../assets/imagenes/iconos/logo-default.png" alt="Logo" id="logo" class="logo">
+      </a>
+
+      
+
+      <!-- Nav Links -->
+      <ul class="navbar-nav-custom" id="navbarNav">
+        <li><a class="nav-link-custom" href="./inicio.html">Inicio</a></li>
+        <li><a class="nav-link-custom" href="./catalogo.html">Tienda</a></li>
+        <li><a class="nav-link-custom" href="./nosotros.html">Nosotros</a></li>
+        <li><a class="nav-link-custom" href="./blog.html">Blog</a></li>        
+        <li><a class="nav-link-custom" href="./contacto.html">Contactanos</a></li>
+      </ul>
+
+      <!-- Botón hamburguesa para móvil -->
+       <div class="iconos-hamburguesa">
+
+       <button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+         aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon-custom"></span>
+       <span class="navbar-toggler-icon-custom"></span>
+       <span class="navbar-toggler-icon-custom"></span>
+       </button>
+
+      <!-- Botón de usuario -->
+       
+        <a href="./micuenta.html">
+            <button class="user-btn" id="userBtn">
+        <img src="../assets/imagenes/iconos/user-dark.png" alt="Usuario" id="userIcon">
+      </button>
+      </a>
+      <!-- Botón de compras -->
+       <a href="./carrito.html">
+      <button class="user-btn" id="comprasBtn">
+        <img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" id="comprasIcon">
+      </button>
+      </a>
     </div>
-  </header>
+    </div>
+  </nav>
+
 
   <main>
     <!-- Tarjeta de éxito (estilo modal centrado) -->
