@@ -1,0 +1,112 @@
+/* --- FOOTER --- */
+.footer {
+width: 100%;
+  background-color: #f2a413;
+  padding: 40px 16px 20px;
+}
+
+.footer-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/*  Grid base con 4 columnas */
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  align-items: start;
+  text-align: left;
+}
+
+/* Síguenos */
+.footer-section:last-child {
+  text-align: center;
+  grid-column: 4 / 5;
+  justify-self: center;
+}
+
+/* Logo */
+.footer-logo {
+  color: #ac5204;
+  width: 80px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Títulos */
+.footer-section h3 {
+  font-size: 20px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 500;
+  color: #ac5204;
+  margin-bottom: 16px;
+}
+
+/* Enlaces */
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0px;
+}
+
+.footer-links a {
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  color: #ac5204;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+/* Redes sociales */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.footer-social-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #ffffff;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.footer-social-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Parte inferior */
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #ac5204;
+}
+
+.footer-bottom p {
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  color: #ac5204;
+  margin-bottom: 10px;
+}
+
+.footer-bottom .team-credits {
+  font-weight: 500;
+}
+
