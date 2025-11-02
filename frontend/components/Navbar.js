@@ -2,16 +2,16 @@
 const logo = document.getElementById("logo");
 
 logo.addEventListener("mouseenter", () => { 
-  logo.src = "../assets/imagenes/iconos/logo-hover.png"; 
+  logo.src = "/assets/imagenes/iconos/logo-hover.png"; 
 });
 logo.addEventListener("mouseleave", () => { 
-  logo.src = "../assets/imagenes/iconos/logo-default.png"; 
+  logo.src = "/assets/imagenes/iconos/logo-default.png"; 
 });
 logo.addEventListener("mousedown", () => { 
-  logo.src = "../assets/imagenes/iconos/logo-click.png"; 
+  logo.src = "/assets/imagenes/iconos/logo-click.png"; 
 });
 logo.addEventListener("mouseup", () => { 
-  logo.src = "../assets/imagenes/iconos/logo-hover.png"; 
+  logo.src = "/assets/imagenes/iconos/logo-hover.png"; 
 });
 
 // ---------------- BOTÓN DE USUARIO ----------------
@@ -23,10 +23,10 @@ userBtn.addEventListener('click', () => {
   usuarioActivo = !usuarioActivo;
   if (usuarioActivo) {
     userBtn.style.backgroundColor = 'var(--amarillo-400)';
-    userIcon.src = '../assets/imagenes/iconos/user-light.png';
+    userIcon.src = '/assets/imagenes/iconos/user-light.png';
   } else {
     userBtn.style.backgroundColor = 'transparent';
-    userIcon.src = '../assets/imagenes/iconos/user-dark.png';
+    userIcon.src = '/assets/imagenes/iconos/user-dark.png';
   }
 });
 
@@ -39,10 +39,10 @@ comprasBtn.addEventListener('click', () => {
   compraActiva = !compraActiva;
   if (compraActiva) {
     comprasBtn.style.backgroundColor = 'var(--amarillo-400)';
-    comprasIcon.src = '../assets/imagenes/iconos/compras-light.png';
+    comprasIcon.src = '/assets/imagenes/iconos/compras-light.png';
   } else {
     comprasBtn.style.backgroundColor = 'transparent';
-    comprasIcon.src = '../assets/imagenes/iconos/compras-dark.png';
+    comprasIcon.src = '/assets/imagenes/iconos/compras-dark.png';
   }
 });
 
