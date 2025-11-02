@@ -5,8 +5,8 @@ body {
 
         /* ----- Estilos de Marca "Woof & Barf" ----- */
         :root {
-            --wb-primary:  #aab845; /* CÁMBIALO POR TU COLOR DE MARCA */
-            --wb-dark: #black;   /* CÁMBIALO POR TU COLOR OSCURO */
+            --wb-primary:  #95A617; 
+            --wb-dark: #black;   
         }
 
         .text-brand {
@@ -92,3 +92,28 @@ body {
             margin-right: 0.35rem; /* Espacio entre ícono y texto */
             color: var(--wb-primary); /* Color de íconos */
         }
+
+
+        /* ----- NUEVOS ESTILOS PARA NAVEGACIÓN DE ARTÍCULOS ----- */
+
+    /* Contenedor principal de los botones */
+    .article-navigation {
+        padding-top: 1.5rem; /* Espacio superior */
+        margin-top: 2rem;    /* Margen para separarlo del contenido */
+        border-top: 1px solid #dee2e6; /* Una línea divisoria sutil */
+        }
+
+    /* Estilo de los botones de navegación */
+    .article-navigation .nav-button {
+        color: #95A617;        
+        text-decoration: none;  
+        font-weight: 700;       /* Texto en negrita */
+        font-size: 1.1rem;      /* Un poco más grande */
+        transition: color 0.2s; /* Transición suave */
+        }
+
+    /* Efecto al pasar el mouse */
+    .article-navigation .nav-button:hover {
+        color: #99aa19; /* Un tono de naranja/oro más oscuro */
+        text-decoration: underline;
+    }
