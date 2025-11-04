@@ -1,151 +1,55 @@
+/* Fondo general */
+.catalogo-body-color { background-color: #f8f7f5; }
 
-
-.catalogo-bg-sidebar{
-    background-color: white;
-    /* La altura fija se moverá a la media query */
+/* Sidebar */
+.catalogo-bg-sidebar {
+  background-color: #fff;
+  border-radius: 1.25rem;
 }
 
-/* Esta media query se activa solo en pantallas de 1200px o más */
-@media (min-width: 1200px) {
-    .catalogo-bg-sidebar {
-        height: 700px;
-    }
-}
-.catalogo-main-padding{
+/* Tipografías */
+.catalogo-fredoka-h1 { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 48px; }
+.catalogo-fredoka-h4 { font-family: "Fredoka", sans-serif; font-weight: 500; }
+.catalogo-roboto-h4  { font-family: "Roboto",  sans-serif; font-weight: 700; }
+.catalogo-roboto-primary-label  { font-family: "Roboto", sans-serif; font-weight: 700; }
+.catalogo-roboto-secundary-label{ font-family: "Roboto", sans-serif; font-weight: 400; }
 
-} 
-.catalogo-header-size{
+/* Colores marca */
+.catalogo-primary-button-color  { background: #F3A412; }
+.catalogo-secundary-button-color{ background: #FDEDD0; color: #F3A515; border: 1px solid #F3A515; }
+.catalogo-price-color           { color: #F3A412; }
+.catalogo-h4-color              { color: #8A7C60; }
 
-
-}
-
-.catalogo-div-card{
-    width: 100%;
-    height: 100%;
-    padding-bottom: 3rem;
-    padding-top: 0rem;
-    
-}
-
+/* Imagen completa y limpia */
 .catalogo-img-size{
-    width: 300px;
-    
-    padding: 15px;
-    height: 20rem;  
-    object-fit: cover;
-}
-.catalogo-body-color{
-    background-color: #f8f7F5;
-}
-.catalogo-primary-button-color{
-    background-color: #F3A412;
-}
-.catalogo-secundary-button-color{
-    background-color: #FDEDD0;
-    color: #F3A515;
-}
-.catalogo-price-color{
-    color: #F3A412;
+  width: 100%;
+  height: 250px;
+  object-fit: contain;   /* 👈 ahora no se corta la foto */
+  background: #fff;
+  padding: 10px;
 }
 
-.catalogo-header-size{
-    width: 100%;
-    height: auto;
-    min-height: 150px;
-
+/* Cards con hover sutil */
+.hover-zoom {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.hover-zoom:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
 }
 
-.catalogo-h4-color{
-    color: #8A7C60;
-}
-
-/* Cambia el color del radio button cuando está seleccionado */
+/* Radios con color de marca */
 .form-check-input:checked {
   background-color: #F3A412;
   border-color: #F3A412;
 }
-
-/* Cambia el color del "foquito" al hacerle focus */
 .form-check-input:focus {
-  box-shadow: 0 0 0 0.25rem rgba(243, 164, 18, 0.25);
+  box-shadow: 0 0 0 .2rem rgba(243,164,18,.25);
 }
 
-/*GOOGLE FONTS*/
+/* Espaciado */
+.catalogo-main-padding { padding-left: 1rem; padding-right: 1rem; }
+.catalogo-header-size  { min-height: 140px; }
 
-.catalogo-fredoka-h1 {
-  font-family: "Fredoka", sans-serif;
-  font-optical-sizing: auto;
-  font-size: 48px;
-  font-weight:600;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
-}
-
-.catalogo-fredoka-h4 {
-  font-family: "Fredoka", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
-}
-
-
-.catalogo-roboto-h4 {
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: bold;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
-}
-
-.catalogo-roboto-primary-label {
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: bold;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
-}
-.catalogo-roboto-secundary-label {
-  font-family: "Roboto", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
-  font-variation-settings:
-    "wdth" 100;
-}
-
-.tipo-carne-container .form-check,
-.tamano-porcion-container .form-check {
-  margin-left: 0 !important; /* 👈 elimina el ms-5 de Bootstrap */
-}
-
-/* Pantallas grandes: alineación a la izquierda */
-.tipo-carne-container,
-.tamano-porcion-container {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
-}
-
-/* Elimina margen izquierdo de los radios */
-.tipo-carne-container .form-check,
-.tamano-porcion-container .form-check {
-  margin-left: 0 !important;
-}
-
-/* Pantallas medianas: fila */
-@media (max-width: 1199px) {
-  .tipo-carne-container,
-  .tamano-porcion-container {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 1rem;
-  }
-}
+/* Paginación más compacta */
+.pagination .page-link { border-radius: .6rem; }

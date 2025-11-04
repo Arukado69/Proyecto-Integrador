@@ -1,0 +1,8 @@
+/* styles/formulario-productos.css */
+main .card {
+  border: none;
+}
+#jsonPreview {
+  max-height: 300px;
+  overflow: auto;
+}
