@@ -97,6 +97,7 @@ const listaDeProductos = [
         price: 299,
         description: "Descripción de res",
         imageURL: "../assets/imagenes/catalogo/lentes.jpg"
-    }
+    },
+    
     
 ];
