@@ -6,531 +6,403 @@
     <title>Transición Exitosa a la Dieta BARF - Woof & BARF</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/frontend/styles/blogcss/articulo7.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="/components/Navbar.css">
+    <link rel="stylesheet" href="/styles/blogcss/articulo1.css">
+    <link rel="stylesheet" href="/components/footer.css">
 </head>
 <body>
-    <article class="blog-article">
-        <header class="article-header">
-            <div class="breadcrumb">
-                <a href="indexblog.html">Blog</a> / <span>Transición BARF</span>
-            </div>
-            <h1 class="article-title">Transición Exitosa a la Dieta BARF: Guía Completa Paso a Paso</h1>
-            <div class="article-meta">
-                <span class="author">Por Dr. Carlos Méndez, DVM</span>
-                <span class="date">28 de septiembre de 2025</span>
-                <span class="reading-time">⏱ 12 min de lectura</span>
-            </div>
-        </header>
 
-        <div class="featured-image">
-            <img src="https://images.unsplash.com/photo-1601758228041-f3b2795255f1?w=1200&h=600&fit=crop" alt="Perro comiendo dieta BARF">
-        </div>
+<!-- NAVBAR -->
+  <nav class="navbar-center">
+    <div class="container">
 
-        <div class="article-content">
-            <div class="intro-section">
-                <p class="lead">La transición de alimento procesado a dieta BARF es un proceso que requiere paciencia, planificación y observación cuidadosa. Esta guía te llevará paso a paso para lograr un cambio exitoso sin complicaciones digestivas.</p>
-            </div>
+      <!-- Logo -->
+      <a class="navbar-brand" href="./index.html">
+        <img src="/assets/imagenes/iconos/logo-default.png" alt="Logo" id="logo" class="logo">
+      </a>
 
-            <section class="content-section">
-                <h2>¿Por Qué es Importante una Transición Gradual?</h2>
-                
-                <p>Los perros alimentados con croquetas durante años han adaptado su sistema digestivo a procesar alimentos altamente procesados y cocidos. Un cambio abrupto puede causar malestar estomacal, diarrea o vómitos, no porque la comida cruda sea inadecuada, sino porque el cuerpo necesita tiempo para adaptarse.</p>
+      <!-- Nav Links -->
+      <ul class="navbar-nav-custom" id="navbarNav">
+        <li><a class="nav-link-custom" href="../index.html">Inicio</a></li>
+        <li><a class="nav-link-custom" href="../catalogo.html">Tienda</a></li>
+        <li><a class="nav-link-custom" href="../nosotros.html">Nosotros</a></li>
+        <li><a class="nav-link-custom" href="../blog.html">Blog</a></li>        
+        <li><a class="nav-link-custom" href="../contacto.html">Contactanos</a></li>
+      </ul>
 
-                <div class="science-box">
-                    <h3>🔬 La Ciencia detrás de la Adaptación</h3>
-                    <p>El pH estomacal de los perros es naturalmente ácido (alrededor de 1-2), diseñado para digerir carne cruda y huesos. Sin embargo, las dietas procesadas pueden alterar ligeramente este pH. La transición gradual permite que:</p>
-                    <ul>
-                        <li>El pH estomacal se reajuste a niveles óptimos para carne cruda</li>
-                        <li>La microbiota intestinal se adapte a nuevos nutrientes</li>
-                        <li>Las enzimas digestivas se optimicen para proteínas crudas</li>
-                        <li>El sistema inmune intestinal reconozca nuevos alimentos</li>
-                    </ul>
-                </div>
-            </section>
+      <!-- Botón hamburguesa para móvil -->
+       <div class="iconos-hamburguesa">
 
-            <section class="content-section">
-                <h2>Preparación Antes de Comenzar</h2>
+       <button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+         aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon-custom"></span>
+       <span class="navbar-toggler-icon-custom"></span>
+       <span class="navbar-toggler-icon-custom"></span>
+       </button>
 
-                <div class="preparation-checklist">
-                    <h3>✓ Lista de Verificación Pre-Transición</h3>
-                    
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check1">
-                        <label for="check1"><strong>Consulta veterinaria:</strong> Especialmente si tu perro tiene condiciones médicas preexistentes o está tomando medicamentos.</label>
-                    </div>
+      <!-- Botón de usuario -->
+       
+        <a href="../micuenta.html">
+            <button class="user-btn" id="userBtn">
+        <img src="/assets/imagenes/iconos/user-dark.png" alt="Usuario" id="userIcon">
+      </button>
+      </a>
+      <!-- Botón de compras -->
+       <a href="../carrito.html">
+      <button class="user-btn" id="comprasBtn">
+        <img src="/assets/imagenes/iconos/compras-dark.png" alt="Compras" id="comprasIcon">
+      </button>
+      </a>
+    </div>
+    </div>
+  </nav>
+     <!-- Nav/bar-->   
 
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check2">
-                        <label for="check2"><strong>Equipamiento básico:</strong> Báscula de cocina, contenedores herméticos, espacio en congelador.</label>
-                    </div>
+<!--articulo 7-->
 
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check3">
-                        <label for="check3"><strong>Investigación completa:</strong> Lee sobre proporciones adecuadas, ingredientes seguros y prohibidos.</label>
-                    </div>
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
 
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check4">
-                        <label for="check4"><strong>Proveedor confiable:</strong> Identifica dónde comprarás carne de calidad para consumo humano.</label>
-                    </div>
+                <article>
+                    <header class="text-center mb-4">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a href="/pages/blog.html">Blog</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Transición BARF</li>
+                            </ol>
+                        </nav>
 
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check5">
-                        <label for="check5"><strong>Calendario de transición:</strong> Elige un período de 2-4 semanas sin eventos estresantes (mudanzas, viajes).</label>
-                    </div>
-
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check6">
-                        <label for="check6"><strong>Diario de seguimiento:</strong> Prepara un cuaderno para registrar peso, heces, comportamiento.</label>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Métodos de Transición</h2>
-
-                <p>Existen dos enfoques principales para la transición. Elige el que mejor se adapte a tu perro y situación:</p>
-
-                <div class="methods-comparison">
-                    <div class="method-card gradual">
-                        <h3>Método Gradual (Recomendado)</h3>
-                        <div class="method-badge">✓ Más Seguro</div>
+                        <h1 class="fw-bold mb-3" style="color: var(--wb-dark);">
+                            Transición Exitosa a la Dieta BARF: Guía Completa Paso a Paso
+                        </h1>
                         
-                        <h4>¿Para quién?</h4>
-                        <ul>
-                            <li>Perros con estómago sensible</li>
-                            <li>Cachorros y seniors</li>
-                            <li>Perros con historial de alergias</li>
-                            <li>Primera vez con dieta cruda</li>
-                        </ul>
+                        <div class="article-meta">
+                            <span><i class="bi bi-person-fill"></i>Por Dr. Carlos Méndez, DVM</span>
+                            <span><i class="bi bi-calendar-event"></i>28 de septiembre de 2025</span>
+                            <span><i class="bi bi-clock-fill"></i>12 min de lectura</span>
+                        </div>
+                    </header>
 
-                        <h4>Duración:</h4>
-                        <p>2-4 semanas</p>
-
-                        <h4>Ventajas:</h4>
-                        <ul>
-                            <li>Menor riesgo de malestar digestivo</li>
-                            <li>Permite identificar intolerancias</li>
-                            <li>Más seguro para perros con condiciones médicas</li>
-                        </ul>
-
-                        <h4>Desventajas:</h4>
-                        <ul>
-                            <li>Proceso más largo</li>
-                            <li>Requiere tener ambos tipos de alimento</li>
-                        </ul>
+                    <div class="mb-4">
+                        <img src="/assets/imagenes/perritos-varios/blog-articulo-7.jpg" 
+                             class="img-fluid rounded shadow-sm" 
+                             alt="Perro comiendo dieta BARF">
                     </div>
 
-                    <div class="method-card cold-turkey">
-                        <h3>Método "Cold Turkey" (Cambio Directo)</h3>
-                        <div class="method-badge warning">⚠️ Precaución</div>
+                    <div>
+                        <p class="lead text-muted">La transición de alimento procesado a dieta BARF es un proceso que requiere paciencia, planificación y observación cuidadosa. Esta guía te llevará paso a paso para lograr un cambio exitoso sin complicaciones digestivas.</p>
+
+                        <section class="mt-5">
+                            <h2 class="section-title mb-4">¿Por Qué es Importante una Transición Gradual?</h2>
+                            <p>Los perros alimentados con croquetas durante años han adaptado su sistema digestivo a procesar alimentos altamente procesados y cocidos. Un cambio abrupto puede causar malestar estomacal, diarrea o vómitos, no porque la comida cruda sea inadecuada, sino porque el cuerpo necesita tiempo para adaptarse.</p>
+                            
+                            <div class="alert alert-info-subtle border-info-subtle shadow-sm">
+                                <h3 class="alert-heading h5 fw-bold"><i class="bi bi-clipboard-data-fill me-2"></i>La Ciencia detrás de la Adaptación</h3>
+                                <p>El pH estomacal de los perros es naturalmente ácido (pH 1-2), diseñado para digerir carne cruda. Las dietas procesadas pueden alterar esto. La transición gradual permite que:</p>
+                                <ul class="mb-0">
+                                    <li>El pH estomacal se reajuste a niveles óptimos.</li>
+                                    <li>La microbiota intestinal (flora) se adapte a nuevos nutrientes.</li>
+                                    <li>Las enzimas digestivas se optimicen para proteínas crudas.</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <section class="mt-5">
+                            <h2 class="section-title mb-4">Preparación Antes de Comenzar</h2>
+                            <div class="card shadow-sm">
+                                <div class="card-header fw-bold h5" style="color: var(--wb-dark);">
+                                    <i class="bi bi-card-checklist me-2"></i>Lista de Verificación Pre-Transición
+                                </div>
+                                <div class="card-body">
+                                    <ul class="preparation-list">
+                                        <li><strong>Consulta veterinaria:</strong> Especialmente si tu perro tiene condiciones médicas preexistentes.</li>
+                                        <li><strong>Equipamiento básico:</strong> Báscula de cocina, contenedores herméticos, espacio en congelador.</li>
+                                        <li><strong>Proveedor confiable:</strong> Identifica dónde comprarás carne de calidad o menús completos.</li>
+                                        <li><strong>Calendario de transición:</strong> Elige un período de 2-4 semanas sin eventos estresantes (mudanzas, viajes).</li>
+                                        <li><strong>Diario de seguimiento:</strong> Prepara un cuaderno para registrar peso, heces y comportamiento.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="mt-5">
+                            <h2 class="section-title mb-4">Métodos de Transición</h2>
+                            <p>Existen dos enfoques principales. Elige el que mejor se adapte a tu perro:</p>
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100 shadow-sm border-success">
+                                        <div class="card-header bg-success-subtle text-success-emphasis fw-bold">
+                                            <i class="bi bi-check-circle-fill me-2"></i>Método Gradual (Recomendado)
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold" style="color: var(--wb-dark);">¿Para quién?</h5>
+                                            <p class="small">Perros con estómago sensible, cachorros, seniors, o si es tu primera vez.</p>
+                                            <h5 class="card-title fw-bold mt-3" style="color: var(--wb-dark);">Ventajas:</h5>
+                                            <p class="small mb-0">Menor riesgo de malestar digestivo, permite identificar intolerancias.</p>
+                                        </div>
+                                        <div class="card-footer bg-transparent border-0 text-muted small">
+                                            <strong>Duración:</strong> 2-4 semanas
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100 shadow-sm border-warning">
+                                        <div class="card-header bg-warning-subtle text-warning-emphasis fw-bold">
+                                            <i class="bi bi-exclamation-triangle-fill me-2"></i>Método "Cold Turkey" (Directo)
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title fw-bold" style="color: var(--wb-dark);">¿Para quién?</h5>
+                                            <p class="small">Solo para perros jóvenes y 100% saludables, sin historial de problemas digestivos.</p>
+                                            <h5 class="card-title fw-bold mt-3" style="color: var(--wb-dark);">Desventajas:</h5>
+                                            <p class="small mb-0">Mayor riesgo de malestar temporal (vómitos, diarrea). Requiere ayuno previo de 12-24h.</p>
+                                        </div>
+                                        <div class="card-footer bg-transparent border-0 text-muted small">
+                                            <strong>Duración:</strong> 1 día
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="alert alert-brand mt-4">
+                                <strong><i class="bi bi-person-fill-check me-2"></i>Nota del Veterinario:</strong> En mi práctica, recomiendo el método **gradual** en el 90% de los casos. Reduce significativamente las complicaciones.
+                            </div>
+                        </section>
                         
-                        <h4>¿Para quién?</h4>
-                        <ul>
-                            <li>Perros jóvenes y saludables</li>
-                            <li>Sin historial de problemas digestivos</li>
-                            <li>Con aprobación veterinaria</li>
-                        </ul>
-
-                        <h4>Duración:</h4>
-                        <p>Ayuno de 12-24h, luego cambio completo</p>
-
-                        <h4>Ventajas:</h4>
-                        <ul>
-                            <li>Transición más rápida</li>
-                            <li>Evita mezclar tipos de alimento</li>
-                            <li>Algunos veterinarios lo prefieren</li>
-                        </ul>
-
-                        <h4>Desventajas:</h4>
-                        <ul>
-                            <li>Mayor riesgo de malestar temporal</li>
-                            <li>No recomendado para todos los perros</li>
-                            <li>Requiere supervisión cercana</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="expert-note">
-                    <strong>📌 Nota del Veterinario:</strong> En mi práctica, recomiendo el método gradual en el 90% de los casos. Aunque toma más tiempo, reduce significativamente las complicaciones y permite una observación más controlada de la respuesta del perro.
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Plan de Transición Gradual de 4 Semanas</h2>
-
-                <div class="week-by-week">
-                    <div class="week-block week1">
-                        <div class="week-header">
-                            <h3>Semana 1: Introducción Suave</h3>
-                            <span class="ratio">75% Croquetas / 25% BARF</span>
-                        </div>
-
-                        <div class="week-content">
-                            <h4>Día 1-2:</h4>
-                            <ul>
-                                <li>Comienza con pollo molido (más fácil de digerir)</li>
-                                <li>Mezcla 25% de carne cruda con 75% de croquetas</li>
-                                <li>Divide en 2-3 comidas al día</li>
-                            </ul>
-
-                            <h4>Día 3-5:</h4>
-                            <ul>
-                                <li>Si todo va bien, mantén la proporción</li>
-                                <li>Puedes introducir pequeñas piezas de carne (no molida)</li>
-                                <li>Observa las heces: deben mantenerse firmes</li>
-                            </ul>
-
-                            <h4>Día 6-7:</h4>
-                            <ul>
-                                <li>Añade una pequeña cantidad de vegetales triturados (zanahoria, calabaza)</li>
-                                <li>Continúa con la misma proporción 75/25</li>
-                            </ul>
-
-                            <div class="week-tips">
-                                <strong>💡 Consejos de la Semana:</strong>
-                                <p>No introduzcas huesos aún. Mantente con proteínas simples. Si aparece diarrea leve, reduce la cantidad de BARF al 15% y progresa más lentamente.</p>
+                        <section class="mt-5">
+                            <h2 class="section-title mb-4">Plan de Transición Gradual de 4 Semanas</h2>
+                            <div class="accordion shadow-sm" id="accordionPlan">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeek1" aria-expanded="true" aria-controls="collapseWeek1">
+                                            Semana 1: Introducción Suave (75% Croquetas / 25% BARF)
+                                        </button>
+                                    </h2>
+                                    <div id="collapseWeek1" class="accordion-collapse collapse show" data-bs-parent="#accordionPlan">
+                                        <div class="accordion-body">
+                                            <h5>Días 1-7:</h5>
+                                            <ul>
+                                                <li>Comienza con una proteína fácil de digerir (pollo o pavo molido).</li>
+                                                <li>Mezcla 25% de la nueva comida BARF con 75% de sus croquetas.</li>
+                                                <li>Observa las heces. ¡No introduzcas huesos ni órganos todavía!</li>
+                                            </ul>
+                                            <div class="alert alert-warning mb-0">
+                                                <strong><i class="bi bi-lightbulb-fill me-2"></i>Consejo:</strong> Si aparece diarrea leve, reduce la cantidad de BARF y progresa más lentamente.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeek2" aria-expanded="false" aria-controls="collapseWeek2">
+                                            Semana 2: Incremento (50% Croquetas / 50% BARF)
+                                        </button>
+                                    </h2>
+                                    <div id="collapseWeek2" class="accordion-collapse collapse" data-bs-parent="#accordionPlan">
+                                        <div class="accordion-body">
+                                            <h5>Días 8-14:</h5>
+                                            <ul>
+                                                <li>Si todo va bien, aumenta a 50% BARF y 50% croquetas.</li>
+                                                <li>Introduce una segunda fuente de proteína (ej. res molida).</li>
+                                                <li>Puedes comenzar a añadir huesos carnosos blandos (ej. alas de pollo), siempre supervisando.</li>
+                                            </ul>
+                                            <div class="alert alert-warning mb-0">
+                                                <strong><i class="bi bi-lightbulb-fill me-2"></i>Consejo:</strong> Las heces deben volverse más pequeñas y firmes. ¡Esto es normal y es una buena señal!
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeek3" aria-expanded="false" aria-controls="collapseWeek3">
+                                            Semana 3: Dominio BARF (25% Croquetas / 75% BARF)
+                                        </button>
+                                    </h2>
+                                    <div id="collapseWeek3" class="accordion-collapse collapse" data-bs-parent="#accordionPlan">
+                                        <div class="accordion-body">
+                                            <h5>Días 15-21:</h5>
+                                            <ul>
+                                                <li>Aumenta a 75% BARF. Ya casi lo logras.</li>
+                                                <li>Introduce órganos en pequeñas cantidades (empieza con 2-5% de hígado).</li>
+                                                <li>Varía entre las 2-3 proteínas que ya tolera bien.</li>
+                                            </ul>
+                                            <div class="alert alert-warning mb-0">
+                                                <strong><i class="bi bi-lightbulb-fill me-2"></i>Consejo:</strong> Los órganos son muy nutritivos pero potentes. Introdúcelos lentamente para evitar heces blandas.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWeek4" aria-expanded="false" aria-controls="collapseWeek4">
+                                            Semana 4: ¡Transición Completa! (100% BARF)
+                                        </button>
+                                    </h2>
+                                    <div id="collapseWeek4" class="accordion-collapse collapse" data-bs-parent="#accordionPlan">
+                                        <div class="accordion-body">
+                                            <h5>Días 22-28:</h5>
+                                            <ul>
+                                                <li>¡Felicidades! Elimina el 100% de las croquetas.</li>
+                                                <li>Establece tu rutina de alimentación 100% BARF.</li>
+                                                <li>Enfócate en la variedad (rotar proteínas) y el balance a largo plazo.</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </section>
 
-                    <div class="week-block week2">
-                        <div class="week-header">
-                            <h3>Semana 2: Incremento Progresivo</h3>
-                            <span class="ratio">50% Croquetas / 50% BARF</span>
-                        </div>
-
-                        <div class="week-content">
-                            <h4>Día 8-10:</h4>
-                            <ul>
-                                <li>Aumenta a 50% BARF / 50% croquetas</li>
-                                <li>Introduce una segunda fuente de proteína (pavo o res)</li>
-                                <li>Aumenta variedad de vegetales</li>
-                            </ul>
-
-                            <h4>Día 11-14:</h4>
-                            <ul>
-                                <li>Puedes comenzar con huesos carnosos blandos (alas de pollo, cuellos)</li>
-                                <li>Siempre supervisa las primeras veces con huesos</li>
-                                <li>Las heces pueden cambiar de color (más oscuras) - es normal</li>
-                            </ul>
-
-                            <div class="week-tips">
-                                <strong>💡 Consejos de la Semana:</strong>
-                                <p>Este es el momento crítico. Si tu perro tolera bien el 50/50, está listo para continuar. Las heces deben volverse más pequeñas y firmes.</p>
+                        <section class="mt-5">
+                            <h2 class="section-title mb-4">Problemas Comunes y Soluciones</h2>
+                            <div class="accordion shadow-sm" id="accordionProblemas">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseP1" aria-expanded="false" aria-controls="collapseP1">
+                                            <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Problema: Diarrea
+                                        </button>
+                                    </h2>
+                                    <div id="collapseP1" class="accordion-collapse collapse" data-bs-parent="#accordionProblemas">
+                                        <div class="accordion-body">
+                                            <p><strong>Causas:</strong> Transición muy rápida, exceso de órganos (especialmente hígado), o demasiada grasa.</p>
+                                            <p class="mb-0"><strong>Solución:</strong> Regresa al paso anterior por 3-5 días. Reduce la cantidad de BARF y avanza más lento. Considera añadir puré de calabaza (fibra).</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseP2" aria-expanded="false" aria-controls="collapseP2">
+                                            <i class="bi bi-exclamation-triangle-fill text-warning me-2"></i>Problema: Heces muy duras o blancas
+                                        </button>
+                                    </h2>
+                                    <div id="collapseP2" class="accordion-collapse collapse" data-bs-parent="#accordionProblemas">
+                                        <div class="accordion-body">
+                                            <p><strong>Causa:</strong> Exceso de hueso en la dieta.</p>
+                                            <p class="mb-0"><strong>Solución:</strong> Reduce la proporción de hueso carnoso y aumenta la carne muscular (sin hueso) durante unos días.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseP3" aria-expanded="false" aria-controls="collapseP3">
+                                            <i class="bi bi-question-circle-fill text-info me-2"></i>Problema: Rechazo a comer
+                                        </button>
+                                    </h2>
+                                    <div id="collapseP3" class="accordion-collapse collapse" data-bs-parent="#accordionProblemas">
+                                        <div class="accordion-body">
+                                            <p><strong>Causas:</strong> Comida muy fría, textura desconocida, "adicción" a los saborizantes de las croquetas.</p>
+                                            <p class="mb-0"><strong>Solución:</strong> Sirve la comida a temperatura ambiente (no helada). Añade un poco de caldo de huesos tibio por encima. Sé paciente.</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </section>
 
-                    <div class="week-block week3">
-                        <div class="week-header">
-                            <h3>Semana 3: Dominio BARF</h3>
-                            <span class="ratio">25% Croquetas / 75% BARF</span>
-                        </div>
+                        <section class="mt-5">
+                            <h2 class="section-title mb-4">Consejos de Expertos para el Éxito</h2>
+                            <div class="row g-4"> <div class="col-md-6">
+                                    <div class="card h-100 step-card">
+                                        <div class="card-body d-flex align-items-center">
+                                            <i class="bi bi-hourglass-split display-4 text-brand me-3"></i>
+                                            <div>
+                                                <h4 class="card-title h5">Paciencia es Clave</h4>
+                                                <p class="card-text mb-0 small">Cada perro es diferente. Si tu perro necesita 6 semanas en lugar de 4, está bien. No hay prisa.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                        <div class="week-content">
-                            <h4>Día 15-17:</h4>
-                            <ul>
-                                <li>Aumenta a 75% BARF / 25% croquetas</li>
-                                <li>Introduce órganos en pequeñas cantidades (comenzar con 2% de hígado)</li>
-                                <li>Varía entre diferentes proteínas</li>
-                            </ul>
+                                <div class="col-md-6">
+                                    <div class="card h-100 step-card">
+                                        <div class="card-body d-flex align-items-center">
+                                            <i class="bi bi-clipboard-data-fill display-4 text-brand me-3"></i>
+                                            <div>
+                                                <h4 class="card-title h5">Documenta Todo</h4>
+                                                <p class="card-text mb-0 small">Toma fotos, anota peso, registra heces. Esta información es valiosa si surgen problemas.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <h4>Día 18-21:</h4>
-                            <ul>
-                                <li>Continúa con la misma proporción</li>
-                                <li>Aumenta gradualmente la porción de órganos hasta 5-10%</li>
-                                <li>Tu perro debería estar completamente adaptado</li>
-                            </ul>
+                                <div class="col-md-6">
+                                    <div class="card h-100 step-card">
+                                        <div class="card-body d-flex align-items-center">
+                                            <i class="bi bi-distribute-vertical display-4 text-brand me-3"></i>
+                                            <div>
+                                                <h4 class="card-title h5">No Mezcles en la Misma Comida</h4>
+                                                <p class="card-text mb-0 small">Croquetas y crudo digieren a diferentes velocidades. Es mejor separarlos por comidas.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div class="week-tips">
-                                <strong>💡 Consejos de la Semana:</strong>
-                                <p>Los órganos son muy nutritivos pero pueden causar heces blandas si se introducen rápido. Ve despacio con el hígado.</p>
+                                <div class="col-md-6">
+                                    <div class="card h-100 step-card">
+                                        <div class="card-body d-flex align-items-center">
+                                            <i class="bi bi-person-check-fill display-4 text-brand me-3"></i>
+                                            <div>
+                                                <h4 class="card-title h5">Confía en tu Perro</h4>
+                                                <p class="card-text mb-0 small">Sus cuerpos están diseñados para esto. Dales tiempo para adaptarse y confía en el proceso.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                </div>
+                        </section>                        
+                       
+                        
+                        <section class="mt-5">
+                            <h2 class="section-title mb-4">Cuándo Buscar Ayuda Veterinaria</h2>
+                            <div class="alert alert-danger shadow-sm">
+                                <h4 class="alert-heading"><i class="bi bi-exclamation-octagon-fill me-2"></i>¡Atención Inmediata!</h4>
+                                <p>Una diarrea leve de 24h puede ser normal, pero busca atención veterinaria **inmediata** si observas:</p>
+                                <ul class="mb-0">
+                                    <li>Vómito persistente (más de 2 veces en 24h).</li>
+                                    <li>Diarrea con sangre o muy acuosa por más de 24h.</li>
+                                    <li>Letargo severo o debilidad.</li>
+                                    <li>Hinchazón abdominal o signos de dolor.</li>
+                                </ul>
                             </div>
-                        </div>
-                    </div>
+                        </section>
 
-                    <div class="week-block week4">
-                        <div class="week-header">
-                            <h3>Semana 4: Transición Completa</h3>
-                            <span class="ratio">100% BARF</span>
-                        </div>
-
-                        <div class="week-content">
-                            <h4>Día 22-28:</h4>
-                            <ul>
-                                <li>¡100% BARF!</li>
-                                <li>Establece tu rutina de alimentación</li>
-                                <li>Continúa variando proteínas semanalmente</li>
-                                <li>Monitorea peso y condición corporal</li>
-                            </ul>
-
-                            <div class="week-tips">
-                                <strong>💡 Consejos de la Semana:</strong>
-                                <p>¡Felicidades! Tu perro está oficialmente en BARF. Ahora concéntrate en variedad y balance a largo plazo.</p>
+                        <section class="mt-5">
+                            <h2 class="section-title mb-4">Reflexión Final</h2>
+                            <p>La transición a BARF es un viaje. Cada perro responderá de manera única. Lo más importante es observar a tu compañero, ser flexible y estar dispuesto a ajustar el plan.</p>
+                            <div class="alert alert-brand mt-3">
+                                <p class="mb-0">Recuerda: has tomado una decisión consciente de mejorar la nutrición de tu perro. Con paciencia y observación, lograrás una transición exitosa que lo beneficiará durante años.</p>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                        </section>
 
-            <section class="content-section">
-                <h2>Señales de que la Transición Va Bien</h2>
-
-                <div class="signals-positive">
-                    <h3>✅ Señales Positivas</h3>
-                    <div class="signal-grid">
-                        <div class="signal-item good">
-                            <span class="signal-icon">🐕</span>
-                            <h4>Entusiasmo por la Comida</h4>
-                            <p>Tu perro come con gusto y termina su porción</p>
-                        </div>
-
-                        <div class="signal-item good">
-                            <span class="signal-icon">💩</span>
-                            <h4>Heces Firmes y Pequeñas</h4>
-                            <p>Menos voluminosas que con croquetas, sin diarrea</p>
-                        </div>
-
-                        <div class="signal-item good">
-                            <span class="signal-icon">⚡</span>
-                            <h4>Energía Estable</h4>
-                            <p>Nivel de actividad normal o incrementado</p>
-                        </div>
-
-                        <div class="signal-item good">
-                            <span class="signal-icon">😊</span>
-                            <h4>Comportamiento Normal</h4>
-                            <p>Sin signos de malestar o dolor abdominal</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Problemas Comunes y Soluciones</h2>
-
-                <div class="problems-solutions">
-                    <div class="problem-box">
-                        <h4>🔴 Problema: Diarrea</h4>
-                        <p><strong>Causas posibles:</strong> Transición demasiado rápida, exceso de órganos, intolerancia a proteína.</p>
-                        <p><strong>Solución:</strong> Regresa al paso anterior por 3-5 días. Reduce la cantidad de BARF o cambia de proteína. Considera ayuno de 12h.</p>
-                    </div>
-
-                    <div class="problem-box">
-                        <h4>🔴 Problema: Vómito</h4>
-                        <p><strong>Causas posibles:</strong> Comió demasiado rápido, porción muy grande, intolerancia.</p>
-                        <p><strong>Solución:</strong> Reduce porciones, divide en más comidas. Usa comederos lentos. Si persiste, consulta veterinario.</p>
-                    </div>
-
-                    <div class="problem-box">
-                        <h4>🔴 Problema: Rechazo a comer</h4>
-                        <p><strong>Causas posibles:</strong> Temperatura muy fría, textura desconocida, preferencia por croquetas.</p>
-                        <p><strong>Solución:</strong> Templa ligeramente la comida. Añade un poco de caldo. Sé paciente, puede tomar días adaptarse.</p>
-                    </div>
-
-                    <div class="problem-box">
-                        <h4>🔴 Problema: Heces muy duras/blancas</h4>
-                        <p><strong>Causas posibles:</strong> Exceso de huesos en la dieta.</p>
-                        <p><strong>Solución:</strong> Reduce la proporción de huesos al 5-8%. Añade más vegetales para fibra.</p>
-                    </div>
-
-                    <div class="problem-box">
-                        <h4>🔴 Problema: Gases excesivos</h4>
-                        <p><strong>Causas posibles:</strong> Adaptación de microbiota, mezcla de alimentos.</p>
-                        <p><strong>Solución:</strong> Evita mezclar croquetas y BARF en la misma comida. Separa por al menos 6-8 horas. Considera probióticos.</p>
-                    </div>
-
-                    <div class="problem-box">
-                        <h4>🔴 Problema: Pérdida de peso</h4>
-                        <p><strong>Causas posibles:</strong> Porciones insuficientes, alta actividad.</p>
-                        <p><strong>Solución:</strong> Aumenta cantidad diaria en 10-15%. Revisa que esté recibiendo suficiente grasa.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Cronograma de Introducción de Alimentos</h2>
-
-                <div class="food-timeline">
-                    <div class="timeline-phase">
-                        <h4>Fase 1: Semanas 1-2</h4>
-                        <div class="foods-list safe">
-                            <strong>Proteínas seguras para comenzar:</strong>
-                            <ul>
-                                <li>Pollo (pechuga, muslos)</li>
-                                <li>Pavo molido</li>
-                                <li>Res molida magra</li>
+                        <div class="mt-5">
+                            <h3 class="h6 text-muted fw-bold">Referencias consultadas:</h3>
+                            <ul class="sources-list text-muted">
+                                <li>Schlesinger, D.P. & Joffe, D.J. (2011). "Raw food diets in companion animals: A critical review" - Canadian Veterinary Journal</li>
+                                <li>Freeman, L.M., et al. (2013). "Current knowledge about the risks and benefits of raw meat-based diets..." - JAVMA</li>
+                                <li>Kerr, K.R., et al. (2012). "Apparent total tract energy and macronutrient digestibility..." - Journal of Animal Science</li>
                             </ul>
                         </div>
+
+                    </div> <div class="article-navigation d-flex justify-content-between">
+                        <a href="./articulo6.html" class="nav-button back">← Artículo Anterior</a>
+                        <a href="indexblog.html" class="nav-button next">Volver al Blog →</a>
                     </div>
+                </article>
 
-                    <div class="timeline-phase">
-                        <h4>Fase 2: Semanas 3-4</h4>
-                        <div class="foods-list moderate">
-                            <strong>Añadir gradualmente:</strong>
-                            <ul>
-                                <li>Huesos carnosos (alas, cuellos de pollo)</li>
-                                <li>Pescado (salmón, sardinas)</li>
-                                <li>Cordero</li>
-                                <li>Hígado (2-5% de la dieta)</li>
-                                <li>Vegetales variados</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="timeline-phase">
-                        <h4>Fase 3: Mes 2 en adelante</h4>
-                        <div class="foods-list advanced">
-                            <strong>Para variedad avanzada:</strong>
-                            <ul>
-                                <li>Otros órganos (riñón, corazón, bazo)</li>
-                                <li>Huevos enteros con cáscara</li>
-                                <li>Tripa verde</li>
-                                <li>Proteínas exóticas (venado, conejo)</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Consejos de Expertos para el Éxito</h2>
-
-                <div class="expert-tips">
-                    <div class="tip-card">
-                        <span class="tip-number">1</span>
-                        <h4>Paciencia es Clave</h4>
-                        <p>Cada perro es diferente. Si necesitas 6 semanas en lugar de 4, está bien. No hay prisa.</p>
-                    </div>
-
-                    <div class="tip-card">
-                        <span class="tip-number">2</span>
-                        <h4>Documenta Todo</h4>
-                        <p>Toma fotos, anota peso, registra heces. Esta información es valiosa si surgen problemas.</p>
-                    </div>
-
-                    <div class="tip-card">
-                        <span class="tip-number">3</span>
-                        <h4>Mantén la Simplicidad al Inicio</h4>
-                        <p>No intentes dar 5 proteínas diferentes la primera semana. Una proteína a la vez.</p>
-                    </div>
-
-                    <div class="tip-card">
-                        <span class="tip-number">4</span>
-                        <h4>Temperatura de la Comida</h4>
-                        <p>Muchos perros prefieren comida a temperatura ambiente. Saca del refrigerador 30 minutos antes.</p>
-                    </div>
-
-                    <div class="tip-card">
-                        <span class="tip-number">5</span>
-                        <h4>No Mezcles en la Misma Comida</h4>
-                        <p>Croquetas y alimento crudo digieren a diferentes velocidades. Si mezclas, separa por comidas.</p>
-                    </div>
-
-                    <div class="tip-card">
-                        <span class="tip-number">6</span>
-                        <h4>Confía en tu Perro</h4>
-                        <p>Los perros son carnívoros. Sus cuerpos están diseñados para esto. Confía en el proceso.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Cuándo Buscar Ayuda Veterinaria</h2>
-
-                <div class="emergency-box">
-                    <h3>🚨 Busca atención veterinaria inmediata si observas:</h3>
-                    <ul>
-                        <li>Vómito persistente (más de 2 veces en 24h)</li>
-                        <li>Diarrea con sangre o muy acuosa por más de 24h</li>
-                        <li>Letargo severo o debilidad</li>
-                        <li>Rechazo completo de comida por más de 48h</li>
-                        <li>Hinchazón abdominal o signos de dolor</li>
-                        <li>Dificultad para defecar o estreñimiento severo</li>
-                        <li>Cualquier comportamiento anormal preocupante</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Después de la Transición: Mantenimiento a Largo Plazo</h2>
-
-                <p>Una vez completada la transición, tu enfoque cambia al mantenimiento y la optimización:</p>
-
-                <div class="maintenance-guide">
-                    <h3>Plan de Mantenimiento:</h3>
-                    
-                    <div class="maintenance-item">
-                        <h4>📅 Semanal:</h4>
-                        <ul>
-                            <li>Pesar a tu perro (misma hora, mismas condiciones)</li>
-                            <li>Rotar entre 2-3 proteínas diferentes</li>
-                            <li>Preparar porciones para la semana</li>
-                        </ul>
-                    </div>
-
-                    <div class="maintenance-item">
-                        <h4>📅 Mensual:</h4>
-                        <ul>
-                            <li>Evaluar condición corporal (palpar costillas, cintura)</li>
-                            <li>Revisar calidad de pelaje y piel</li>
-                            <li>Ajustar porciones si es necesario</li>
-                            <li>Introducir nuevas proteínas o vegetales</li>
-                        </ul>
-                    </div>
-
-                    <div class="maintenance-item">
-                        <h4>📅 Trimestral:</h4>
-                        <ul>
-                            <li>Revisión veterinaria general</li>
-                            <li>Evaluar niveles de energía y comportamiento</li>
-                            <li>Considerar análisis de sangre (opcional pero recomendado)</li>
-                        </ul>
-                    </div>
-
-                    <div class="maintenance-item">
-                        <h4>📅 Anual:</h4>
-                        <ul>
-                            <li>Chequeo veterinario completo</li>
-                            <li>Panel de sangre completo</li>
-                            <li>Evaluación dental</li>
-                            <li>Revisar y ajustar plan nutricional según edad</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Reflexión Final</h2>
-
-                <div class="final-message">
-                    <p>La transición a BARF es un viaje, no un destino. Cada perro responderá de manera única, y eso está perfectamente bien. Lo más importante es observar a tu perro, ser flexible en tu enfoque y estar dispuesto a ajustar según sea necesario.</p>
-
-                    <p>No existe una única forma "correcta" de hacer BARF. Lo que funciona para el perro de tu amigo puede no funcionar para el tuyo. La clave está en educarte, ser paciente y mantener una comunicación abierta con tu veterinario.</p>
-
-                    <p>Recuerda: has tomado una decisión consciente de mejorar la nutrición de tu compañero. Eso, en sí mismo, ya es un gran paso. Con paciencia, observación y amor, lograrás una transición exitosa que beneficiará a tu perro durante años.</p>
-                </div>
-            </section>
-
-            <div class="sources-section">
-                <h3>Referencias científicas:</h3>
-                <ul class="sources-list">
-                    <li>Schlesinger, D.P. & Joffe, D.J. (2011). "Raw food diets in companion animals: A critical review" - Canadian Veterinary Journal</li>
-                    <li>Freeman, L.M., et al. (2013). "Current knowledge about the risks and benefits of raw meat-based diets for dogs and cats" - JAVMA</li>
-                    <li>Kerr, K.R., et al. (2012). "Apparent total tract energy and macronutrient digestibility and fecal fermentative end-product concentrations of domestic cats fed extruded, raw beef-based, and cooked beef-based diets" - Journal of Animal Science</li>
-                    <li>Axelsson, E., et al. (2013). "The genomic signature of dog domestication reveals adaptation to a starch-rich diet" - Nature</li>
-                </ul>
             </div>
         </div>
+    </div>
 
-        <div class="article-navigation">
-            <a href="articulo6.html" class="nav-button back">← Artículo Anterior</a>
-            <a href="indexblog.html" class="nav-button next">Volver al Blog →</a>
-        </div>
-    </article>
+<footer></footer>
 
-    <script src="articulo6.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="/scripts/indexblog.js"></script>
+    <script src="/components/Navbar.js"></script>
+    <script src="/components/footer.js"></script>
 </body>
 </html>

@@ -2,10 +2,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--ENLACE PARA BOOTSTRAP-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title>Woof & Barf - Blog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <!--SCRIPT PARA CSS-->
-    <link rel="stylesheet" href="/frontend/styles/style.css">
+    <link rel="stylesheet" href="/styles/blogcss/indexblog.css">
     <link rel="stylesheet" href="../components/Navbar.css">
     <link rel="stylesheet" href="../components/footer.css">
     <title>Blog</title>
@@ -59,10 +65,227 @@
     </div>
   </nav>
     <!--BARRA DE NAVEGACION-->
-    <header>
-        <h1>Blog</h1>
-    </header>
-    <main></main>
+  
+    <!--contenido blog-->
+  <div class="container py-5">
+        <section class="featured-articles mb-5">
+            <h1 class="section-title text-center mb-5 display-4">Woof & Barf: El Blog de Nutrición Natural</h1>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="./Blog/articulo1.html" class="text-decoration-none">
+                        <div class="card h-100 article-card shadow-sm">
+                            <div class="article-image overflow-hidden">
+                                <img src="/assets/imagenes/perritos-varios/blog-articulo1.jpg" 
+                                     class="card-img-top" 
+                                     alt="Perro Beagle">
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title h5">La Guía Definitiva: Cómo Manejar la Dieta BARF de Forma Segura en Casa</h3>
+                                <p class="card-text text-muted small">Todo lo que necesitas saber para empezar.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="./Blog/articulo2.html" class="text-decoration-none">
+                        <div class="card h-100 article-card shadow-sm">
+                            <div class="article-image overflow-hidden">
+                                <img src="/assets/imagenes/perritos-varios/blog-articulo-2.jpg" 
+                                     class="card-img-top" 
+                                     alt="Vegetales frescos">
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title h5">Los 5 mejores ingredientes para la salud de tu perro</h3>
+                                <p class="card-text text-muted small">Descubre los alimentos que marcan una dieta balanceada.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <a href="./Blog/articulo3.html" class="text-decoration-none">
+                        <div class="card h-100 article-card shadow-sm">
+                            <div class="article-image overflow-hidden">
+                                <img src="/assets/imagenes/perritos-varios/blog-articulo-3.jpg" 
+                                     class="card-img-top" 
+                                     alt="Labrador feliz">
+                            </div>
+                            <div class="card-body">
+                                <h3 class="card-title h5">Testimonio de un cliente satisfecho</h3>
+                                <p class="card-text text-muted small">Lee cómo BARF transformó la vida de Max.</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="recent-posts mt-5 pt-4">
+            <h2 class="section-title text-center mb-4 display-5">Publicaciones Recientes</h2>
+            
+            <ul class="nav nav-pills justify-content-center mb-4 category-nav" id="categoryTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-todos-tab" data-bs-toggle="pill" data-bs-target="#pills-todos" type="button" role="tab" aria-controls="pills-todos" aria-selected="true">Todos</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-guias-tab" data-bs-toggle="pill" data-bs-target="#pills-guias" type="button" role="tab" aria-controls="pills-guias" aria-selected="false">Guía de Inicio</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-mitos-tab" data-bs-toggle="pill" data-bs-target="#pills-mitos" type="button" role="tab" aria-controls="pills-mitos" aria-selected="false">Mitos y Verdades</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-recetas-tab" data-bs-toggle="pill" data-bs-target="#pills-recetas" type="button" role="tab" aria-controls="pills-recetas" aria-selected="false">Recetas</button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="pills-tabContent">
+                
+                <div class="tab-pane fade show active" id="pills-todos" role="tabpanel" aria-labelledby="pills-todos-tab">
+                    <div class="row g-3">
+                        
+                        <div class="col-12">
+                            <div class="card post-item article-card shadow-sm">
+                                <div class="row g-0">
+                                    <div class="col-md-3">
+                                        <img src="/assets/imagenes/perritos-varios/blog-articulo-4.jpg" 
+                                             class="img-fluid rounded-start post-image" 
+                                             alt="Bowl de comida">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center h-100">
+                                            <div>
+                                                <h4 class="card-title h5 mb-2">
+                                                    <a href="./Blog/articulo4.html" class="text-decoration-none stretched-link">
+                                                        ¿Cuánta comida BARF necesita mi perro?
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text text-muted mb-1 small">Una guía completa de porciones basada en peso, edad y actividad.</p>
+                                                <p class="card-text mb-0"><small class="text-muted">Publicado el 20 de octubre de 2025</small></p>
+                                            </div>
+                                            <a href="./Blog/articulo4.html" class="btn btn-brand btn-sm mt-3 mt-md-0 ms-md-3">Leer Más</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="card post-item article-card shadow-sm">
+                                <div class="row g-0">
+                                    <div class="col-md-3">
+                                        <img src="/assets/imagenes/perritos-varios/blog-articulo-5.jpg" 
+                                             class="img-fluid rounded-start post-image" 
+                                             alt="Husky">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center h-100">
+                                            <div>
+                                                <h4 class="card-title h5 mb-2">
+                                                    <a href="./Blog/articulo5.html" class="text-decoration-none stretched-link">
+                                                        Mitos y verdades sobre la alimentación cruda
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text text-muted mb-1 small">Desmitificando conceptos erróneos con evidencia científica.</p>
+                                                <p class="card-text mb-0"><small class="text-muted">Publicado el 12 de octubre de 2025</small></p>
+                                            </div>
+                                            <a href="./Blog/articulo5.html" class="btn btn-brand btn-sm mt-3 mt-md-0 ms-md-3">Leer Más</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="card post-item article-card shadow-sm">
+                                <div class="row g-0">
+                                    <div class="col-md-3">
+                                        <img src="/assets/imagenes/perritos-varios/blog-articulo-6.jpg" 
+                                             class="img-fluid rounded-start post-image" 
+                                             alt="Snacks">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center h-100">
+                                            <div>
+                                                <h4 class="card-title h5 mb-2">
+                                                    <a href="./Blog/articulo6.html" class="text-decoration-none stretched-link">
+                                                        Recetas caseras de snacks saludables
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text text-muted mb-1 small">Ideas fáciles y nutritivas compatibles con BARF.</p>
+                                                <p class="card-text mb-0"><small class="text-muted">Publicado el 5 de octubre de 2025</small></p>
+                                            </div>
+                                            <a href="./Blog/articulo6.html" class="btn btn-brand btn-sm mt-3 mt-md-0 ms-md-3">Leer Más</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="card post-item article-card shadow-sm">
+                                <div class="row g-0">
+                                    <div class="col-md-3">
+                                        <img src="/assets/imagenes/perritos-varios/blog-articulo-7.jpg" 
+                                             class="img-fluid rounded-start post-image" 
+                                             alt="Perro comiendo">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-center h-100">
+                                            <div>
+                                                <h4 class="card-title h5 mb-2">
+                                                    <a href="./Blog/articulo7.html" class="text-decoration-none stretched-link">
+                                                        Transición exitosa a la dieta BARF
+                                                    </a>
+                                                </h4>
+                                                <p class="card-text text-muted mb-1 small">Paso a paso para cambiar la alimentación sin complicaciones.</p>
+                                                <p class="card-text mb-0"><small class="text-muted">Publicado el 28 de septiembre de 2025</small></p>
+                                            </div>
+                                            <a href="./Blog/articulo7.html" class="btn btn-brand btn-sm mt-3 mt-md-0 ms-md-3">Leer Más</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="pills-guias" role="tabpanel" aria-labelledby="pills-guias-tab">
+                    <p class="text-center text-muted">Contenido de la pestaña "Guías de Inicio".</p>
+                    </div>
+                <div class="tab-pane fade" id="pills-mitos" role="tabpanel" aria-labelledby="pills-mitos-tab">
+                    <p class="text-center text-muted">Contenido de la pestaña "Mitos y Verdades".</p>
+                </div>
+                <div class="tab-pane fade" id="pills-recetas" role="tabpanel" aria-labelledby="pills-recetas-tab">
+                    <p class="text-center text-muted">Contenido de la pestaña "Recetas".</p>
+                </div>
+
+            </div> <nav aria-label="Navegación de páginas" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled" id="prevBtnLi">
+                        <button class="page-link" id="prevBtn" aria-label="Anterior">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                    </li>
+                    <li class="page-item active" aria-current="page">
+                        <button class="page-link pagination-number" data-page="1">1</button>
+                    </li>
+                    <li class="page-item">
+                        <button class="page-link pagination-number" data-page="2">2</button>
+                    </li>
+                    <li class="page-item d-none"> <button class="page-link pagination-number" data-page="3">3</button>
+                    </li>
+                    <li class="page-item" id="nextBtnLi">
+                        <button class="page-link" id="nextBtn" aria-label="Siguiente">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+        </section>
+   </div>  
     <footer></footer>
 
 <!--SCRIPT PARA BOOTSTRAP-->

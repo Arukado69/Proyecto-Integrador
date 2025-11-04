@@ -6,188 +6,232 @@
     <title>Guía para principiantes sobre la dieta BARF - Woof & BARF</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/frontend/styles/blogcss/articulo1.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    
+    <link rel="stylesheet" href="/components/Navbar.css">
+    <link rel="stylesheet" href="/styles/blogcss/articulo1.css">
+    <link rel="stylesheet" href="/components/footer.css">
+   
 </head>
+
 <body>
-    <article class="blog-article">
-        <!-- Header del artículo -->
-        <header class="article-header">
-            <div class="breadcrumb">
-                <a href="indexblog.html">Blog</a> / <span>Guía para principiantes</span>
-            </div>
-            <h1 class="article-title">Guía para principiantes sobre la dieta BARF</h1>
-            <div class="article-meta">
-                <span class="author">Por Equipo Woof & BARF</span>
-                <span class="date">20 de octubre de 2025</span>
-                <span class="reading-time">⏱ 8 min de lectura</span>
-            </div>
-        </header>
 
-        <!-- Imagen destacada -->
-        <div class="featured-image">
-            <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1200&h=600&fit=crop" alt="Perro saludable con dieta BARF">
+<!-- NAVBAR -->
+  <nav class="navbar-center">
+    <div class="container">
+
+      <!-- Logo -->
+      <a class="navbar-brand" href="./index.html">
+        <img src="/assets/imagenes/iconos/logo-default.png" alt="Logo" id="logo" class="logo">
+      </a>
+
+      <!-- Nav Links -->
+      <ul class="navbar-nav-custom" id="navbarNav">
+        <li><a class="nav-link-custom" href="../index.html">Inicio</a></li>
+        <li><a class="nav-link-custom" href="../catalogo.html">Tienda</a></li>
+        <li><a class="nav-link-custom" href="../nosotros.html">Nosotros</a></li>
+        <li><a class="nav-link-custom" href="../blog.html">Blog</a></li>        
+        <li><a class="nav-link-custom" href="../contacto.html">Contactanos</a></li>
+      </ul>
+
+      <!-- Botón hamburguesa para móvil -->
+       <div class="iconos-hamburguesa">
+
+       <button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+         aria-label="Toggle navigation">
+       <span class="navbar-toggler-icon-custom"></span>
+       <span class="navbar-toggler-icon-custom"></span>
+       <span class="navbar-toggler-icon-custom"></span>
+       </button>
+
+      <!-- Botón de usuario -->
+       
+        <a href="../micuenta.html">
+            <button class="user-btn" id="userBtn">
+        <img src="/assets/imagenes/iconos/user-dark.png" alt="Usuario" id="userIcon">
+      </button>
+      </a>
+      <!-- Botón de compras -->
+       <a href="../carrito.html">
+      <button class="user-btn" id="comprasBtn">
+        <img src="/assets/imagenes/iconos/compras-dark.png" alt="Compras" id="comprasIcon">
+      </button>
+      </a>
+    </div>
+    </div>
+  </nav>
+     <!-- Nav/bar-->   
+
+<main>    
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+ <!-- Contenido del artículo -->
+                <article>
+                    <header class="text-center mb-4">
+                        
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb justify-content-center">
+                                <li class="breadcrumb-item"><a href="/pages/blog.html">Blog</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Guía para principiantes</li>
+                            </ol>
+                        </nav>
+
+                        <h1 class="fw-bold mb-3" style="color: var(--wb-dark);">
+                            La Guía Definitiva: Cómo Manejar la Dieta BARF de Forma Segura en Casa
+                        </h1>
+                        
+                        <div class="article-meta">
+                            <span><i class="bi bi-person-fill"></i>Por Equipo Woof & BARF</span>
+                            <span><i class="bi bi-calendar-event"></i>20 de octubre de 2025</span>
+                            <span><i class="bi bi-clock-fill"></i>8 min de lectura</span>
+                        </div>
+                    </header>
+
+                    <div class="mb-4">
+                        <img src="/assets/imagenes/perritos-varios/blog-articulo1.jpg" 
+                             class="img-fluid rounded shadow-sm" 
+                             alt="Perro saludable con dieta BARF">
+                    </div>
+                </article>
+
+                <p class="lead text-center text-muted mb-4">
+                    ¡Felicidades! Has elegido una dieta fresca y nutritiva para tu perro. Ahora, hablemos de algo que en Woof & Barf nos tomamos muy en serio: la seguridad.
+                    Manejar carne cruda para tu perro no es muy diferente a preparar una cena para tu familia. Simplemente requiere aplicar las mismas reglas de higiene y sentido común.
+                    Mucha gente se preocupa por las bacterias o los parásitos, y es válido tenerlo en cuenta. La buena noticia es que, siguiendo dos pasos clave, estos riesgos se vuelven increíblemente fáciles de manejar.
+                    Aquí tienes tu guía práctica para ser un experto en el manejo seguro de la dieta BARF.
+                </p>
+
+                <h2 class="section-title fw-bold mt-5 mb-4">
+                    <i class="bi bi-snow2"></i> Paso 1: El Súper Poder del Frío (Congelación)
+                </h2>
+
+                <p>Este es el paso más importante para la tranquilidad. La congelación es la herramienta más poderosa de la naturaleza para inactivar parásitos que podrían venir en la carne. Mientras que las bacterias se gestionan con la higiene (lo veremos en el paso 2), los parásitos se combaten con el frío.</p>
+
+                <div class="alert alert-info d-flex align-items-center" role="alert">
+                    <i class="bi bi-shield-check fs-3 me-3"></i> <div>
+                        <h4 class="alert-heading">Tu Regla de Oro (Congelación)</h4>
+                        Los estudios científicos recomiendan congelar la carne cruda para inactivar parásitos comunes. Por ejemplo:
+                        <ul class="mt-2 mb-0">
+                            <li>Para *Toxoplasma gondii*, congelar a -20°C durante 3 días es un método eficaz para neutralizarlo.</li>
+                            <li>Para *Sarcocystis*, 1 día a -20°C puede ser suficiente.</li>
+                            <li>Para quistes hidatídicos (*Echinococcus*), bastan 6-9 horas a -18°C.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="alert alert-brand" role="alert">
+                    <h4 class="alert-heading">
+                        <i class="bi bi-star-fill"></i> El consejo de Woof & Barf
+                    </h4>
+                    <p class="mb-0">Una regla simple y efectiva es mantener la carne congelada a -20°C por un mínimo de 3 días antes de dársela a tu perro. En Woof & Barf, todos nuestros productos ya vienen ultra-congelados, así que ¡ya tienes la mitad del trabajo hecho! Solo asegúrate de mantener esa cadena de frío en tu congelador de casa.</p>
+                </div>
+
+                <h2 class="section-title fw-bold mt-5 mb-4">
+                    <i class="bi bi-water"></i> Paso 2: Las Reglas de Oro de la Cocina (Higiene)
+                </h2>
+
+                <p>El segundo paso es para manejar las bacterias (como *Salmonella*, *E. coli* o *Listeria*), ya que estas no mueren con la congelación. Aquí es donde aplicamos las "Buenas Prácticas de Cocina", tal como lo harías para ti.</p>
+
+                <div class="row g-4 mt-3">
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card h-100 p-3 step-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-hands-wash display-3 text-brand"></i> <h3 class="card-title h4 fw-bold mt-3">1. LAVA: Manos y Utensilios</h3>
+                                <ul class="card-list mt-3">
+                                    <li>Lávate las manos con agua caliente y jabón antes y después de manipular la comida de tu perro.</li>
+                                    <li>Lava el plato o recipiente de tu perro inmediatamente después de que termine de comer. No dejes el plato sucio a temperatura ambiente.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card h-100 p-3 step-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-files-alt display-3 text-brand"></i> <h3 class="card-title h4 fw-bold mt-3">2. SEPARA: Evita la Contaminación Cruzada</h3>
+                                <ul class="card-list mt-3">
+                                    <li>¡Súper importante! Usa utensilios, tablas de cortar y recipientes exclusivos para la comida de tu perro.</li>
+                                    <li>Almacena la carne cruda en el refrigerador (mientras se descongela) en un recipiente sellado y en el estante más bajo.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card h-100 p-3 step-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-droplet-half display-3 text-brand"></i> <h3 class="card-title h4 fw-bold mt-3">3. LIMPIA: Desinfecta las Superficies</h3>
+                                <ul class="card-list mt-3">
+                                    <li>Después de preparar la ración, limpia y desinfecta todas las superficies que tocaron la carne cruda.</li>
+                                    <li>Recuerda que algunas bacterias, como la *Listeria*, pueden sobrevivir en temperaturas de refrigerador[cite: 300].</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card h-100 p-3 step-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-thermometer-low display-3 text-brand"></i> <h3 class="card-title h4 fw-bold mt-3">4. DESCONGELA: Siempre en Frío</h3>
+                                <ul class="card-list mt-3">
+                                    <li>La forma más segura de descongelar la porción de BARF es en el refrigerador, no sobre el mostrador a temperatura ambiente.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div> <h2 class="section-title fw-bold mt-5 mb-4">
+                    <i class="bi bi-lightbulb-fill"></i> Un Consejo Extra: La Seguridad Post-Comida
+                </h2>
+                
+                <p>El riesgo no termina cuando tu perro termina de comer. Las bacterias pueden transmitirse desde su boca o sus heces.</p>
+                
+                <div class="alert alert-warning" role="alert">
+                    <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> ¡Atención!</h4>
+                    <ul class="mb-0">
+                        <li>Lávate las manos después de jugar con tu perro, especialmente si acaba de comer.</li>
+                        <li>Recoge sus heces de inmediato en el jardín o el parque.</li>
+                        <li>Estas precauciones son especialmente vitales si en casa hay niños pequeños, personas mayores o personas con sistemas inmunológicos comprometidos[cite: 281].</li>
+                    </ul>
+                </div>
+
+
+                <div class="text-center p-4 mt-5 rounded" style="background-color: #f0f7f2;">
+                    <h2 class="fw-bold" style="color: var(--wb-dark);">¡Lo Estás Haciendo Genial!</h2>
+                    <p class="lead">Puede sonar a mucho, pero te lo prometemos: en un par de días, esta rutina se vuelve totalmente automática. Manejar BARF de forma segura es sencillo. Es un pequeño hábito que te da la enorme recompensa de ver a tu perro sano, fuerte y disfrutando de comida real.</p>
+                    <p class="mt-3">En Woof & Barf, estamos comprometidos con la seguridad de principio a fin. Por eso nuestros productos vienen en porciones selladas y ultra-congeladas, listas para que solo tengas que descongelar y servir.</p>
+                    
+                    <a href="../catalogo.html" class="btn btn-primary btn-lg mt-3" style="background-color: var(--wb-primary); border-color: var(--wb-primary);">
+                        <i class="bi bi-bag-heart-fill me-2"></i>
+                        ¿Listo para tu siguiente entrega?
+                    </a>
+                </div>
+
+            </div>
         </div>
+    </div>
 
-        <!-- Contenido del artículo -->
-        <div class="article-content">
-            <div class="intro-section">
-                <p class="lead">La dieta BARF (Biologically Appropriate Raw Food o Alimentos Crudos Biológicamente Apropiados) es una forma de alimentación natural que busca replicar la dieta ancestral de los perros. Si estás considerando hacer el cambio, esta guía te ayudará a entender los fundamentos básicos.</p>
-            </div>
-
-            <section class="content-section">
-                <h2>¿Qué es la dieta BARF?</h2>
-                <p>El término BARF fue acuñado por el veterinario australiano Ian Billinghurst en 1993, quien propuso que los perros evolucionaron para comer alimentos crudos y que esta forma de alimentación es más saludable que los alimentos procesados comerciales.</p>
-                
-                <p>La dieta BARF se basa en proporcionar alimentos crudos que incluyen carne muscular, huesos carnosos, órganos, vegetales y frutas. El objetivo es ofrecer una nutrición completa y balanceada que se asemeje a lo que los ancestros salvajes de nuestros perros consumirían en la naturaleza.</p>
-            </section>
-
-            <section class="content-section">
-                <h2>Componentes principales de la dieta BARF</h2>
-                
-                <div class="highlight-box">
-                    <h3>Distribución recomendada:</h3>
-                    <ul class="percentage-list">
-                        <li><strong>70% Carne muscular</strong> - Pollo, pavo, res, cordero, pescado</li>
-                        <li><strong>10% Huesos carnosos crudos</strong> - Fuente de calcio y fósforo</li>
-                        <li><strong>10% Órganos</strong> - Hígado (5%), otros órganos (5%)</li>
-                        <li><strong>10% Vegetales y frutas</strong> - Zanahorias, espinacas, manzanas, arándanos</li>
-                    </ul>
-                </div>
-
-                <p>Estudios veterinarios sugieren que una dieta cruda bien balanceada puede proporcionar los nutrientes esenciales que los perros necesitan. Sin embargo, es crucial mantener las proporciones adecuadas para evitar deficiencias nutricionales.</p>
-            </section>
-
-            <section class="content-section">
-                <h2>Beneficios potenciales de la dieta BARF</h2>
-                
-                <p>Los defensores de la alimentación cruda reportan diversos beneficios observados en sus perros, aunque es importante notar que la investigación científica en este campo aún está en desarrollo:</p>
-
-                <div class="benefits-grid">
-                    <div class="benefit-card">
-                        <div class="benefit-icon">🦷</div>
-                        <h4>Salud dental mejorada</h4>
-                        <p>La masticación de huesos crudos puede ayudar a limpiar los dientes de forma natural.</p>
-                    </div>
-
-                    <div class="benefit-card">
-                        <div class="benefit-icon">✨</div>
-                        <h4>Pelaje más brillante</h4>
-                        <p>Los ácidos grasos esenciales de la carne cruda pueden mejorar la calidad del pelaje.</p>
-                    </div>
-
-                    <div class="benefit-card">
-                        <div class="benefit-icon">💪</div>
-                        <h4>Mayor energía</h4>
-                        <p>Mejor digestibilidad puede traducirse en más vitalidad.</p>
-                    </div>
-
-                    <div class="benefit-card">
-                        <div class="benefit-icon">🌿</div>
-                        <h4>Heces más pequeñas</h4>
-                        <p>Mayor aprovechamiento de nutrientes significa menos desperdicio.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Consideraciones importantes de seguridad</h2>
-
-                <div class="warning-box">
-                    <h3>⚠️ Antes de comenzar, ten en cuenta:</h3>
-                    <ul>
-                        <li><strong>Consulta con tu veterinario:</strong> Especialmente si tu perro tiene condiciones médicas preexistentes.</li>
-                        <li><strong>Higiene rigurosa:</strong> Maneja la carne cruda con las mismas precauciones que usarías para consumo humano.</li>
-                        <li><strong>Nunca des huesos cocidos:</strong> Los huesos cocidos pueden astillarse y causar obstrucciones o perforaciones.</li>
-                        <li><strong>Balance nutricional:</strong> Una dieta desequilibrada puede causar deficiencias. Considera trabajar con un nutricionista veterinario.</li>
-                        <li><strong>Riesgos bacterianos:</strong> La carne cruda puede contener patógenos como Salmonella o E. coli.</li>
-                    </ul>
-                </div>
-
-                <p>Investigaciones publicadas en revistas veterinarias han identificado que, si bien muchos perros toleran bien las bacterias presentes en carne cruda, existe un riesgo potencial tanto para las mascotas como para los humanos que las manipulan. La Asociación Americana de Medicina Veterinaria (AVMA) recomienda precaución al considerar dietas crudas.</p>
-            </section>
-
-            <section class="content-section">
-                <h2>¿Cómo calcular las porciones?</h2>
-
-                <p>Una regla general es alimentar con el 2-3% del peso corporal ideal de tu perro adulto por día. Los cachorros y perros muy activos pueden necesitar hasta el 5-6%.</p>
-
-                <div class="calculator-example">
-                    <h4>Ejemplo práctico:</h4>
-                    <p><strong>Perro de 20 kg con actividad moderada:</strong></p>
-                    <p>20 kg × 2.5% = 500 gramos de comida al día</p>
-                    <ul>
-                        <li>350g de carne muscular</li>
-                        <li>50g de huesos carnosos</li>
-                        <li>50g de órganos</li>
-                        <li>50g de vegetales/frutas</li>
-                    </ul>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Primeros pasos para comenzar</h2>
-
-                <div class="steps-list">
-                    <div class="step">
-                        <span class="step-number">1</span>
-                        <div class="step-content">
-                            <h4>Investiga y planifica</h4>
-                            <p>Aprende sobre las necesidades nutricionales específicas de tu perro según su edad, tamaño y nivel de actividad.</p>
-                        </div>
-                    </div>
-
-                    <div class="step">
-                        <span class="step-number">2</span>
-                        <div class="step-content">
-                            <h4>Consulta con profesionales</h4>
-                            <p>Habla con tu veterinario y considera consultar a un nutricionista veterinario certificado.</p>
-                        </div>
-                    </div>
-
-                    <div class="step">
-                        <span class="step-number">3</span>
-                        <div class="step-content">
-                            <h4>Transición gradual</h4>
-                            <p>Introduce la dieta BARF lentamente durante 7-10 días, comenzando con proteínas fáciles de digerir como pollo.</p>
-                        </div>
-                    </div>
-
-                    <div class="step">
-                        <span class="step-number">4</span>
-                        <div class="step-content">
-                            <h4>Monitorea y ajusta</h4>
-                            <p>Observa las heces, energía, pelaje y peso de tu perro. Ajusta las porciones según sea necesario.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="content-section">
-                <h2>Conclusión</h2>
-                <p>La dieta BARF puede ser una opción nutritiva para tu perro cuando se implementa correctamente. Sin embargo, requiere investigación, compromiso y atención al detalle. No es la única forma de alimentar saludablemente a tu mascota, y lo más importante es encontrar lo que funcione mejor para tu perro individual y tu estilo de vida.</p>
-
-                <p>Recuerda que cada perro es único, y lo que funciona para uno puede no ser ideal para otro. La clave está en estar bien informado, trabajar con profesionales veterinarios y observar atentamente la respuesta de tu perro a cualquier cambio dietético.</p>
-            </section>
-
-            <div class="sources-section">
-                <h3>Fuentes consultadas:</h3>
-                <ul class="sources-list">
-                    <li>Billinghurst, I. (1993). "Give Your Dog a Bone: The Practical Commonsense Way to Feed Dogs"</li>
-                    <li>Freeman, L.M., et al. (2013). "Current knowledge about the risks and benefits of raw meat-based diets for dogs and cats" - Journal of the American Veterinary Medical Association</li>
-                    <li>American Veterinary Medical Association (AVMA) - Raw Pet Food Diets Policy</li>
-                    <li>World Small Animal Veterinary Association (WSAVA) - Nutritional Guidelines</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Navegación al siguiente artículo -->
-        <div class="article-navigation">
-            <a href="indexblog.html" class="nav-button back">← Volver al Blog</a>
-            <a href="./articulo2.html" class="nav-button next">Siguiente Artículo →</a>
+    <!-- Navegación al siguiente artículo -->
+        <div class="article-navigation d-flex justify-content-between">
+            <a href="/pages/blog.html" class="nav-button back">← Volver al Blog</a>
+            <a href="/pages/Blog/articulo2.html" class="nav-button next">Siguiente Artículo →</a>
         </div>
     </article>
+</main>
+<footer></footer>
 
-    <script src="articulo1.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="/scripts/indexblog.js"></script>
+    <script src="/components/Navbar.js"></script>
+    <script src="/components/footer.js"></script>
 </body>
 </html>
