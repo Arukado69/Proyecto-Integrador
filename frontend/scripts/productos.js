@@ -1,102 +1,184 @@
 const listaDeProductos = [
-    {
-        id: 1,
-        name: "Menú de Pollo 500g",
-        price: 199,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/pollo_500.jpg"
-    },
-    {
-        id: 2,
-        name: "Menú de Res 500g",
-        price: 199,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/res_500.jpg"
-    },
-    {
-        id: 3,
-        name: "Menú de Cerdo 500g",
-        price: 199,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/cerdo_500.jpg"
-    },
-    {
-        id: 4,
-        name: "Menú de Pollo 1Kg",
-        price: 389,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/pollo_1kg.jpg"
-    },
-    {
-        id: 5,
-        name: "Menú de Res 1Kg",
-        price: 389,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/res_1kg.jpg"
-    },
-    {
-        id: 6,
-        name: "Menú de Cerdo 1Kg",
-        price: 389,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/cerdo_1kg.jpg"
-    },
-    {
-        id: 7,
-        name: "Menú de Pollo 2Kg",
-        price: 789,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/pollo_2kg.jpg"
-    },
-
-    {
-        id: 8,
-        name: "Menú de Res 2Kg",
-        price: 789,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/res_2kg.jpg"
-    },
-    {
-        id: 9,
-        name: "Menú de Cerdo 2Kg",
-        price: 789,
-        descripion: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/cerdo_2kg.jpg"
-    },
-    {
-        id: 10,
-        name: "Pelota exclusiva Woof&BARF",
-        price: 119,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/pelota_orange.png"
-    },
-    {
-        id: 11,
-        name: "Plato exclusivo Woof&BARF",
-        price: 299,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/plato_amarillo.png"
-    },
-    {
-        id: 12,
-        name: "Pañuelo exclusivo Woof&BARF",
-        price: 99,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/paliacate_amarillo.jpg"
-    },
-    {
-        id: 13,
-        name: "Collar exclusivo Woof&BARF",
-        price: 199,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/collar_rojo.png"
-    },
-    {
-        id: 14,
-        name: "Lentes exclusivos Woof&BARF",
-        price: 299,
-        description: "Descripción de res",
-        imageURL: "../assets/imagenes/catalogo/lentes.jpg"
-    }
-    
+  {
+    id: 1,
+    name: "Menú de Pollo 500g",
+    price: 199,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/pollo_500.jpg",
+    flavor: "Pollo",
+    size: "500g",
+    category: "Alimento",
+    stock: 50,
+    sku: "WBF-PO-500",
+    discount: 0
+  },
+  {
+    id: 2,
+    name: "Menú de Res 500g",
+    price: 199,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/res_500.jpg",
+    flavor: "Res",
+    size: "500g",
+    category: "Alimento",
+    stock: 50,
+    sku: "WBF-RE-500",
+    discount: 0
+  },
+  {
+    id: 3,
+    name: "Menú de Cerdo 500g",
+    price: 199,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/cerdo_500.jpg",
+    flavor: "Cerdo",
+    size: "500g",
+    category: "Alimento",
+    stock: 50,
+    sku: "WBF-CE-500",
+    discount: 0
+  },
+  {
+    id: 4,
+    name: "Menú de Pollo 1Kg",
+    price: 389,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/pollo_1kg.jpg",
+    flavor: "Pollo",
+    size: "1kg",
+    category: "Alimento",
+    stock: 40,
+    sku: "WBF-PO-1K",
+    discount: 0
+  },
+  {
+    id: 5,
+    name: "Menú de Res 1Kg",
+    price: 389,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/res_1kg.jpg",
+    flavor: "Res",
+    size: "1kg",
+    category: "Alimento",
+    stock: 40,
+    sku: "WBF-RE-1K",
+    discount: 0
+  },
+  {
+    id: 6,
+    name: "Menú de Cerdo 1Kg",
+    price: 389,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/cerdo_1kg.jpg",
+    flavor: "Cerdo",
+    size: "1kg",
+    category: "Alimento",
+    stock: 40,
+    sku: "WBF-CE-1K",
+    discount: 0
+  },
+  {
+    id: 7,
+    name: "Menú de Pollo 2Kg",
+    price: 789,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/pollo_2kg.jpg",
+    flavor: "Pollo",
+    size: "2kg",
+    category: "Alimento",
+    stock: 25,
+    sku: "WBF-PO-2K",
+    discount: 0
+  },
+  {
+    id: 8,
+    name: "Menú de Res 2Kg",
+    price: 789,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/res_2kg.jpg",
+    flavor: "Res",
+    size: "2kg",
+    category: "Alimento",
+    stock: 25,
+    sku: "WBF-RE-2K",
+    discount: 0
+  },
+  {
+    id: 9,
+    name: "Menú de Cerdo 2Kg",
+    price: 789,
+    description: "Descripción de res",
+    imageURL: "../assets/imagenes/catalogo/cerdo_2kg.jpg",
+    flavor: "Cerdo",
+    size: "2kg",
+    category: "Alimento",
+    stock: 25,
+    sku: "WBF-CE-2K",
+    discount: 0
+  },
+  {
+    id: 10,
+    name: "Pelota exclusiva Woof&BARF",
+    price: 119,
+    description: "Pelota resistente para juego activo.",
+    imageURL: "../assets/imagenes/catalogo/pelota_orange.png",
+    flavor: null,
+    size: null,
+    category: "Juguete",
+    stock: 100,
+    sku: "JUG-PEL-001",
+    discount: 0
+  },
+  {
+    id: 11,
+    name: "Plato exclusivo Woof&BARF",
+    price: 299,
+    description: "Plato antiderrame para alimentación cómoda.",
+    imageURL: "../assets/imagenes/catalogo/plato_amarillo.png",
+    flavor: null,
+    size: null,
+    category: "Accesorio",
+    stock: 60,
+    sku: "ACC-PLA-001",
+    discount: 0
+  },
+  {
+    id: 12,
+    name: "Pañuelo exclusivo Woof&BARF",
+    price: 99,
+    description: "Pañuelo suave y lavable para tu mascota.",
+    imageURL: "../assets/imagenes/catalogo/paliacate_amarillo.jpg",
+    flavor: null,
+    size: null,
+    category: "Accesorio",
+    stock: 80,
+    sku: "ACC-PAN-001",
+    discount: 0
+  },
+  {
+    id: 13,
+    name: "Collar exclusivo Woof&BARF",
+    price: 199,
+    description: "Collar ajustable de alta resistencia.",
+    imageURL: "../assets/imagenes/catalogo/collar_rojo.png",
+    flavor: null,
+    size: null,
+    category: "Accesorio",
+    stock: 70,
+    sku: "ACC-COL-001",
+    discount: 0
+  },
+  {
+    id: 14,
+    name: "Lentes exclusivos Woof&BARF",
+    price: 299,
+    description: "Lentes para fotos increíbles de tu perro.",
+    imageURL: "../assets/imagenes/catalogo/lentes.jpg",
+    flavor: null,
+    size: null,
+    category: "Accesorio",
+    stock: 30,
+    sku: "ACC-LEN-001",
+    discount: 0
+  }
 ];

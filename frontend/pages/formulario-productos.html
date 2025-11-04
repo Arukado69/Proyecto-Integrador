@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formulario de Productos | Woof & BARF</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="../components/Navbar.css">
+  <link rel="stylesheet" href="../components/footer.css">
+  <link rel="stylesheet" href="../styles/formulario-productos.css">
+</head>
+
+<body class="bg-body-tertiary">
+
+  <!-- NAVBAR (mismo markup que usan en catálogo) -->
+  <nav class="navbar-center">
+    <div class="container">
+      <a class="navbar-brand" href="./index.html">
+        <img src="../assets/imagenes/iconos/logo-default.png" alt="Logo" id="logo" class="logo">
+      </a>
+
+      <ul class="navbar-nav-custom" id="navbarNav">
+        <li><a class="nav-link-custom" href="./index.html">Inicio</a></li>
+        <li><a class="nav-link-custom" href="./catalogo.html">Tienda</a></li>
+        <li><a class="nav-link-custom" href="./nosotros.html">Nosotros</a></li>
+        <li><a class="nav-link-custom" href="./blog.html">Blog</a></li>
+        <li><a class="nav-link-custom" href="./contacto.html">Contáctanos</a></li>
+      </ul>
+
+      <div class="iconos-hamburguesa">
+        <button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon-custom"></span>
+          <span class="navbar-toggler-icon-custom"></span>
+          <span class="navbar-toggler-icon-custom"></span>
+        </button>
+
+        <a href="./micuenta.html">
+          <button class="user-btn" id="userBtn">
+            <img src="../assets/imagenes/iconos/user-dark.png" alt="Usuario" id="userIcon">
+          </button>
+        </a>
+        <a href="./carrito.html">
+          <button class="user-btn" id="comprasBtn">
+            <img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" id="comprasIcon">
+          </button>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10 col-xl-8">
+        <div class="card shadow-sm rounded-4">
+          <div class="card-body p-4 p-md-5">
+            <h1 class="h3 mb-4">Agregar nuevo producto</h1>
+
+            <!-- Alertas Bootstrap -->
+            <div id="alerta" class="d-none"></div>
+
+            <!-- Formulario -->
+            <form id="formProducto" novalidate class="needs-validation">
+              <div class="row g-3">
+
+                <!-- Nombre -->
+                <div class="col-md-8">
+                  <label for="nombre" class="form-label">Nombre del producto</label>
+                  <input type="text" class="form-control" id="nombre" placeholder="Menú de Pollo 500g" required>
+                  <div class="invalid-feedback">Escribe el nombre del producto.</div>
+                </div>
+
+                <!-- Precio -->
+                <div class="col-md-4">
+                  <label for="precio" class="form-label">Precio (MXN)</label>
+                  <input type="number" class="form-control" id="precio" min="1" step="1" required>
+                  <div class="invalid-feedback">Precio válido mayor a 0.</div>
+                </div>
+
+                <!-- Descripción -->
+                <div class="col-12">
+                  <label for="descripcion" class="form-label">Descripción</label>
+                  <textarea class="form-control" id="descripcion" rows="3" placeholder="Receta natural con 80% carne magra y 20% vegetales." required></textarea>
+                  <div class="invalid-feedback">Agrega una breve descripción.</div>
+                </div>
+
+                <!-- Tamaño -->
+                <div class="col-md-4">
+                  <label for="tamano" class="form-label">Tamaño / Porción</label>
+                  <select class="form-select" id="tamano" required>
+                    <option value="" selected disabled>Elige...</option>
+                    <option>500g</option>
+                    <option>1kg</option>
+                    <option>2kg</option>
+                  </select>
+                  <div class="invalid-feedback">Selecciona un tamaño.</div>
+                </div>
+
+                <!-- Sabor -->
+                <div class="col-md-4">
+                  <label for="sabor" class="form-label">Sabor / Tipo de carne</label>
+                  <select class="form-select" id="sabor" required>
+                    <option value="" selected disabled>Elige...</option>
+                    <option>Pollo</option>
+                    <option>Res</option>
+                    <option>Cerdo</option>
+                    <option>Pavo</option>
+                  </select>
+                  <div class="invalid-feedback">Selecciona un sabor.</div>
+                </div>
+
+                <!-- Categoría -->
+                <div class="col-md-4">
+                  <label for="categoria" class="form-label">Categoría</label>
+                  <select class="form-select" id="categoria" required>
+                    <option value="" selected disabled>Elige...</option>
+                    <option>Alimento</option>
+                    <option>Accesorio</option>
+                    <option>Juguete</option>
+                  </select>
+                  <div class="invalid-feedback">Selecciona una categoría.</div>
+                </div>
+
+                <!-- URL de imagen -->
+                <div class="col-12">
+                  <label for="imagen" class="form-label">URL de imagen</label>
+                  <input type="url" class="form-control" id="imagen" placeholder="../assets/imagenes/catalogo/pollo_500.jpg" required>
+                  <div class="invalid-feedback">Proporciona una URL de imagen válida.</div>
+                </div>
+
+                <!-- Opcionales -->
+                <div class="col-md-4">
+                  <label for="stock" class="form-label">Stock</label>
+                  <input type="number" class="form-control" id="stock" min="0" step="1" value="10">
+                </div>
+
+                <div class="col-md-4">
+                  <label for="sku" class="form-label">SKU</label>
+                  <input type="text" class="form-control" id="sku" placeholder="WBF-001">
+                </div>
+
+                <div class="col-md-4">
+                  <label for="descuento" class="form-label">Descuento (%)</label>
+                  <input type="number" class="form-control" id="descuento" min="0" max="90" step="1" value="0">
+                </div>
+
+              </div>
+
+              <div class="d-flex gap-2 mt-4">
+                <button type="submit" class="btn btn-primary rounded-3">Agregar</button>
+                <button type="button" id="btnLimpiar" class="btn btn-outline-secondary rounded-3">Limpiar</button>
+                <a class="btn btn-success rounded-3" href="./catalogo.html">Ver en catálogo</a>
+              </div>
+            </form>
+
+            <!-- Vista JSON -->
+            <hr class="my-4">
+            <h2 class="h5 mb-3">Vista previa (JSON)</h2>
+            <pre id="jsonPreview" class="bg-light p-3 rounded-3 small">—</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer></footer>
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+  <!-- Scripts del sitio -->
+  <script src="../components/footer.js"></script>
+  <script src="../components/Navbar.js"></script>
+
+  <!-- Datos de productos existentes (para conocer IDs y consistencia) -->
+  <script src="../scripts/productos.js"></script>
+
+  <!-- Lógica del formulario -->
+  <script src="../scripts/formulario-productos.js"></script>
+</body>
+</html>
