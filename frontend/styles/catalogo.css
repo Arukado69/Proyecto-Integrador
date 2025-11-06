@@ -1,5 +1,13 @@
 /* Fondo general */
-.catalogo-body-color { background-color: #f8f7f5; }
+.catalogo-body-color {
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.png');
+  background-repeat: no-repeat;       /* No repetir la imagen */
+  background-size: cover;             /* Que cubra todo el fondo */
+  background-position: center center; /* Centrada */
+  background-attachment: fixed;       /* 👈 Imagen estática al hacer scroll */
+  min-height: 100vh;                  /* Para que ocupe toda la ventana */
+}
+
 
 /* Sidebar */
 .catalogo-bg-sidebar {
