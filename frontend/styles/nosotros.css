@@ -189,9 +189,16 @@
 
 body {
   color: #fff;
-  background-color: #fff;
+  font-family: "Fredoka", sans-serif;
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed; /* 👈 Hace que el fondo quede estático al hacer scroll */
   overflow-x: hidden;
+  min-height: 100vh; /* Para que cubra toda la pantalla */
 }
+
 
 /* ======== HERO ======== */
 .hero {
