@@ -1,0 +1,42 @@
+@import url('./variables.css');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fondo general */
+.login-body-bg {
+  font-family: 'Roboto', sans-serif;
+  color: #111;
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .login-card {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-title {
+    font-size: 22px;
+  }
+
+  .login-btn {
+    font-size: 16px;
+  }
+
+  .login-img {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+}

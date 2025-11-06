@@ -17,13 +17,57 @@
   --bs-primary-rgb: 122,74,41;
 }
 
-html, body {
-  font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
-  background: #fff;
-  color: var(--brand-ink);
+/* ---------- Reset suave + tipografía ---------- */
+*{ box-sizing:border-box; }
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  color: #f2f4ef;
+  background:
+    url('../assets/imagenes/perritos-varios/fondo-web.png') no-repeat center center fixed, /* 👈 Imagen fija */
+    radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--bs-primary) 18%, transparent), transparent 60%),
+    radial-gradient(900px 500px at 90% 0%, color-mix(in srgb, var(--bs-secondary) 18%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  background-size: cover; /* Ajusta la imagen al tamaño del viewport */
+  overflow-x: hidden;
 }
 
-/* ---------- Tipos ---------- */
+
+/* Scrollbar */
+::-webkit-scrollbar{ height:10px; width:10px; }
+::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg, var(--bs-secondary), var(--bs-primary));
+  border-radius:999px;
+}
+::-webkit-scrollbar-track{ background:rgba(255,255,255,.04); }
+
+/* =================== Layout base =================== */
+
+/* Contador automático de items (fallback visual; el JS ya actualiza badge con cantidades) */
+.contenedor-carrito{ counter-reset:cartItems; }
+.carrito-productos .producto-item{ counter-increment:cartItems; }
+
+/* Barra retorno + título */
+.nav-retorno{
+  position:sticky; top:0; z-index:30;
+  display:flex; align-items:center; gap:1rem;
+  padding:1.25rem 1.5rem;
+  background:linear-gradient(180deg, rgba(31,31,31,.95), rgba(31,31,31,.5));
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--stroke);
+  animation:dropFade .5s ease both;
+}
+.btn-regresar{
+  display:inline-flex; align-items:center; gap:.5rem;
+  text-decoration:none; color:var(--bs-info);
+  font-weight:600;
+  padding:.5rem .75rem; border:1px solid var(--stroke);
+  border-radius:.75rem; transition:.25s ease;
+}
+.btn-regresar:hover{
+  color:var(--brand-dark); background:var(--bs-info);
+  box-shadow:var(--glow); transform:translateY(-1px);
+}
 .titulo-pagina{
   font-family: 'Fredoka','Roboto',sans-serif;
   letter-spacing:.2px;
