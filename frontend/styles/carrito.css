@@ -1,318 +1,205 @@
-/* ======================================================================
-   Woof & Barf · Carrito — CSS con paleta de marca integrada (Bootstrap 5)
-   ====================================================================== */
-
-/* Fuentes */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@400;600;700&display=swap');
-
-/* ---------- Variables de marca (override) ---------- */
+/* === Woof & Barf · Carrito animado ===
+   - Estilo claro tipo confirmación con acentos cálidos
+   - Micro-interacciones (hover, elevación, brillos)
+   - Animaciones: rise, pulse, bounce, shimmer
+   - Sin cambiar HTML
+*/
 :root{
-  /* Paleta */
-  --brand-red:#BF0413;
-  --brand-green:#95A617;
-  --brand-yellow:#F2A413;
-  --brand-orange:#F27405;
-  --brand-burnt:#BF5111;
-  --brand-dark:#282828;
+  --brand-ink: #111;          /* texto principal */
+  --brand-accent: #7a4a29;    /* acento Woof&Barf */
+  --brand-accent-2: #c77a43;  /* acento claro */
+  --brand-100: #f8efe9;       /* fondo cálido */
+  --ok: #2fbf71;
+  --warn: #e0a800;
+  --danger: #e03131;
 
-  /* Bootstrap roles (señales y utilidades) */
-  --bs-primary:var(--brand-green);
-  --bs-secondary:var(--brand-yellow);
-  --bs-success:var(--brand-green);
-  --bs-warning:var(--brand-orange);
-  --bs-danger:var(--brand-red);
-  --bs-info:#c8d0a8;
-
-  --bs-primary-rgb:149,166,23;
-  --bs-secondary-rgb:242,164,19;
-  --bs-success-rgb:149,166,23;
-  --bs-warning-rgb:242,116,5;
-  --bs-danger-rgb:191,4,19;
-  --bs-info-rgb:200,208,168;
-
-  /* Base UI */
-  --bg-1:#1f1f1f;
-  --bg-2:var(--brand-dark);
-  --card:rgba(255,255,255,0.06);
-  --stroke:rgba(255,255,255,0.14);
-  --glow:0 0 0 rgba(0,0,0,0), 0 0 24px color-mix(in srgb, var(--bs-primary) 55%, transparent), 0 0 48px color-mix(in srgb, var(--bs-secondary) 25%, transparent);
+  --bs-primary: var(--brand-accent);
+  --bs-primary-rgb: 122,74,41;
 }
 
-/* ---------- Reset suave + tipografía ---------- */
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
-  margin:0;
-  font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-  color:#f2f4ef;
-  background:
-    radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--bs-primary) 18%, transparent), transparent 60%),
-    radial-gradient(900px 500px at 90% 0%, color-mix(in srgb, var(--bs-secondary) 18%, transparent), transparent 60%),
-    linear-gradient(180deg, var(--bg-1), var(--bg-2));
-  overflow-x:hidden;
+html, body {
+  font-family: 'Roboto', system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+  background: #fff;
+  color: var(--brand-ink);
 }
 
-/* Scrollbar */
-::-webkit-scrollbar{ height:10px; width:10px; }
-::-webkit-scrollbar-thumb{
-  background:linear-gradient(180deg, var(--bs-secondary), var(--bs-primary));
-  border-radius:999px;
-}
-::-webkit-scrollbar-track{ background:rgba(255,255,255,.04); }
-
-/* =================== Layout base =================== */
-
-/* Contador automático de items (fallback visual; el JS ya actualiza badge con cantidades) */
-.contenedor-carrito{ counter-reset:cartItems; }
-.carrito-productos .producto-item{ counter-increment:cartItems; }
-
-/* Barra retorno + título */
-.nav-retorno{
-  position:sticky; top:0; z-index:30;
-  display:flex; align-items:center; gap:1rem;
-  padding:1.25rem 1.5rem;
-  background:linear-gradient(180deg, rgba(31,31,31,.95), rgba(31,31,31,.5));
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--stroke);
-  animation:dropFade .5s ease both;
-}
-.btn-regresar{
-  display:inline-flex; align-items:center; gap:.5rem;
-  text-decoration:none; color:var(--bs-info);
-  font-weight:600;
-  padding:.5rem .75rem; border:1px solid var(--stroke);
-  border-radius:.75rem; transition:.25s ease;
-}
-.btn-regresar:hover{
-  color:var(--brand-dark); background:var(--bs-info);
-  box-shadow:var(--glow); transform:translateY(-1px);
-}
+/* ---------- Tipos ---------- */
 .titulo-pagina{
-  margin:0; font:700 1.75rem/1 Orbitron, sans-serif; letter-spacing:.02em; padding-left:.25rem;
-}
-/* Badge por CSS (el JS lo reemplaza por <span> dinámico) */
-.titulo-pagina::after{
-  content:"🛒 " counter(cartItems);
-  display:inline-flex; align-items:center; justify-content:center;
-  margin-left:.75rem;
-  font:700 .95rem/1 Inter, sans-serif;
-  color:#0b1020; background:var(--bs-success);
-  border-radius:999px; padding:.4rem .7rem;
-  border:1px solid rgba(0,0,0,.2);
-  box-shadow:0 6px 12px rgba(46,242,162,.35);
-  transform:translateY(-2px);
+  font-family: 'Fredoka','Roboto',sans-serif;
+  letter-spacing:.2px;
 }
 
-/* Grid principal */
-.contenedor-carrito{
-  max-width:1200px; margin:1.5rem auto 3rem; padding:0 1rem;
-  display:grid; grid-template-columns:minmax(0,1.4fr) minmax(280px,.9fr);
-  gap:2rem; animation:rise .6s ease .1s both;
+/* ---------- Animaciones base ---------- */
+@keyframes rise{ from{transform:translateY(6px);opacity:0} to{transform:none;opacity:1} }
+@keyframes pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+@keyframes bounce{ 0%{transform:scale(1)} 40%{transform:scale(1.13)} 100%{transform:scale(1)} }
+@keyframes shine{ 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+@keyframes shimmer{ 0%{background-position:-450px 0} 100%{background-position:450px 0} }
+@keyframes fadein{ from{opacity:0} to{opacity:1} }
+
+/* Entrada suave del main */
+.fade-in{ animation: fadein .28s ease both; }
+
+/* ---------- Cards y elevación ---------- */
+.card{
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 14px;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  will-change: transform;
+}
+.card:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.08);
+  border-color: rgba(0,0,0,.10);
 }
 
-/* =================== Productos =================== */
-.carrito-productos{ display:grid; gap:1rem; }
-.producto-item{
-  display:grid; grid-template-columns:104px 1fr auto; align-items:center; gap:1rem;
-  background:var(--card);
-  border:1px solid var(--stroke);
-  border-radius:1rem; overflow:hidden; position:relative; isolation:isolate;
-  box-shadow:0 8px 30px rgba(0,0,0,.25);
-  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-}
-.producto-item::before{
-  content:""; position:absolute; inset:-2px; border-radius:inherit; padding:2px;
-  background:conic-gradient(from 0deg,
-    color-mix(in srgb, var(--bs-primary) 0%, transparent),
-    color-mix(in srgb, var(--bs-primary) 85%, transparent),
-    color-mix(in srgb, var(--bs-secondary) 85%, transparent),
-    color-mix(in srgb, var(--bs-primary) 85%, transparent),
-    color-mix(in srgb, var(--bs-primary) 0%, transparent));
-  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor; mask-composite:exclude;
-  animation:spin 6s linear infinite; opacity:.25; z-index:-1;
-}
-.producto-item:hover{
-  transform:translateY(-2px);
-  box-shadow:0 16px 50px color-mix(in srgb, var(--bs-primary) 15%, transparent), 0 8px 22px rgba(0,0,0,.4);
-  border-color:color-mix(in srgb, var(--bs-primary) 35%, transparent);
+.card-empty{
+  background: linear-gradient(180deg, #fff, var(--brand-100));
 }
 
-/* Imagen placeholder estilo wireframe */
-.producto-img{
-  width:96px; height:96px; object-fit:cover; border-radius:.7rem;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.12) 25%, transparent 25%) 0 0/12px 12px,
-    linear-gradient(135deg, transparent 75%, rgba(255,255,255,.12) 75%) 0 0/12px 12px,
-    rgba(255,255,255,.04);
-  border:1px dashed rgba(255,255,255,.25);
-  animation:shimmer 2.2s linear infinite;
+/* Borde superior animado para cards destacadas (resumen) */
+.resumen-card{
+  top: 90px; /* sticky */
+  position: sticky;
 }
-.producto-descripcion p{ margin:0; color:rgba(242,244,239,.9); }
-
-/* Stepper cantidad */
-.producto-cantidad{
-  display:grid; grid-auto-flow:column; align-items:center; gap:.35rem;
-  padding:.35rem; border-radius:.75rem; background:rgba(255,255,255,.06);
-  border:1px solid var(--stroke);
+.resumen-card .card-body{
+  position: relative;
+  isolation: isolate;
 }
-.producto-cantidad .btn-restar,
-.producto-cantidad .btn-sumar{
-  all:unset; display:grid; place-items:center;
-  width:40px; height:40px; border-radius:.65rem;
-  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
-  border:1px solid var(--stroke); cursor:pointer; transition:.2s ease;
-}
-.producto-cantidad .btn-restar:hover,
-.producto-cantidad .btn-sumar:hover{
-  background:linear-gradient(180deg, var(--bs-secondary), var(--bs-primary));
-  color:var(--brand-dark); box-shadow:var(--glow);
-  transform:translateY(-1px) scale(1.02);
-}
-.input-cantidad{
-  width:54px; height:40px; text-align:center; font-weight:700;
-  border:1px solid var(--stroke); background:rgba(0,0,0,.25);
-  color:#fff; border-radius:.65rem;
+.resumen-card .card-body::before{
+  content:"";
+  position:absolute; inset: -1px -1px auto -1px; height:4px; border-top-left-radius:14px; border-top-right-radius:14px;
+  background: linear-gradient(90deg, var(--brand-accent), var(--brand-accent-2), var(--brand-accent));
+  background-size: 200% 100%;
+  animation: shine 3.5s linear infinite;
+  z-index:-1;
 }
 
-/* =================== Resumen =================== */
-.resumen-compra{
-  position:sticky; top:1rem; align-self:start;
-  background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
-  backdrop-filter:blur(10px);
-  border:1px solid var(--stroke);
-  border-radius:1.1rem; padding:1.25rem;
-  box-shadow:0 8px 26px rgba(0,0,0,.35);
-  animation:rise .7s ease .15s both;
+/* ---------- Lista de items ---------- */
+.item{
+  display:grid;
+  grid-template-columns: 96px 1fr auto;
+  grid-template-areas:
+    "img info qty"
+    "img info act";
+  gap: 12px 16px;
+  padding: 14px;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 12px;
+  background:#fff;
+  animation: rise .25s ease both;
 }
-.lista-resumen{
-  list-style:none; margin:0 0 1rem; padding:0; display:grid; gap:.4rem;
+.item + .item{ margin-top: 10px; }
+
+.item-img{
+  grid-area: img;
+  width: 96px; height: 96px;
+  border-radius: 12px; object-fit: cover; background: #f5f5f5;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
 }
-.lista-resumen li{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:.6rem .75rem; border:1px dashed var(--stroke);
-  border-radius:.6rem; background:rgba(255,255,255,.02);
+.item-info{ grid-area: info; }
+.item-title{ font-weight: 700; margin:0 0 2px; letter-spacing:.2px; }
+.item-meta{ color:#666; font-size:.9rem; }
+.item-price{ color:#111; font-weight:600; }
+
+.item-qty{ grid-area: qty; display:flex; align-items:center; gap:8px; }
+.qty-btn{
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff; font-size: 18px; line-height: 1;
+  transition: transform .06s ease, background .2s ease, box-shadow .2s ease;
 }
-.lista-resumen li:last-child{
-  background:linear-gradient(90deg,
-    color-mix(in srgb, var(--bs-primary) 15%, transparent),
-    color-mix(in srgb, var(--bs-secondary) 15%, transparent));
-  font-weight:700; border-style:solid;
+.qty-btn:hover{ background:#f7f7f7; box-shadow:0 4px 10px rgba(0,0,0,.05); }
+.qty-btn:active{ transform: scale(.97); }
+.qty-btn:disabled{ opacity:.5; cursor:not-allowed; }
+
+.qty-input{
+  width: 48px; text-align: center; border: 1px solid rgba(0,0,0,.12);
+  height: 36px; border-radius: 10px; background: #fff;
+}
+.qty-bounce{ animation: bounce .28s ease; }
+
+.item-actions{ grid-area: act; display:flex; gap:10px; align-items:center; }
+.item-actions .btn-remove{
+  border:none; background:transparent; color: var(--danger); font-weight:600;
+}
+.item-actions .fav{
+  border:none; background:transparent; color:#666; transition: transform .12s ease, color .2s ease;
+}
+.item-actions .fav:hover{ transform: scale(1.1); color: var(--brand-accent-2); }
+.item-actions .fav.active{ color: var(--brand-accent); transform: scale(1.15); }
+
+/* ---------- Recomendaciones ---------- */
+.reco-card{ min-height:100%; overflow: hidden; }
+.reco-img{
+  height:140px; background:#f6f2ef; border-top-left-radius:12px; border-top-right-radius:12px;
+  position: relative;
+}
+.reco-img img{ opacity:0; transition: opacity .25s ease; }
+.reco-img img.loaded{ opacity:1; }
+.reco-img.skeleton{
+  background: #eee;
+  background-image: linear-gradient(90deg, #eee 0px, #f6f6f6 40px, #eee 80px);
+  background-size: 600px 100%;
+  animation: shimmer 1.2s infinite linear;
 }
 
-.resumen-botones{ display:grid; gap:.6rem; margin-top:.75rem; }
-.btn-principal, .btn-secundario{
-  --_grad:linear-gradient(90deg, var(--bs-secondary), var(--bs-primary));
-  display:inline-block; width:100%;
-  color:#05101e; font-weight:800; letter-spacing:.02em;
-  padding:.85rem 1rem; border-radius:.9rem;
-  border:1px solid rgba(0,0,0,.15); background:var(--_grad);
-  box-shadow:0 12px 30px color-mix(in srgb, var(--bs-primary) 20%, transparent);
-  cursor:pointer; transition:transform .15s ease, filter .2s ease, box-shadow .2s ease;
-}
-.btn-secundario{
-  color:#f2f4ef; background:transparent; border:1px solid var(--stroke);
-  backdrop-filter:blur(6px);
-}
-.btn-principal:hover{ filter:brightness(1.1); transform:translateY(-1px); box-shadow:var(--glow); }
-.btn-secundario:hover{ border-color:color-mix(in srgb, var(--bs-primary) 40%, transparent); box-shadow:var(--glow); transform:translateY(-1px); }
-
-/* ========== Envío + Dirección ========== */
-.entrega-direccion{ margin-top:1rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
-.metodo-entrega, .direccion-entrega{
-  background:var(--card); border:1px solid var(--stroke);
-  border-radius:1rem; padding:1rem;
-  box-shadow:0 8px 26px rgba(0,0,0,.25); animation:rise .7s ease .2s both;
-}
-.titulo-seccion{ font:700 1.1rem/1 Orbitron, sans-serif; margin:0 0 .75rem; color:var(--bs-info); }
-.opcion-entrega{
-  display:grid; grid-template-columns:24px 1fr auto; align-items:center;
-  gap:.75rem; padding:.6rem .7rem; border-radius:.7rem;
-  border:1px dashed var(--stroke); background:rgba(255,255,255,.02);
-  transition:.2s ease;
-}
-.opcion-entrega + .opcion-entrega{ margin-top:.6rem; }
-.opcion-entrega:hover{ border-color:color-mix(in srgb, var(--bs-primary) 40%, transparent); transform:translateY(-1px); }
-.opcion-entrega input[type="radio"]{ accent-color:var(--bs-primary); }
-.precio-opcion{ font-weight:700; color:var(--bs-success); }
-.fecha-entrega{ color:rgba(242,244,239,.75); }
-
-.direccion-info{
-  display:grid; grid-template-columns:24px 1fr; gap:.75rem;
-  padding:.6rem .7rem; border-radius:.7rem;
-  border:1px dashed var(--stroke); background:rgba(255,255,255,.02);
-}
-.direccion-info input[type="radio"]{ accent-color:var(--bs-secondary); }
-.btn-agregar{
-  margin-top:.75rem; padding:.6rem .9rem; border-radius:.7rem;
-  color:#f2f4ef; background:transparent; border:1px solid var(--stroke);
-  cursor:pointer; transition:.2s ease;
-}
-.btn-agregar:hover{
-  background:linear-gradient(90deg,
-    color-mix(in srgb, var(--bs-primary) 12%, transparent),
-    color-mix(in srgb, var(--bs-secondary) 12%, transparent));
-  border-color:color-mix(in srgb, var(--bs-primary) 40%, transparent);
-  box-shadow:var(--glow);
+/* ---------- Badges de pago ---------- */
+.pay-badge{
+  padding:.25rem .5rem; border:1px solid rgba(0,0,0,.2); border-radius:6px; font-size:.75rem; background:#fff;
 }
 
-/* ========== Progreso checkout ========== */
-.progreso-compra{ margin:1.25rem 0; display:grid; place-items:center; }
-.progreso-compra p{
-  margin:0; padding:.5rem 1rem; border:1px dashed var(--stroke);
-  border-radius:999px; background:rgba(255,255,255,.04);
-  animation:pulse 1.6s ease-in-out infinite;
+/* ---------- Botones ---------- */
+.btn-dark{
+  position: relative; overflow: hidden;
+}
+.btn-dark::after{
+  content:"";
+  position:absolute; inset:0;
+  background: radial-gradient(120px 120px at var(--x, 50%) var(--y, 50%), rgba(255,255,255,.18), transparent 60%);
+  opacity:0; transition: opacity .25s ease;
+}
+.btn-dark:active::after{ opacity:1; }
+
+/* ---------- Focus accesible ---------- */
+button:focus-visible,
+a:focus-visible,
+.qty-input:focus-visible,
+input:focus-visible{
+  outline: 3px solid rgba(122,74,41,.35);
+  outline-offset: 2px;
 }
 
-/* ========== Galería inferior ========== */
-.galeria-inferior{
-  margin-top:1.5rem;
-  background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-  border:1px solid var(--stroke); border-radius:1rem; padding:1rem;
-  box-shadow:0 8px 26px rgba(0,0,0,.25);
-}
-.galeria-inferior .galeria-principal{
-  display:grid; grid-template-columns:140px 1fr; gap:1rem; align-items:center; margin-bottom:1rem;
-}
-.img-relacionado{
-  width:130px; height:90px; object-fit:cover; border-radius:.6rem;
-  background:rgba(255,255,255,.05); border:1px solid var(--stroke);
-}
-.lista-descripcion{ list-style:none; margin:0; padding:0; display:grid; gap:.25rem; }
-.lista-descripcion li{ color:rgba(242,244,239,.85); }
+/* ---------- Estado vacío ---------- */
+#estadoVacio .btn{ animation: pulse 2.2s ease infinite; }
 
-.galeria-secundaria{ display:grid; gap:.5rem; justify-items:start; }
-.galeria-secundaria input[type="radio"]{
-  appearance:none; width:14px; height:14px; border-radius:999px;
-  border:2px solid var(--bs-secondary);
-  box-shadow:inset 0 0 0 2px rgba(40,40,40,.85), 0 0 8px color-mix(in srgb, var(--bs-primary) 35%, transparent);
-  cursor:pointer; transition:.2s ease;
-}
-.galeria-secundaria input[type="radio"]:checked{
-  background:radial-gradient(circle at 50% 50%, var(--bs-secondary), var(--bs-primary));
-  transform:scale(1.15);
-}
-.galeria-secundaria img{ display:none; width:180px; height:110px; object-fit:cover; border-radius:.6rem; border:1px solid var(--stroke); }
-.galeria-secundaria input[type="radio"]:checked + img{ display:inline-block; animation:rise .4s ease both; }
+/* ---------- Utilidades ---------- */
+.d-none{ display: none !important; }
+.opacity-75{ opacity:.75; }
 
-.texto-inferior{ display:block; margin-top:.75rem; color:rgba(242,244,239,.65); text-align:center; }
+/* Pequeños textos */
+#hintMostrando{ font-size:.95rem; }
 
-/* ========== Animaciones ========== */
-@keyframes dropFade{ from{opacity:0; transform:translateY(-8px);} to{opacity:1; transform:translateY(0);} }
-@keyframes rise{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
-@keyframes spin{ to{ transform:rotate(1turn);} }
-@keyframes shimmer{ 0%{ background-position:-200% 0,0 0,0 0;} 100%{ background-position:200% 0,0 0,0 0;} }
-@keyframes pulse{ 0%,100%{ transform:translateY(0); box-shadow:0 0 0 0 rgba(0,0,0,0);} 50%{ transform:translateY(-2px); box-shadow:0 0 18px 2px color-mix(in srgb, var(--bs-primary) 25%, transparent);} }
+/* Micro-feedback para errores (cupon/CP) */
+.form-text.error{ color: var(--danger); }
+.form-text.ok{ color: var(--ok); }
 
-/* ========== Responsividad ========== */
-@media (max-width:992px){
-  .contenedor-carrito{ grid-template-columns:1fr; }
-  .resumen-compra{ order:-1; }
-  .entrega-direccion{ grid-template-columns:1fr; }
-}
-@media (max-width:520px){
-  .producto-item{ grid-template-columns:84px 1fr auto; }
-  .producto-img{ width:80px; height:80px; }
-  .galeria-inferior .galeria-principal{ grid-template-columns:1fr; }
+/* === Animación continua para la barra de progreso === */
+.progress-bar {
+  background-image: linear-gradient(
+    90deg,
+    var(--bs-primary) 0%,
+    #4fa3ff 25%,
+    var(--bs-primary) 50%,
+    #4fa3ff 75%,
+    var(--bs-primary) 100%
+  );
+  background-size: 200% 100%;
+  animation: fillFlow 3s linear infinite;
 }
 
+/* Movimiento de izquierda a derecha tipo oleaje */
+@keyframes fillFlow {
+  0% { background-position: 0% 0; }
+  100% { background-position: -200% 0; }
+}

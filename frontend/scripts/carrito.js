@@ -1,475 +1,422 @@
-// ======================================================================
-// Carrito Futurista — Lógica con Bootstrap 5
-// Requiere: HTML previo que compartiste + Bootstrap 5.3.8 bundle
-// ======================================================================
+/* === Woof & Barf · Carrito animado (sin tocar HTML) ===
+   - Estado centralizado + persistencia (localStorage)
+   - Antirrebote en +/−, contador en ícono
+   - Cupones: WOOF10 (-10%), ENVIOGRATIS (envío $0)
+   - Estimador de entrega por CP (2–4 días hábiles)
+   - Recomendaciones en carousel con skeleton + load fade
+   - Totales = (subtotal - descuento) + IVA + envío
+   - Toasts Bootstrap para feedback + "Deshacer" en eliminar
+*/
 (() => {
-  "use strict";
+  // --------- Constantes / DOM
+  const LS_CART   = 'cart:v1';
+  const LS_COUPON = 'coupon:v1';
 
-  // --------- Utils ---------
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-  const on = (el, ev, cb, opts) => el && el.addEventListener(ev, cb, opts);
-  const money = (n) =>
-    new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(
-      Number.isFinite(n) ? n : 0
-    );
-  const parsePrice = (txt) => {
-    if (!txt) return 0;
-    const m = String(txt).replaceAll(",", "").match(/(\d+(\.\d+)?)/);
-    return m ? parseFloat(m[1]) : 0;
-  };
-  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-  const debounce = (fn, ms = 250) => {
-    let t;
-    return (...args) => {
-      clearTimeout(t);
-      t = setTimeout(() => fn(...args), ms);
-    };
+  const $miniCount = $('#miniCount');
+  const $lista     = $('#listaItems');
+  const $vacio     = $('#estadoVacio');
+  const $hint      = $('#hintMostrando');
+
+  const $rSubtotal = $('#rSubtotal');
+  const $rDescuento= $('#rDescuento');
+  const $rEnvio    = $('#rEnvio');
+  const $rIva      = $('#rIva');
+  const $rTotal    = $('#rTotal');
+
+  const $btnVaciar = $('#btnVaciar');
+  const $btnPagar  = $('#btnPagar');
+
+  const $cupon         = $('#cupon');
+  const $btnCupon      = $('#btnAplicarCupon');
+  const $cuponFeedback = $('#cuponFeedback');
+
+  const $cp         = $('#cp');
+  const $btnCP      = $('#btnCalcularCP');
+  const $cpResultado= $('#cpResultado');
+
+  const $recoSlides = $('#recoSlides');
+  const $toasts     = $('#toasts');
+
+  // --------- Helpers
+  const $ = (sel, ctx=document) => ctx.querySelector(sel);
+  const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+  const money = n => Number(n || 0).toLocaleString('es-MX', { style:'currency', currency:'MXN' });
+  const safeJSON = s => { try{ return JSON.parse(s) } catch { return null } };
+
+  const COUPONS = {
+    'WOOF10':      { type:'percent', value:0.10, label:'10% de descuento' },
+    'ENVIOGRATIS': { type:'shipping', value:1,    label:'Envío gratis' }
   };
 
-  // --------- Estado (con persistencia) ---------
-  const STORAGE_KEY = "wb-cart-v1";
-  const loadState = () => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
-    } catch {
-      return null;
-    }
-  };
-  const saveState = debounce((state) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch {}
-  }, 200);
-
-  // Estado en memoria
+  // --------- Estado central
   const state = {
-    items: [], // {id, price, qty}
-    shippingIndex: 0,
-    addresses: [], // [{id, text}]
-    selectedAddress: 0,
-    ...loadState(),
+    items: readCart(),
+    coupon: readCoupon(),
+
+    get subtotal(){
+      return this.items.reduce((acc,it)=> acc + (Number(it.price)||0)*(Number(it.qty)||0), 0);
+    },
+    get discount(){
+      const c = this.coupon;
+      if (!c) return 0;
+      if (c.type === 'percent') return +(this.subtotal * c.value).toFixed(2);
+      return 0;
+    },
+    get envio(){
+      const after = Math.max(0, this.subtotal - this.discount);
+      let envio = (after >= 499 || after === 0) ? 0 : 89;
+      if (this.coupon?.type === 'shipping') envio = 0;
+      return envio;
+    },
+    get iva(){
+      return +((Math.max(0, this.subtotal - this.discount)) * 0.16).toFixed(2);
+    },
+    get total(){
+      return Math.max(0, this.subtotal - this.discount) + this.iva + this.envio;
+    }
   };
 
-  // --------- Inicialización desde el DOM ---------
-  const productsRoot = $(".carrito-productos");
-  const summaryRoot = $(".resumen-compra");
-  const envioRoot = $(".metodo-entrega");
-  const dirRoot = $(".direccion-entrega");
-  const title = $(".titulo-pagina");
-
-  // Crea un ID simple
-  const uid = (pfx = "id") =>
-    `${pfx}_${Math.random().toString(36).slice(2, 8)}${Date.now().toString(36).slice(-3)}`;
-
-  // Lee items del DOM (si no hay en storage)
-  const bootstrapItemsFromDOM = () =>
-    $$(".producto-item", productsRoot).map((el, i) => {
-      const qty = parseInt($(".input-cantidad", el)?.value || "1", 10) || 1;
-      // Si el HTML no trae precio, ponemos uno base (lo puedes reemplazar luego)
-      const fallback = 129.0 + i * 20;
-      const price =
-        parseFloat(el.dataset.precio) ||
-        parseFloat(el.dataset.price) ||
-        parsePrice($(".precio", el)?.textContent) ||
-        fallback;
-      return {
-        id: el.dataset.id || uid("p"),
-        price,
-        qty,
-        _el: el,
-      };
-    });
-
-  if (!state.items?.length) {
-    state.items = bootstrapItemsFromDOM().map(({ id, price, qty }) => ({ id, price, qty }));
-    saveState(state);
+  // --------- Storage
+  function readCart(){
+    const data = safeJSON(localStorage.getItem(LS_CART));
+    return Array.isArray(data) ? data : [];
   }
-
-  // Sincroniza cantidades del DOM con el estado guardado (si existen nodos)
-  const syncDOMQuantities = () => {
-    const nodes = $$(".producto-item", productsRoot);
-    nodes.forEach((el, idx) => {
-      const id = el.dataset.id || (state.items[idx]?.id ?? uid("p"));
-      el.dataset.id = id;
-      const found = state.items.find((it) => it.id === id);
-      const input = $(".input-cantidad", el);
-      if (found && input) input.value = String(found.qty);
-    });
-  };
-  syncDOMQuantities();
-
-  // --------- UI helpers (Bootstrap) ---------
-  // Tooltips
-  const initTooltips = () => {
-    $$("[data-bs-toggle='tooltip']").forEach((el) => new bootstrap.Tooltip(el));
-  };
-
-  // Toasts
-  const toastContainer = (() => {
-    let c = $("#toasts");
-    if (!c) {
-      c = document.createElement("div");
-      c.id = "toasts";
-      c.className = "toast-container position-fixed top-0 end-0 p-3";
-      document.body.appendChild(c);
-    }
-    return c;
-  })();
-  const showToast = (titleTxt, bodyTxt, color = "primary") => {
-    const wrap = document.createElement("div");
-    wrap.className = `toast align-items-center text-bg-${color} border-0`;
-    wrap.setAttribute("role", "alert");
-    wrap.setAttribute("aria-live", "assertive");
-    wrap.setAttribute("aria-atomic", "true");
-    wrap.innerHTML = `
-      <div class="d-flex">
-        <div class="toast-body">
-          <strong>${titleTxt}</strong><div class="small opacity-75">${bodyTxt || ""}</div>
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>`;
-    toastContainer.appendChild(wrap);
-    const t = new bootstrap.Toast(wrap, { delay: 2000 });
-    t.show();
-  };
-
-  // Badge dinámico (oculta el ::after del CSS y usa un <span>)
-  const ensureBadge = () => {
-    if (!title) return null;
-    document.body.classList.add("js-badge");
-    let styleEl = $("#_badge_override_style_");
-    if (!styleEl) {
-      styleEl = document.createElement("style");
-      styleEl.id = "_badge_override_style_";
-      styleEl.textContent = `.js-badge .titulo-pagina::after{content:'' !important;}`;
-      document.head.appendChild(styleEl);
-    }
-    let b = $(".cart-badge", title);
-    if (!b) {
-      b = document.createElement("span");
-      b.className = "cart-badge badge rounded-pill text-dark ms-2";
-      b.style.background =
-        "linear-gradient(90deg, var(--bs-success), var(--bs-info))";
-      b.style.fontWeight = "800";
-      b.style.boxShadow = "0 6px 12px rgba(46,242,162,.35)";
-      title.appendChild(b);
-    }
-    return b;
-  };
-  const updateBadge = () => {
-    const b = ensureBadge();
-    if (!b) return;
-    const totalQty = state.items.reduce((a, b) => a + (b.qty || 0), 0);
-    b.textContent = `🛒 ${totalQty}`;
-  };
-
-  // --------- Cálculos ---------
-  const getShipping = () => {
-    // Lee radio seleccionado y su precio
-    const radios = $$("input[type='radio']", envioRoot);
-    const checked = radios.find((r) => r.checked) || radios[state.shippingIndex] || radios[0];
-    const label = checked?.closest("label");
-    const p = parsePrice($(".precio-opcion", label)?.textContent);
-    const idx = radios.indexOf(checked);
-    state.shippingIndex = idx < 0 ? 0 : idx;
-    return p || 0;
-  };
-
-  const getIVA = (subtotal) => subtotal * 0.16;
-
-  const recalc = () => {
-    const subtotal = state.items.reduce((acc, it) => acc + it.price * it.qty, 0);
-    const shipping = getShipping();
-    const iva = getIVA(subtotal);
-    const total = subtotal + iva + shipping;
-
-    // Pintar en el resumen (asumiendo 4 <li>)
-    const lis = $$(".lista-resumen li", summaryRoot);
-    if (lis[0]) lis[0].innerHTML = `Subtotal: <span>${money(subtotal)}</span>`;
-    if (lis[1]) lis[1].innerHTML = `Envío: <span>${money(shipping)}</span>`;
-    if (lis[2]) lis[2].innerHTML = `IVA (16%): <span>${money(iva)}</span>`;
-    if (lis[3]) lis[3].innerHTML = `Total: <strong>${money(total)}</strong>`;
-
+  function writeCart(list){
+    state.items = list;
+    localStorage.setItem(LS_CART, JSON.stringify(list));
     updateBadge();
-    saveState(state);
-  };
-
-  // --------- Stepper (click y press & hold) ---------
-  const attachStepper = (rowEl, item) => {
-    const minus = $(".btn-restar", rowEl);
-    const plus = $(".btn-sumar", rowEl);
-    const input = $(".input-cantidad", rowEl);
-
-    const setQty = (q) => {
-      const newQty = clamp(q, 0, 99);
-      item.qty = newQty;
-      if (input) input.value = String(newQty);
-
-      // Si llega a 0, pedir confirmación para quitar del carrito
-      if (newQty === 0) {
-        const ok = confirm("Cantidad 0. ¿Quieres quitar este producto del carrito?");
-        if (ok) {
-          // Eliminar del estado y del DOM
-          state.items = state.items.filter((it) => it.id !== item.id);
-          rowEl.remove();
-          showToast("Producto eliminado", "Se quitó del carrito", "danger");
-        } else {
-          item.qty = 1;
-          if (input) input.value = "1";
-        }
-      } else {
-        // Micro-feedback
-        rowEl.animate([{ transform: "scale(1)" }, { transform: "scale(1.02)" }, { transform: "scale(1)" }], { duration: 180 });
-      }
-
-      recalc();
-    };
-
-    const step = (delta) => setQty((item.qty || 1) + delta);
-
-    // Click normal
-    on(plus, "click", () => step(+1));
-    on(minus, "click", () => step(-1));
-
-    // Press & hold
-    let holdTimer, tick;
-    const startHold = (delta) => {
-      step(delta);
-      clearTimeout(holdTimer);
-      clearInterval(tick);
-      holdTimer = setTimeout(() => {
-        tick = setInterval(() => step(delta), 80);
-      }, 300);
-    };
-    const endHold = () => {
-      clearTimeout(holdTimer);
-      clearInterval(tick);
-    };
-    ["mousedown", "touchstart"].forEach((ev) => {
-      on(plus, ev, (e) => {
-        e.preventDefault();
-        startHold(+1);
-      });
-      on(minus, ev, (e) => {
-        e.preventDefault();
-        startHold(-1);
-      });
-    });
-    ["mouseup", "mouseleave", "touchend", "touchcancel"].forEach((ev) => {
-      on(plus, ev, endHold);
-      on(minus, ev, endHold);
-    });
-
-    // Edición manual (por si quitan readonly en la reestructura)
-    on(input, "input", () => {
-      const v = parseInt(input.value.replace(/\D/g, ""), 10);
-      setQty(Number.isFinite(v) ? v : item.qty);
-    });
-  };
-
-  // Vincular steppers actuales a estado (por posición/ID)
-  const bindAllSteppers = () => {
-    const nodes = $$(".producto-item", productsRoot);
-    nodes.forEach((rowEl) => {
-      const id = rowEl.dataset.id || uid("p");
-      rowEl.dataset.id = id;
-
-      // Busca/crea item en estado
-      let item = state.items.find((it) => it.id === id);
-      if (!item) {
-        const qty = parseInt($(".input-cantidad", rowEl)?.value || "1", 10) || 1;
-        const fallbackPrice = 129.0;
-        const price =
-          parseFloat(rowEl.dataset.precio) ||
-          parseFloat(rowEl.dataset.price) ||
-          parsePrice($(".precio", rowEl)?.textContent) ||
-          fallbackPrice;
-        item = { id, price, qty };
-        state.items.push(item);
-      }
-      attachStepper(rowEl, item);
-    });
-  };
-  bindAllSteppers();
-
-  // Observa cambios en la lista (por si agregan/quitán artículos luego)
-  const observer = new MutationObserver(() => {
-    bindAllSteppers();
-    recalc();
-  });
-  if (productsRoot) {
-    observer.observe(productsRoot, { childList: true, subtree: true });
+  }
+  function readCoupon(){
+    return safeJSON(localStorage.getItem(LS_COUPON)) || null;
+  }
+  function writeCoupon(c){
+    state.coupon = c;
+    if (c) localStorage.setItem(LS_COUPON, JSON.stringify(c));
+    else localStorage.removeItem(LS_COUPON);
   }
 
-  // --------- Envío ---------
-  if (envioRoot) {
-    on(envioRoot, "change", (e) => {
-      if (e.target.matches("input[type='radio']")) {
-        // Marcar visualmente
-        $$(".opcion-entrega", envioRoot).forEach((lab) => lab.classList.remove("active"));
-        e.target.closest("label")?.classList.add("active");
-        recalc();
-        showToast("Método de envío actualizado", "Se recalculó el total", "info");
-      }
-    });
+  // --------- Throttle para +/−
+  const throttles = new Map();
+  function throttle(key, ms=180){
+    const now = Date.now(), last = throttles.get(key) || 0;
+    if (now - last < ms) return false;
+    throttles.set(key, now);
+    return true;
   }
 
-  // --------- Dirección (modal "Agregar otra") ---------
-  const ensureAddressModal = () => {
-    let m = $("#direccionModal");
-    if (m) return m;
-    const markup = `
-      <div class="modal fade" id="direccionModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content bg-dark text-light border border-info">
-            <div class="modal-header">
-              <h5 class="modal-title">Agregar dirección</h5>
-              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-              <form id="direccionForm" class="row g-3">
-                <div class="col-12">
-                  <label class="form-label">Alias / Identificador</label>
-                  <input class="form-control" name="alias" placeholder="Casa, Trabajo..." required>
-                </div>
-                <div class="col-12">
-                  <label class="form-label">Dirección</label>
-                  <textarea class="form-control" name="full" rows="3" placeholder="Calle, número, colonia, alcaldía, CP" required></textarea>
-                </div>
-              </form>
-              <div class="small opacity-75 mt-2">Se guardará localmente en tu navegador.</div>
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-outline-light" data-bs-dismiss="modal">Cancelar</button>
-              <button id="guardarDireccion" class="btn btn-info">Guardar</button>
-            </div>
+  // --------- Render
+  function render(){
+    const list = state.items;
+
+    // Estado vacío
+    if (!list.length){
+      $lista.innerHTML = '';
+      $vacio.classList.remove('d-none');
+      $hint.textContent = 'Mostrando 0 artículos';
+      paintTotals();
+      updateBadge();
+      return;
+    }
+    $vacio.classList.add('d-none');
+    $hint.textContent = `Mostrando ${list.length} artículo${list.length===1?'':'s'}`;
+
+    $lista.innerHTML = list.map(itemTemplate).join('');
+
+    // Delegación de eventos de items
+    $$('#listaItems [data-btn="plus"]').forEach(b => b.addEventListener('click', onPlus));
+    $$('#listaItems [data-btn="minus"]').forEach(b => b.addEventListener('click', onMinus));
+    $$('#listaItems [data-btn="remove"]').forEach(b => b.addEventListener('click', onRemove));
+    $$('#listaItems [data-btn="fav"]').forEach(b => b.addEventListener('click', e => e.currentTarget.classList.toggle('active')));
+
+    // QTY bounce visual
+    requestAnimationFrame(() => {
+      $$('#listaItems .qty-input').forEach(q => {
+        q.classList.remove('qty-bounce'); void q.offsetWidth; q.classList.add('qty-bounce');
+      });
+    });
+
+    paintTotals();
+    updateBadge();
+  }
+
+  function itemTemplate({ id, name, price, qty, image, meta }){
+    const src = image || '../assets/imagenes/productos/placeholder.png';
+    const q = Number(qty)||1;
+    const metaText = meta || 'Paquete 500 g';
+    return `
+      <article class="item reveal-on-scroll">
+        <img class="item-img" src="${src}" alt="${escapeHtml(name||'Producto')}" onerror="this.src='../assets/imagenes/productos/placeholder.png'">
+        <div class="item-info">
+          <h3 class="item-title">${escapeHtml(name||'Producto')}</h3>
+          <div class="item-meta">${escapeHtml(metaText)}</div>
+          <div class="item-price mt-1">${money(price)}</div>
+          <div class="small text-muted mt-1">
+            <span class="badge text-bg-light">Fresco</span>
+            <span class="badge text-bg-light">Sin conservadores</span>
           </div>
         </div>
-      </div>`;
-    document.body.insertAdjacentHTML("beforeend", markup);
-    return $("#direccionModal");
-  };
+        <div class="item-qty">
+          <button class="qty-btn" data-btn="minus" data-id="${id}" aria-label="Restar">−</button>
+          <input class="qty-input" value="${q}" inputmode="numeric" aria-label="Cantidad" readonly>
+          <button class="qty-btn" data-btn="plus" data-id="${id}" aria-label="Sumar">+</button>
+        </div>
+        <div class="item-actions">
+          <button class="fav" data-btn="fav" title="Mover a favoritos"><i class="bi bi-heart"></i></button>
+          <button class="btn-remove" data-btn="remove" data-id="${id}" title="Eliminar"><i class="bi bi-x-lg"></i> Eliminar</button>
+        </div>
+      </article>
+    `;
+  }
 
-  const renderAddresses = () => {
-    // Crea radios dentro de .direccion-entrega
-    const cont = $(".direccion-info", dirRoot);
-    if (!cont) return;
+  function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 
-    // El primer radio ya existe en el HTML; lo convertimos en lista dinámica
-    // Limpia y vuelve a renderizar (conservando el primero si no hay data)
-    const wrapper = cont.parentElement;
-    // Elimina todos los .direccion-info menos el primero
-    $$(".direccion-info", wrapper)
-      .slice(1)
-      .forEach((n) => n.remove());
+  // --------- Totales
+  function paintTotals(){
+    $rSubtotal.textContent = money(state.subtotal);
+    $rDescuento.textContent= '−' + money(state.discount);
+    $rEnvio.textContent    = money(state.envio);
+    $rIva.textContent      = money(state.iva);
+    $rTotal.textContent    = money(state.total);
+    $btnPagar.disabled     = state.items.length === 0;
+  }
 
-    // Render dinámico
-    state.addresses.forEach((a, idx) => {
-      // El 0 puede mapearse al existente; los demás se agregan
-      if (idx === 0) {
-        // Rellena texto inicial
-        const p = $("p", cont);
-        if (p) p.textContent = a.text;
-        const r = $("input[type='radio']", cont);
-        if (r) r.checked = state.selectedAddress === 0;
-        cont.dataset.id = a.id;
+  function updateBadge(){
+    const count = state.items.reduce((a,it)=> a+(Number(it.qty)||0), 0);
+    if ($miniCount) $miniCount.textContent = String(count);
+  }
+
+  // --------- Handlers (items)
+  function onPlus(e){
+    const id = e.currentTarget.dataset.id;
+    if (!throttle('plus:'+id)) return;
+    const i = state.items.findIndex(it => String(it.id) === String(id));
+    if (i>=0){
+      state.items[i].qty = Math.min(99, Number(state.items[i].qty||1)+1);
+      writeCart(state.items); render(); toast('Cantidad actualizada','primary');
+    }
+  }
+
+  function onMinus(e){
+    const id = e.currentTarget.dataset.id;
+    if (!throttle('minus:'+id)) return;
+    const i = state.items.findIndex(it => String(it.id) === String(id));
+    if (i>=0){
+      const next = Math.max(0, Number(state.items[i].qty||1)-1);
+      if (next===0){
+        if (!confirm('¿Eliminar este producto del carrito?')) return;
+        const removed = state.items.splice(i,1)[0];
+        writeCart(state.items); render();
+        toast(`Producto eliminado <a href="#" data-undo='${removed.id}'>Deshacer</a>`, 'danger');
+        lastRemoved = removed;
       } else {
-        const div = document.createElement("div");
-        div.className = "direccion-info mt-2";
-        div.dataset.id = a.id;
-        div.innerHTML = `
-          <input type="radio" name="direccion" ${state.selectedAddress === idx ? "checked" : ""}>
-          <p class="mb-0">${a.text}</p>`;
-        wrapper.insertBefore(div, $(".btn-agregar", wrapper));
+        state.items[i].qty = next;
+        writeCart(state.items); render(); toast('Cantidad actualizada','primary');
       }
-    });
-  };
-
-  // Carga direcciones por defecto si no hay
-  if (!state.addresses?.length) {
-    // Toma el texto del HTML como dirección base si existe
-    const baseTxt = $(".direccion-info p", dirRoot)?.textContent?.trim() || "Dirección predeterminada";
-    state.addresses = [{ id: uid("addr"), text: baseTxt }];
-    state.selectedAddress = 0;
-    saveState(state);
-  }
-  renderAddresses();
-
-  const btnAddAddr = $(".btn-agregar", dirRoot);
-  if (btnAddAddr) {
-    on(btnAddAddr, "click", (e) => {
-      e.preventDefault();
-      const modalEl = ensureAddressModal();
-      const modal = new bootstrap.Modal(modalEl);
-      modal.show();
-
-      const saveBtn = $("#guardarDireccion");
-      const form = $("#direccionForm");
-
-      const doSave = () => {
-        const data = new FormData(form);
-        const alias = (data.get("alias") || "").toString().trim();
-        const full = (data.get("full") || "").toString().trim();
-        if (!alias || !full) return;
-
-        const text = `${alias}: ${full}`;
-        state.addresses.push({ id: uid("addr"), text });
-        state.selectedAddress = state.addresses.length - 1;
-        saveState(state);
-        renderAddresses();
-        modal.hide();
-        showToast("Dirección agregada", alias, "success");
-      };
-
-      on(saveBtn, "click", (ev) => {
-        ev.preventDefault();
-        doSave();
-      }, { once: true });
-    });
+    }
   }
 
-  // Cambiar dirección seleccionada
-  on(dirRoot, "change", (e) => {
-    if (e.target.matches("input[type='radio'][name='direccion']")) {
-      const all = $$("input[type='radio'][name='direccion']", dirRoot);
-      state.selectedAddress = all.indexOf(e.target);
-      saveState(state);
-      showToast("Dirección seleccionada", `Opción #${state.selectedAddress + 1}`, "info");
+  function onRemove(e){
+    const id = e.currentTarget.dataset.id;
+    const i = state.items.findIndex(it => String(it.id) === String(id));
+    if (i>=0){
+      const removed = state.items.splice(i,1)[0];
+      writeCart(state.items); render();
+      toast(`Producto eliminado <a href="#" data-undo='${removed.id}'>Deshacer</a>`, 'danger');
+      lastRemoved = removed;
+    }
+  }
+  let lastRemoved = null;
+
+  // Undo desde toast
+  $toasts.addEventListener('click', ev => {
+    const id = ev.target?.getAttribute?.('data-undo');
+    if (!id || !lastRemoved) return;
+    ev.preventDefault();
+    const exists = state.items.find(it => String(it.id)===String(id));
+    if (!exists){
+      state.items.push(lastRemoved);
+      writeCart(state.items); render(); toast('Se restauró el producto','success');
+    }
+    lastRemoved = null;
+  });
+
+  // --------- Vaciar / Pagar
+  $btnVaciar?.addEventListener('click', () => {
+    if (!state.items.length) return;
+    if (confirm('¿Vaciar todo el carrito?')){
+      writeCart([]); render(); toast('Carrito vacío','secondary');
     }
   });
 
-  // --------- Slider (galería secundaria) con flechas ← → ---------
-  const sliderRoot = $(".galeria-secundaria");
-  const moveSlider = (dir = 1) => {
-    if (!sliderRoot) return;
-    const radios = $$("input[type='radio']", sliderRoot);
-    let idx = radios.findIndex((r) => r.checked);
-    if (idx < 0) idx = 0;
-    idx = (idx + dir + radios.length) % radios.length;
-    radios[idx].checked = true;
-  };
-  on(window, "keydown", (e) => {
-    if (e.key === "ArrowRight") moveSlider(1);
-    if (e.key === "ArrowLeft") moveSlider(-1);
+  $btnPagar?.addEventListener('click', () => {
+    if (!state.items.length) return;
+    localStorage.setItem('lastOrder', JSON.stringify({
+      id: 'WBF-' + Math.random().toString(36).slice(2,8).toUpperCase(),
+      date: new Date().toISOString(),
+      items: state.items,
+      total: state.total
+    }));
+    window.location.href = './confirmacion.html';
   });
 
-  // --------- Acciones de los botones del resumen ---------
-  const btnPagar = $(".btn-principal", summaryRoot);
-  const btnSec = $(".btn-secundario", summaryRoot);
-  on(btnPagar, "click", () => {
-    const items = state.items.reduce((a, it) => a + it.qty, 0);
-    showToast("Ir a pago", `Llevas ${items} artículo(s).`, "primary");
-  });
-  on(btnSec, "click", () => {
-    showToast("Acción secundaria", "Puedes definirlo en la reestructura.", "secondary");
+  // --------- Cupones
+  $btnCupon?.addEventListener('click', () => {
+    const code = String($cupon.value||'').trim().toUpperCase();
+    if (!code) { setFeedback($cuponFeedback,'Escribe un código.','error'); return; }
+    const c = COUPONS[code];
+    if (!c){ setFeedback($cuponFeedback,'Código inválido o expirado.','error'); toast('Cupón inválido','warning'); return; }
+    writeCoupon({ code, ...c });
+    setFeedback($cuponFeedback, `Aplicado: ${c.label}`,'ok');
+    render(); toast('Cupón aplicado','success');
   });
 
-  // --------- Tooltips demo ---------
-  // Puedes poner data-bs-toggle="tooltip" en botones del HTML para activarlos.
-  initTooltips();
+  function setFeedback(el, text, type){
+    el.textContent = text;
+    el.classList.remove('ok','error');
+    if (type) el.classList.add(type);
+  }
 
-  // --------- Primera ejecución ---------
-  recalc();
+  // --------- Estimador de entrega por CP
+  $btnCP?.addEventListener('click', () => {
+    const cp = String($cp.value||'').trim();
+    if (!/^\d{5}$/.test(cp)){ $cpResultado.textContent='Ingresa un CP válido (5 dígitos).'; return; }
+    const dias = 2 + Math.floor(Math.random()*3); // 2–4 días hábiles
+    const fecha = addBusinessDays(new Date(), dias);
+    $cpResultado.innerHTML = `Entrega estimada: <b>${fecha.toLocaleDateString('es-MX')}</b> (2–4 días hábiles).`;
+    toast('Estimación generada','info');
+  });
+
+  function addBusinessDays(date, days){
+    let d = new Date(date), added = 0;
+    while (added < days){
+      d.setDate(d.getDate()+1);
+      const w = d.getDay();
+      if (w!==0 && w!==6) added++;
+    }
+    return d;
+  }
+
+  // --------- Recomendaciones (carousel)
+  const recoData = [
+    { id:'r1', name:'Tenias BARF pollo 500g', price:109, image:'../assets/imagenes/productos/barf1.jpg' },
+    { id:'r2', name:'Snack hígado 120g',     price:79,  image:'../assets/imagenes/productos/snack1.jpg' },
+    { id:'r3', name:'Mix res 1kg',           price:199, image:'../assets/imagenes/productos/barf2.jpg' },
+    { id:'r4', name:'Aceite de salmón 250ml',price:149, image:'../assets/imagenes/productos/oil.jpg' },
+    { id:'r5', name:'Premio deshidratado',   price:95,  image:'../assets/imagenes/productos/snack2.jpg' },
+    { id:'r6', name:'Suplemento antipulgas', price:129, image:'../assets/imagenes/productos/sup.jpg' },
+    { id:'r7', name:'Pack semanal cachorro', price:499, image:'../assets/imagenes/productos/pack.jpg' },
+    { id:'r8', name:'Hueso recreativo',      price:69,  image:'../assets/imagenes/productos/bone.jpg' },
+  ];
+
+  function buildRecoCarousel(){
+    // skeleton mientras carga
+    $recoSlides.innerHTML = `
+      <div class="carousel-item active">
+        <div class="row g-3">
+          ${Array.from({length:4}).map(()=>`
+            <div class="col-6 col-md-3">
+              <div class="card reco-card h-100">
+                <div class="reco-img skeleton"></div>
+                <div class="card-body">
+                  <div class="placeholder-wave">
+                    <span class="placeholder col-8"></span>
+                  </div>
+                  <p class="small text-muted mb-2">&nbsp;</p>
+                  <button class="btn btn-sm btn-outline-primary disabled">Agregar</button>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+
+    // construir slides reales
+    const chunk = 4;
+    const frag = document.createDocumentFragment();
+    for (let i=0; i<recoData.length; i+=chunk){
+      const group = recoData.slice(i, i+chunk);
+      const slide = document.createElement('div');
+      slide.className = `carousel-item ${i===0 ? 'active' : ''}`;
+      slide.innerHTML = `
+        <div class="row g-3">
+          ${group.map(r => `
+            <div class="col-6 col-md-3">
+              <div class="card reco-card h-100">
+                <div class="reco-img">
+                  <img src="${r.image}" alt="${escapeHtml(r.name)}">
+                </div>
+                <div class="card-body">
+                  <h4 class="h6 mb-1">${escapeHtml(r.name)}</h4>
+                  <p class="small text-muted mb-2">${money(r.price)}</p>
+                  <button class="btn btn-sm btn-outline-primary" data-reco="${r.id}">Agregar</button>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>`;
+      frag.appendChild(slide);
+    }
+    // reemplazar skeleton
+    setTimeout(()=>{ $recoSlides.innerHTML=''; $recoSlides.appendChild(frag); hookReco(); lazyLoadRecoImages(); }, 400);
+  }
+
+  function hookReco(){
+    $('#recoCarousel')?.addEventListener('click', e => {
+      const id = e.target?.getAttribute('data-reco');
+      if (!id) return;
+      const prod = recoData.find(x => x.id===id);
+      if (!prod) return;
+      const i = state.items.findIndex(it => String(it.id)===id);
+      if (i>=0) state.items[i].qty = Math.min(99, Number(state.items[i].qty||1)+1);
+      else state.items.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1, image: prod.image });
+      writeCart(state.items); render(); toast('Agregado a tu carrito','success');
+    });
+  }
+
+  function lazyLoadRecoImages(){
+    $$('#recoSlides img').forEach(img=>{
+      img.addEventListener('load', () => img.classList.add('loaded'), { once:true });
+      const parent = img.closest('.reco-img');
+      parent?.classList.remove('skeleton');
+    });
+  }
+
+  // --------- Toasts Bootstrap (+ ripple en btn-dark)
+  function toast(html, tone='primary'){
+    const el = document.createElement('div');
+    el.className = `toast align-items-center text-bg-${tone} border-0`;
+    el.innerHTML = `
+      <div class="d-flex">
+        <div class="toast-body">${html}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
+      </div>`;
+    $toasts.appendChild(el);
+    const t = new bootstrap.Toast(el, { delay: 2400 });
+    t.show();
+    el.addEventListener('hidden.bs.toast', ()=> el.remove());
+  }
+
+  // efecto luz en btn-dark (sin cambiar HTML)
+  document.addEventListener('pointerdown', e => {
+    const b = e.target.closest('.btn-dark');
+    if (!b) return;
+    const r = b.getBoundingClientRect();
+    b.style.setProperty('--x', `${e.clientX - r.left}px`);
+    b.style.setProperty('--y', `${e.clientY - r.top}px`);
+  });
+
+  // --------- Init
+  (function seed(){
+    // ?demo=1 para poblar
+    if (new URL(location.href).searchParams.get('demo')==='1' && state.items.length===0){
+      writeCart([
+        { id:'p1', name:'Mix BARF Res x 500g', price:129, qty:1, image:'../assets/imagenes/productos/barf1.jpg' },
+        { id:'p2', name:'Snack deshidratado 250g', price:89, qty:2, image:'../assets/imagenes/productos/snack1.jpg' }
+      ]);
+    }
+  })();
+
+  buildRecoCarousel();
+  render();
+
 })();
