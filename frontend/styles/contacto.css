@@ -8,80 +8,146 @@
   --contact-shadow: 0 6px 16px rgba(0,0,0,.08);
 }
 
+/* Fondo general */
 body {
   background-color: var(--contact-bg);
+
 }
 
-.contact-page { 
+body::before {
+  content: ""; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; 
+
+  background-image: url('../assets/imagenes/perritos-varios/Husky-verde.png'); 
+  background-repeat: repeat;
+  background-size: 150px; /* Define un tamaño para cada perrito del mosaico */
+  opacity: 0.15; 
+}
+
+/* Página contacto */
+.contact-page{ 
   background: var(--contact-bg); 
   color: var(--contact-green); 
+  font-family: "Fredoka", sans-serif;
 }
 
-/* Encabezado */
-.contact-page .contact-title { font-weight: 700; }
-.contact-page .contact-subtitle { color: #6b756f; }
-
-/* Cards y layout fino (calcado a la maqueta) */
-.contact-page .contact-card {
-  border-radius: var(--contact-card-radius);
-  box-shadow: var(--contact-shadow);
+/* Estilo específico para el título principal */
+.contact-title {
+  color: var(--contact-green) !important; 
+  font-family: "Fredoka", sans-serif;
+  font-size: 2.5rem; 
+  font-weight: 600;   
+  margin-bottom: 5px !important; 
 }
 
-/* Íconos de la card de info */
-.contact-page .contact-icon {
-  font-size: 1.15rem;
-  color: var(--contact-accent);
-  line-height: 1;
-  transform: translateY(2px);
+.contact-subtitle {
+  font-style: italic;
+  color: var(--contact-green-600) !important; 
+  margin-bottom: 40px !important;
 }
 
-/* Links acento (tel/email) */
-.contact-page .contact-accent { color: var(--contact-accent); }
-.contact-page .contact-accent:hover { text-decoration: underline; }
+/* ==============================
+    CONTACTO - AJUSTES PARA BOOTSTRAP
+============================== */
 
-/* Botón principal */
-.contact-page .btn-forest {
-  background: var(--contact-green);
+/* Contenedor principal */
+.contact-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin: 0 auto;
+  max-width: 1200px; 
+}
+
+/* FORMULARIO */
+.contact-form {
+  flex: 1 1 48%;
+  min-width: 360px;
+}
+
+/* Tarjetas */
+.contact-card {
+  background-color: #fff;
+  border-radius: var(--contact-card-radius); 
+  box-shadow: var(--contact-shadow); 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none; 
+}
+
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+}
+
+.form-control {
+  border-radius: 8px;
+  border: 1px solid #dcdcdc;
+  padding: 0.8rem 1rem; 
+  font-size: 1rem; 
+  font-family: "Fredoka", sans-serif;
+}
+
+.form-control:focus {
+  border-color: var(--contact-green-600); /* Color de borde al enfocar */
+  box-shadow: 0 0 0 0.2rem rgba(27, 59, 50, 0.15); /* Sombra de foco usando el color verde oscuro */
+}
+
+.btn-forest {
+  background-color: var(--contact-green);
   color: #fff;
   border: none;
-  padding: .875rem 1rem;
-  border-radius: 999px;
-}
-.contact-page .btn-forest:hover { background: var(--contact-green-600); }
-
-/* Inputs */
-.contact-page .form-control {
   border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-weight: 600;
+  transition: background-color 0.2s;
 }
 
-/* Social */
-.contact-page .social-link {
-  font-size: 1.35rem;
-  color: var(--contact-green);
-  transition: transform .2s ease, color .2s ease, opacity .2s ease;
-}
-.contact-page .social-link:hover {
-  color: var(--contact-green-600);
-  transform: translateY(-2px);
-  opacity: .9;
+.btn-forest:hover {
+  background-color: var(--contact-green-600); 
 }
 
-/* Animación sutil al entrar (requisito) */
-@keyframes contact-fade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* INFORMACIÓN Y REDES */
+.contact-info {
+  flex: 1 1 48%;
+  min-width: 360px;
 }
-.contact-page .card,
-.contact-page header {
-  animation: contact-fade .6s ease-out both;
-}
-.contact-page .card:nth-of-type(1) { animation-delay: .05s; }
-.contact-page .card:nth-of-type(2) { animation-delay: .12s; }
 
-/* Responsivo fino (tablet/móvil) */
-@media (max-width: 991.98px) { /* < lg */
-  .contact-page .contact-card { border-radius: 12px; }
+.contact-icon {
+  color: var(--contact-accent); 
+  font-size: 1.4rem; 
 }
-@media (max-width: 575.98px) { /* < sm */
-  .contact-page .btn-forest { padding: .8rem 1rem; }
+
+.contact-accent {
+  color: var(--contact-accent); 
+}
+
+.social-link {
+  font-size: 1.8rem;
+  color: var(--contact-green); 
+  transition: color 0.2s;
+}
+
+.social-link:hover {
+  color: var(--contact-accent); 
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .contact-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contact-form,
+  .contact-info {
+    width: 100%;
+    max-width: 600px;
+  }
 }
