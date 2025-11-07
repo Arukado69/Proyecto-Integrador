@@ -1,6 +1,6 @@
 /* Fondo general */
 .catalogo-body-color {
-  background-image: url('../assets/imagenes/perritos-varios/fondo-web.png');
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
   background-repeat: no-repeat;       /* No repetir la imagen */
   background-size: cover;             /* Que cubra todo el fondo */
   background-position: center center; /* Centrada */

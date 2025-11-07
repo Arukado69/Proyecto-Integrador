@@ -48,13 +48,62 @@
           <span class="navbar-toggler-icon-custom"></span>
           <span class="navbar-toggler-icon-custom"></span>
         </button>
-        <a href="./micuenta.html"><button class="user-btn" id="userBtn"><img src='../assets/imagenes/iconos/user-dark.png' alt="Usuario" id="userIcon" /></button></a>
+        <a href="./iniciosesion.html"><button class="user-btn" id="userBtn"><img src='../assets/imagenes/iconos/user-dark.png' alt="Usuario" id="userIcon" /></button></a>
         <a href="./carrito.html"><button class="user-btn" id="comprasBtn"><img src='../assets/imagenes/iconos/compras-dark.png' alt="Compras" id="comprasIcon" /></button></a>
       </div>
     </div>
   </nav>
 
   <!-- insertar flujo aqui -->
+
+  <div class="tab">
+    <div class="tab-layout">
+
+      <!-- Imagen lateral -->
+      <div class="tab-image">
+        <img id="husky-img" src="../assets/imagenes/perritos-varios/HuskyLogin.png" alt="Inicio de sesión">
+      </div>
+
+      <!-- Panel derecho -->
+      <div class="tab-panel">
+        
+        <div class="tabs-content">
+          <section id="login" data-active="true">
+            <div class="tab-form">
+              <h2>Inicio de sesión</h2>
+              <form>
+                <div class="form-row">
+                <div class="form-group">
+                <input type="text" id="usuario" required>
+                <label for="usuario">Correo o número</label>
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-group">
+                <input type="password" id="password" required>
+                  <label for="password">Contraseña</label>
+                </div>
+                </div>
+
+
+                <button type="button" class="btn-next">Siguiente</button>
+              </form>
+
+              <p class="link-registro">
+                ¿No tienes cuenta?
+                <a href="registro.html">Regístrate</a>
+              </p>
+
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  
 
   <!-- FOOTER -->
 <footer></footer>
