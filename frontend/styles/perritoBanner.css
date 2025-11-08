@@ -67,21 +67,12 @@
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  padding: 1.2rem;
+  padding: 0; /* <-- Cambiado a 0 */
   box-shadow: 
     0 4px 12px rgba(0, 0, 0, 0.15),
     inset 0 4px 6px rgba(255, 255, 255, 0.2),
     inset 0 -3px 6px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  color: #fff;
-  font-weight: 500;
-  animation: float 4s ease-in-out infinite;
-  position: relative;
-  overflow: hidden;
+  
 }
 
 /* ✨ Pequeño brillo para simular reflejo del plato */
@@ -108,21 +99,21 @@
 .spoke-6 { transform: rotate(300deg) translateY(-275px); }
 
 /* ✅ Rotación inversa para mantener texto derecho */
-.spoke-1 .orbit-item { transform: rotate(0deg); }
-.spoke-2 .orbit-item { transform: rotate(-60deg); }
+.spoke-1 .orbit-item { transform: rotate(-120deg); }
+.spoke-2 .orbit-item { transform: rotate(-120deg); }
 .spoke-3 .orbit-item { transform: rotate(-120deg); }
-.spoke-4 .orbit-item { transform: rotate(-180deg); }
-.spoke-5 .orbit-item { transform: rotate(-240deg); }
-.spoke-6 .orbit-item { transform: rotate(-300deg); }
+.spoke-4 .orbit-item { transform: rotate(-120deg); }
+.spoke-5 .orbit-item { transform: rotate(-120deg); }
+.spoke-6 .orbit-item { transform: rotate(-120deg); }
 
 /* =================================
    6. COLORES Y TEXTOS
    ================================= */
-.item-one { background-color: #3a5a40; border: 3px solid #2f4833; }
-.item-two { background-color: #588157; border: 3px solid #4a6b49; }
-.item-three { background-color: #344e41; border: 3px solid #2b4035; }
-.item-five { background-color: #a3b18a; border: 3px solid #8e9c75; color: #2c3e50; }
-.item-six { background-color: #588157; border: 3px solid #4a6b49; }
+.item-one { background-color: #59635b; border: 3px solid #2f4833; }
+.item-two { background-color: #6b705c; border: 3px solid #4a6b49; }
+.item-three { background-color: #59635b; border: 3px solid #2b4035; }
+.item-five { background-color: #6b705c; border: 3px solid #8e9c75; color: #2c3e50; }
+.item-six { background-color: #59635b; border: 3px solid #4a6b49; }
 .item-seven { background-color: #6b705c; border: 3px solid #585c4c; }
 .item-five h2, .item-five p { color: #2c3e50; }
 
