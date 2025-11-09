@@ -142,3 +142,6 @@ filtersForm.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListe
 
 // Init
 applyFilters();
+
+if (window.syncCartBadge) window.syncCartBadge();
+

@@ -1,9 +1,4 @@
-/* === Woof & Barf · Carrito animado ===
-   - Estilo claro tipo confirmación con acentos cálidos
-   - Micro-interacciones (hover, elevación, brillos)
-   - Animaciones: rise, pulse, bounce, shimmer
-   - Sin cambiar HTML
-*/
+
 :root{
   --brand-ink: #111;          /* texto principal */
   --brand-accent: #7a4a29;    /* acento Woof&Barf */
@@ -20,16 +15,12 @@
 /* ---------- Reset suave + tipografía ---------- */
 *{ box-sizing:border-box; }
 body {
-  margin: 0;
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-  color: #f2f4ef;
-  background:
-    url('../assets/imagenes/perritos-varios/fondo-web.png') no-repeat center center fixed, /* 👈 Imagen fija */
-    radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--bs-primary) 18%, transparent), transparent 60%),
-    radial-gradient(900px 500px at 90% 0%, color-mix(in srgb, var(--bs-secondary) 18%, transparent), transparent 60%),
-    linear-gradient(180deg, var(--bg-1), var(--bg-2));
-  background-size: cover; /* Ajusta la imagen al tamaño del viewport */
-  overflow-x: hidden;
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
+  background-repeat: no-repeat;       /* No repetir la imagen */
+  background-size: cover;             /* Que cubra todo el fondo */
+  background-position: center center; /* Centrada */
+  background-attachment: fixed;       /* 👈 Imagen estática al hacer scroll */
+  min-height: 100vh;                  /* Para que ocupe toda la ventana */
 }
 
 
