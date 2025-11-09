@@ -136,3 +136,66 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
+
+// ====== Registro pro: validaciones fuertes y guardado local ======
+(() => {
+  const nombre = document.getElementById("nombre");
+  const apellido = document.getElementById("apellido");
+  const numero = document.getElementById("numero");
+  const fecha = document.getElementById("fecha");
+  const pass = document.getElementById("password");
+  const confirmar = document.getElementById("confirmar");
+
+  const passStrongRx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{5,}$/;
+  const nameRx = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]{2,}$/;
+  const phoneRx10 = /^\d{10}$/;
+
+  function telefonoValido(v){
+    if(!phoneRx10.test(v)) return false;
+    if(/^(\d)\1{9}$/.test(v)) return false; // 0000000000, 1111111111
+    if(["0123456789","1234567890","0987654321"].includes(v)) return false;
+    return true;
+  }
+
+  // Hook sobre los botones "Siguiente" con captura para frenar la navegación de pestaña
+  document.querySelectorAll(".btn-next").forEach(btn=>{
+    btn.addEventListener("click", (e)=>{
+      // solo validamos cuando estamos en la pestaña de registro
+      const inRegistro = btn.closest("#registro");
+      if(!inRegistro) return;
+
+      const n = (nombre?.value || "").trim();
+      const a = (apellido?.value || "").trim();
+      const tel = (numero?.value || "").trim();
+      const f = (fecha?.value || "").trim();
+      const p1 = (pass?.value || "").trim();
+      const p2 = (confirmar?.value || "").trim();
+
+      let errores = [];
+      if(!nameRx.test(n)) errores.push("Nombre inválido (solo letras, mínimo 2).");
+      if(!nameRx.test(a)) errores.push("Apellido inválido (solo letras, mínimo 2).");
+      if(!telefonoValido(tel)) errores.push("Número inválido: usa 10 dígitos reales de MX.");
+      if(!f) errores.push("La fecha es obligatoria.");
+      if(!passStrongRx.test(p1)) errores.push("Contraseña débil: mínimo 5 y debe incluir mayúscula, minúscula, número y caracter especial.");
+      if(p1 !== p2) errores.push("Las contraseñas no coinciden.");
+
+      if(errores.length){
+        // Usa tu contenedor de alertas existente si está
+        const box = document.getElementById("alertContainer");
+        if(box){ box.innerHTML = `<div class="alert alert-warning">${errores.join("<br>")}</div>`; }
+        e.stopImmediatePropagation(); // frena el cambio de pestaña
+        e.preventDefault();
+        return;
+      }
+
+      // Guardar usuario en "BD" local
+      try{
+        const list = JSON.parse(localStorage.getItem("wbf_users") || "[]");
+        list.push({ nombre:n, apellido:a, telefono:tel, fecha:f, password:p1 });
+        localStorage.setItem("wbf_users", JSON.stringify(list));
+      }catch(_){}
+
+      // deja continuar a la pestaña de validación (tu handler original hará el cambio)
+    }, true);
+  });
+})();

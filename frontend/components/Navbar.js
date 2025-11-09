@@ -1,94 +1,105 @@
-// ---------------- LOGO ----------------
-const logo = document.getElementById("logo");
+// Navbar.js — versión resiliente (sin rutas absolutas)
+document.addEventListener("DOMContentLoaded", () => {
+  const dirOf = (url) => new URL(url, location.href).href.replace(/[^/]+$/, '');
+  const safeSwap = (img, filename) => {
+    if (!img) return;
+    if (!img.dataset.fallback) img.dataset.fallback = img.src;
+    const base = img.dataset.dir || (img.dataset.dir = dirOf(img.src));
+    img.onerror = () => { img.onerror = null; img.src = img.dataset.fallback; };
+    img.src = base + filename;
+  };
 
-logo.addEventListener("mouseenter", () => { 
-  logo.src = "/assets/imagenes/iconos/logo-hover.png"; 
-});
-logo.addEventListener("mouseleave", () => { 
-  logo.src = "/assets/imagenes/iconos/logo-default.png"; 
-});
-logo.addEventListener("mousedown", () => { 
-  logo.src = "/assets/imagenes/iconos/logo-click.png"; 
-});
-logo.addEventListener("mouseup", () => { 
-  logo.src = "/assets/imagenes/iconos/logo-hover.png"; 
-});
-
-// ---------------- BOTÓN DE USUARIO ----------------
-const userBtn = document.getElementById('userBtn');
-const userIcon = document.getElementById('userIcon');
-let usuarioActivo = false;
-
-userBtn.addEventListener('click', () => {
-  usuarioActivo = !usuarioActivo;
-  if (usuarioActivo) {
-    userBtn.style.backgroundColor = 'var(--amarillo-400)';
-    userIcon.src = '/assets/imagenes/iconos/user-light.png';
-  } else {
-    userBtn.style.backgroundColor = 'transparent';
-    userIcon.src = '/assets/imagenes/iconos/user-dark.png';
+  // LOGO (usa la carpeta real del logo actual)
+  const logo = document.getElementById("logo");
+  if (logo) {
+    logo.addEventListener("mouseenter", () => safeSwap(logo, "logo-hover.png"));
+    logo.addEventListener("mouseleave", () => safeSwap(logo, "logo-default.png"));
+    logo.addEventListener("mousedown",  () => safeSwap(logo, "logo-click.png"));
+    logo.addEventListener("mouseup",    () => safeSwap(logo, "logo-hover.png"));
   }
-});
 
-// ---------------- BOTÓN DE COMPRAS ----------------
-const comprasBtn = document.getElementById('comprasBtn');
-const comprasIcon = document.getElementById('comprasIcon');
-let compraActiva = false;
-
-comprasBtn.addEventListener('click', () => {
-  compraActiva = !compraActiva;
-  if (compraActiva) {
-    comprasBtn.style.backgroundColor = 'var(--amarillo-400)';
-    comprasIcon.src = '/assets/imagenes/iconos/compras-light.png';
-  } else {
-    comprasBtn.style.backgroundColor = 'transparent';
-    comprasIcon.src = '/assets/imagenes/iconos/compras-dark.png';
+  // BOTÓN DE USUARIO (cambia solo el archivo, no la ruta)
+  const userBtn  = document.getElementById('userBtn');
+  const userIcon = document.getElementById('userIcon');
+  let usuarioActivo = false;
+  if (userBtn && userIcon) {
+    userBtn.addEventListener('click', () => {
+      usuarioActivo = !usuarioActivo;
+      userBtn.style.backgroundColor = usuarioActivo ? 'var(--amarillo-400)' : 'transparent';
+      safeSwap(userIcon, usuarioActivo ? 'user-light.png' : 'user-dark.png');
+    });
   }
-});
 
+  // BOTÓN DE COMPRAS (no toca el badge)
+  const comprasBtn  = document.getElementById('comprasBtn');
+  const comprasIcon = document.getElementById('comprasIcon');
+  let compraActiva = false;
+  if (comprasBtn && comprasIcon) {
+    comprasBtn.addEventListener('click', () => {
+      compraActiva = !compraActiva;
+      comprasBtn.style.backgroundColor = compraActiva ? 'var(--amarillo-400)' : 'transparent';
+      safeSwap(comprasIcon, compraActiva ? 'compras-light.png' : 'compras-dark.png');
+    });
+  }
 
-// ---------------- ICONOS SOCIALES ----------------
-const iconButtons = document.querySelectorAll(".icon-btn");
-
-iconButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    btn.classList.add("active");
-    setTimeout(() => { btn.classList.remove("active"); }, 300);
+  // ICONOS sociales del header (si existen)
+  document.querySelectorAll(".icon-btn")?.forEach(btn => {
+    btn.addEventListener("click", () => {
+      btn.classList.add("active");
+      setTimeout(() => btn.classList.remove("active"), 300);
+    });
   });
-});
 
-// ---- CAMBIO DE COLOR AL HACER SCROLL ----
-window.addEventListener("scroll", function() {
-  const navbar = document.querySelector(".navbar-center");
-  if (window.scrollY > 50) {
-    navbar.classList.add("navbar-scrolled");
-  } else {
-    navbar.classList.remove("navbar-scrolled");
+  // Scroll color
+  window.addEventListener("scroll", () => {
+    const navbar = document.querySelector(".navbar-center");
+    if (!navbar) return;
+    if (window.scrollY > 50) navbar.classList.add("navbar-scrolled");
+    else navbar.classList.remove("navbar-scrolled");
+  });
+
+  // Hamburguesa
+  const toggler = document.querySelector('.navbar-toggler-custom');
+  const navMenu = document.querySelector('.navbar-nav-custom');
+  if (toggler && navMenu) {
+    let menuAbierto = false;
+    toggler.addEventListener('click', (e) => {
+      menuAbierto = !menuAbierto;
+      navMenu.classList.toggle('show', menuAbierto);
+      e.stopPropagation();
+    });
+    document.addEventListener('click', (e) => {
+      if (!navMenu.contains(e.target) && !toggler.contains(e.target) && menuAbierto) {
+        navMenu.classList.remove('show'); menuAbierto = false;
+      }
+    });
   }
-});
 
-
-
-// ---------------- BOTÓN HAMBURGUESA ----------------
-const toggler = document.querySelector('.navbar-toggler-custom');
-const navMenu = document.querySelector('.navbar-nav-custom');
-let menuAbierto = false;
-
-// Abrir/cerrar menú al hacer clic en la hamburguesa
-toggler.addEventListener('click', (e) => {
-  menuAbierto = !menuAbierto;
-  if (menuAbierto) {
-    navMenu.classList.add('show');
-  } else {
-    navMenu.classList.remove('show');
-  }
-  e.stopPropagation();
-});
-
-// Cerrar menú si se hace clic fuera
-document.addEventListener('click', (e) => {
-  if (!navMenu.contains(e.target) && !toggler.contains(e.target) && menuAbierto) {
-    navMenu.classList.remove('show');
-    menuAbierto = false;
-  }
+  // === Sincroniza el badge del carrito (asunción de llaves/localStorage) ===
+  const badge = document.getElementById('cart-count') || document.querySelector('[data-cart-badge]');
+  const readCount = () => {
+    try {
+      const keys = ['carrito','cart','shoppingCart'];
+      for (const k of keys) {
+        const raw = localStorage.getItem(k);
+        if (!raw) continue;
+        const data = JSON.parse(raw);
+        if (Array.isArray(data)) {
+          // si tienen quantity usa la suma, si no, usa length
+          const qty = data.reduce((a, it) => a + (Number(it.quantity || it.qty || 1)), 0);
+          return qty || data.length;
+        }
+        if (typeof data === 'object' && data.items) {
+          const arr = Array.isArray(data.items) ? data.items : [];
+          return arr.reduce((a, it) => a + (Number(it.quantity || it.qty || 1)), 0) || arr.length;
+        }
+      }
+    } catch (_) {}
+    return 0;
+  };
+  const syncBadge = () => { if (badge) badge.textContent = readCount(); };
+  syncBadge();
+  window.addEventListener('storage', (e) => { if (e.key) syncBadge(); });
+  window.syncCartBadge = syncBadge;
+  
 });
