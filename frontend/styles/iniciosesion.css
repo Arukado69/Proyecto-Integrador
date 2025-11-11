@@ -333,3 +333,69 @@ button:hover {
     font-size: 0.9rem;
   }
 }
+
+/* --- Ajustes pro, sin cambiar paleta --- */
+
+/* separa la card del navbar */
+.tab { margin-top: 40px; }
+
+/* estado inválido consistente (usa tu rojo por defecto del navegador) */
+input.is-invalid {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 .2rem rgba(220,53,69,.1);
+}
+
+/* mensajes de error + pista */
+.error-text { display: none; color: #dc3545; font-size: .85rem; margin-top: 6px; }
+.hint { display:block; color:#7a7a7a; font-size:.85rem; margin-top:6px; }
+
+/* botón ojo dentro del input */
+.form-group.with-toggle { position: relative; }
+.form-group.with-toggle input { padding-right: 56px; }
+.toggle-password{
+  position: absolute;
+  right: 10px; top: 50%; transform: translateY(-50%);
+  border: 0; background: transparent; color: var(--main-color);
+  font-weight: 700; cursor: pointer; padding: 4px 6px;
+}
+.toggle-password:hover { opacity:.8; }
+
+/* --- Overrides locales para que el footer quede debajo del login --- */
+body.login-body-bg { 
+  /* Anula el body:flex del Navbar.css solo en esta página */
+  display: block; 
+}
+
+.tab { 
+  margin: 40px auto 80px; /* respiro abajo para el footer */
+}
+
+/* --- Alineación fina campo contraseña --- */
+.form-group label{
+  /* Sube ligeramente el label dentro del input */
+  top: 50%;
+  transform: translateY(-58%); /* antes -50% */
+}
+
+.form-group.with-toggle .toggle-password{
+  /* Sube un poco el botón "Ver" */
+  transform: translateY(calc(-50% - 2px));
+}
+
+/* --- Forzar que el link de recuperación quede debajo del input --- */
+.form-row .text-end{
+  flex-basis: 100%;     /* ocupar ancho completo -> nueva línea */
+  margin-top: 6px;      /* separarlo del input */
+}
+
+/* Respiro para la pista bajo el campo */
+.hint{ margin-top: 6px; }
+
+/* --- Alerta global arriba del formulario --- */
+#login-global{ margin: 8px 0 12px; }
+
+
+
+
+
+

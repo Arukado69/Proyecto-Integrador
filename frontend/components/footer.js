@@ -1,11 +1,16 @@
-document.addEventListener("DOMContentLoaded", () => { 
-fetch("/components/footer.html")
-    .then(response => {
-      if (!response.ok) throw new Error("No se pudo cargar el footer");
-      return response.text();
+document.addEventListener("DOMContentLoaded", () => {
+  // Index ahora vive en /frontend; las páginas en /frontend/pages
+  const inPages = location.pathname.includes("/frontend/pages/");
+  const prefix = inPages ? "../" : ""; // ../ cuando estoy en /pages, vacío en /frontend
+
+  fetch(prefix + "components/footer.html")
+    .then(r => { if (!r.ok) throw new Error("No se pudo cargar el footer"); return r.text(); })
+    .then(html => {
+      // Corrige rutas absolutas escritas dentro del footer.html
+      html = html
+        .replaceAll('src="/assets/', `src="${prefix}assets/`)
+        .replaceAll('href="/pages/', `href="${prefix}pages/`);
+      document.body.insertAdjacentHTML("beforeend", html);
     })
-    .then(data => {
-document.body.insertAdjacentHTML("beforeend", data);
-    })
-    .catch(error => console.error(error));
+    .catch(console.error);
 });

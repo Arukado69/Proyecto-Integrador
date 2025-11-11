@@ -49,7 +49,10 @@ function renderPage(page = 1) {
   const start = (currentPage - 1) * ITEMS_PER_PAGE;
   const end = Math.min(start + ITEMS_PER_PAGE, total);
 
-  productRow.innerHTML = filtered.slice(start, end).map(createProductCard).join('');
+  // cosa que puse Brad, lo de arriba lo comente para no borrar todo el row, pero no se si esta bien, segun se debe de borrar
+  const cardsHTML = filtered.slice(start, end).map(createProductCard).join('');
+productRow.querySelectorAll('.col').forEach(el => el.remove()); // Limpia solo las columnas
+productRow.insertAdjacentHTML('beforeend', cardsHTML);
 
   // Indicador
   resultsInfo.textContent = total
@@ -77,6 +80,8 @@ function renderPage(page = 1) {
     </nav>`;
   paginationEl.innerHTML = html;
 
+
+  // cosa que puse Brad
   paginationEl.querySelectorAll('a.page-link').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
@@ -84,6 +89,18 @@ function renderPage(page = 1) {
       if (!Number.isNaN(page)) {
         renderPage(page);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // --- Ajuste visual uniforme ---
+setTimeout(() => {
+  const imgs = document.querySelectorAll('.catalogo-img-size');
+  imgs.forEach(img => {
+    img.style.height = '250px'; // asegúrate de coincidir con el CSS
+    img.style.objectFit = 'cover';
+  });
+}, 200);
+// Aqui termina
+
+
       }
     });
   });
@@ -125,3 +142,6 @@ filtersForm.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListe
 
 // Init
 applyFilters();
+
+if (window.syncCartBadge) window.syncCartBadge();
+
