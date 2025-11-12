@@ -58,12 +58,12 @@
   <!-- NAVBAR -->
   <nav class="navbar-center">
     <div class="container">
-      <a class="navbar-brand" href="/docs/index.html">
+      <a class="navbar-brand" href="/frontend/index.html">
         <img src="../assets/imagenes/iconos/logo-lg-negro-husky-hor.svg" alt="Logo" id="logo" class="logo"/>
       </a>
 
       <ul class="navbar-nav-custom" id="navbarNav">
-        <li><a class="nav-link-custom" href="/docs/index.html">Inicio</a></li>
+        <li><a class="nav-link-custom" href="/frontend/index.html">Inicio</a></li>
         <li><a class="nav-link-custom" href="./catalogo.html">Tienda</a></li>
         <li><a class="nav-link-custom" href="./nosotros.html">Nosotros</a></li>
         <li><a class="nav-link-custom" href="./blog.html">Blog</a></li>
@@ -129,14 +129,16 @@
                   <div class="form-group with-toggle">
                     <input type="password" id="password" autocomplete="current-password" required />
                     <label for="password">Contraseña</label>
-                    <p class="text-end mt-1">
-                              <a href="#" id="linkOlvido" class="small">¿Olvidaste tu contraseña?</a>
-                    </p>
-                    <button type="button" class="toggle-password" id="togglePass" aria-label="Mostrar contraseña" aria-pressed="false">Ver</button>
-                    <small class="hint">Porfavor verifica ingresar correctamente tu informacion </small>
-                    <small class="error-text" id="err-pass"></small>
+                    <button type="button" class="toggle-password" id="togglePass" aria-label="Mostrar contraseña" aria-pressed="false">Ver</button> 
                   </div>
-                </div>
+<small class="hint">Por favor verifica ingresar correctamente tu información</small>
+  <small class="error-text" id="err-pass"></small>
+
+  <p class="text-start mt-1 forgot-pass">
+    <a href="#" id="linkOlvido" class="small">¿Olvidaste tu contraseña?</a>
+  </p>
+</div>
+
 
                 <button type="submit" class="btn-next" id="loginSubmit">Siguiente</button>
               </form>

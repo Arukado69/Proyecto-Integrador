@@ -339,7 +339,7 @@ button:hover {
 /* separa la card del navbar */
 .tab { margin-top: 40px; }
 
-/* estado inválido consistente (usa tu rojo por defecto del navegador) */
+/* estado inválido consistente */
 input.is-invalid {
   border-color: #dc3545 !important;
   box-shadow: 0 0 0 .2rem rgba(220,53,69,.1);
@@ -370,18 +370,6 @@ body.login-body-bg {
   margin: 40px auto 80px; /* respiro abajo para el footer */
 }
 
-/* --- Alineación fina campo contraseña --- */
-.form-group label{
-  /* Sube ligeramente el label dentro del input */
-  top: 50%;
-  transform: translateY(-58%); /* antes -50% */
-}
-
-.form-group.with-toggle .toggle-password{
-  /* Sube un poco el botón "Ver" */
-  transform: translateY(calc(-50% - 2px));
-}
-
 /* --- Forzar que el link de recuperación quede debajo del input --- */
 .form-row .text-end{
   flex-basis: 100%;     /* ocupar ancho completo -> nueva línea */
@@ -394,8 +382,40 @@ body.login-body-bg {
 /* --- Alerta global arriba del formulario --- */
 #login-global{ margin: 8px 0 12px; }
 
+/* --- CORRECCIÓN DE ALINEACIÓN PARA CONTRASEÑA --- */
+.form-row {
+  display: flex;
+  flex-direction: column; /* fuerza apilado vertical */
+  align-items: flex-start; /* alinea al borde izquierdo */
+}
 
+.with-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
 
+.hint {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: #777;
+  display: block;
+}
 
+/* --- UNIFICAR ANCHO DE CAMPOS DE FORMULARIO --- */
+.form-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* fuerza que los elementos ocupen todo el ancho */
+  width: 100%;
+}
 
+.form-group {
+  width: 100%; /* asegura que el input use todo el espacio disponible */
+}
 
+.form-group input {
+  width: 100%; /* estira el input completamente */
+  box-sizing: border-box; /* evita que el padding sume al ancho */
+}
