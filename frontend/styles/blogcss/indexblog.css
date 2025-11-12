@@ -1,6 +1,10 @@
 body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Fredoka', sans-serif;
             background-color: #f8f9fa; 
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Fredoka', sans-serif;
         }
 
         /* ----- Estilos de Marca "Woof & Barf" ----- */
@@ -15,7 +19,7 @@ body {
             border-bottom: 3px solid var(--wb-primary);
             padding-bottom: 10px;
             display: inline-block;
-            font-weight: 400;
+            font-weight: 600;
         }
 
         /* ----- ESTILO TARJETA DE ARTÍCULO (Destacados y Recientes) ----- */
