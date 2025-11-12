@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Index ahora vive en /frontend; las páginas en /frontend/pages
-  const inPages = location.pathname.includes("/frontend/pages/");
-  const prefix = inPages ? "../" : ""; // ../ cuando estoy en /pages, vacío en /frontend
+  // Index ahora vive en /docs; las páginas en /docs/pages
+  const inPages = location.pathname.includes("/docs/pages/");
+  const prefix = inPages ? "../" : ""; // ../ cuando estoy en /pages, vacío en /docs
 
   fetch(prefix + "components/footer.html")
     .then(r => { if (!r.ok) throw new Error("No se pudo cargar el footer"); return r.text(); })
