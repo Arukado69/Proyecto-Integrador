@@ -5,32 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Contacto | Woof & Barf</title>
 
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-  <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap" rel="stylesheet">
 
-  <!-- Estilos -->
   <link rel="stylesheet" href="../components/Navbar.css">
   <link rel="stylesheet" href="../styles/contacto.css">
   <link rel="stylesheet" href="../components/footer.css">
 </head>
 
 <body>
-  <!-- NAVBAR -->
   <nav class="navbar-center">
     <div class="container">
-      <a class="navbar-brand" href="/docs/index.html">
+      <a class="navbar-brand" href="/frontend/index.html">
         <img src="../assets/imagenes/iconos/logo-default.png" alt="Logo" id="logo" class="logo">
       </a>
 
       <ul class="navbar-nav-custom" id="navbarNav">
-        <li><a class="nav-link-custom" href="/docs/index.html">Inicio</a></li>
+        <li><a class="nav-link-custom" href="/frontend/index.html">Inicio</a></li>
         <li><a class="nav-link-custom" href="./catalogo.html">Tienda</a></li>
         <li><a class="nav-link-custom" href="./nosotros.html">Nosotros</a></li>
         <li><a class="nav-link-custom" href="./blog.html">Blog</a></li>
@@ -62,91 +58,92 @@
   </nav>
 
 <main class="container py-5">
-        <div class="text-center mb-4">
-            <h1 class="contact-title">Ponte en contacto con nosotros</h1>
-            <p class="contact-subtitle">¿Tienes alguna pregunta sobre nuestros productos? ¡Nos encantaría ayudarte!</p>
-        </div>
+      <div class="text-center mb-4">
+          <h1 class="contact-title">Ponte en contacto con nosotros</h1>
+          <p class="contact-subtitle">¿Tienes alguna pregunta sobre nuestros productos? ¡Nos encantaría ayudarte!</p>
+      </div>
 
-        <div id="alertPlaceholder"></div>
+      <div id="alertPlaceholder"></div>
 
-        <div class="contact-content mt-4">
-            <div class="contact-form p-4">
-                <div class="contact-card p-4">
-                    <h2 class="h4 mb-4" style="color: var(--contact-green);">Envíanos un mensaje</h2>
-                    <form id="contactForm" class="row g-3" 
-                    action="./gracias-contacto.html" method="POST">
-                        
-                        <div class="col-md-6">
-                            <label for="inputName" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Tu nombre" required>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="inputEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="inputEmail" name="_replyto" placeholder="tu@email.com" required>
-                        </div>
-                        
-                        <div class="col-12">
-                            <label for="inputSubject" class="form-label">Asunto</label>
-                            <input type="text" class="form-control" id="inputSubject" name="asunto" placeholder="Asunto del mensaje" required>
-                        </div>
-                        
-                        <div class="col-12">
-                            <label for="inputMessage" class="form-label">Mensaje</label>
-                            <textarea class="form-control" id="inputMessage" rows="5" name="mensaje" placeholder="Escribe tu mensaje aquí..." required></textarea>
-                        </div>
-                        
-                        <div class="col-12 mt-4">
-                            <button type="submit" class="btn btn-forest w-100">Enviar Mensaje</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+      <div class="contact-content mt-4">
+          <div class="contact-form p-4">
+              <div class="contact-card p-4">
+                  <h2 class="h4 mb-4" style="color: var(--contact-green);">Envíanos un mensaje</h2>
+                  
+                  <form id="contactForm" class="row g-3" 
+                        action="https://api.web3forms.com/submit" 
+                        method="POST">
+                      
+                      <input type="hidden" name="access_key" value="27cc5da8-b279-446c-8830-93402441528e">
 
-            <div class="contact-info p-4">
-                <div class="contact-card p-4 mb-4">
-                    <h2 class="h4 mb-4" style="color: var(--contact-green);">Nuestra información</h2>
-                    <div class="d-flex align-items-start mb-3">
-                        <i class="bi bi-geo-alt-fill contact-icon me-3"></i> <div>
-                            <p class="mb-0">Dirección</p>
-                            <p class="text-muted mb-0">Calle Falsa 123, Springfield, USA</p>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-start mb-3">
-                        <i class="bi bi-telephone-fill contact-icon me-3"></i> <div>
-                            <p class="mb-0">Teléfono</p>
-                            <p class="text-muted mb-0">+1 (23) 456-7890</p>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-start mb-3">
-                        <i class="bi bi-envelope-fill contact-icon me-3"></i> <div>
-                            <p class="mb-0">Email</p>
-                            <a href="mailto:woofandbarf@gmail.com" class="contact-accent">woofandbarf@gmail.com</a>
-                        </div>
-                    </div>
-                </div>
+                      <input type="hidden" name="redirect" value="https://arukado69.github.io/Proyecto-Integrador/pages/gracias-contacto.html">
 
-                <div class="contact-card p-4">
-                    <h2 class="h4 mb-3" style="color: var(--contact-green);">Síguenos en nuestras redes</h2>
-                    <div class="social-media">
-                        <a href="https://www.instagram.com/woof.and.barf?igsh=MXFzMjg3cXJ0Ym5ueg==" class="social-link me-3"><i class="bi bi-instagram"></i></a> 
-                        <a href="https://www.facebook.com/profile.php?id=61583347141368" class="social-link me-3"><i class="bi bi-facebook"></i></a>
-                        <a href="https://x.com/woofandbarf?t=-SSQ351nCBfI9IIQ2pZ0XQ&s=08" class="social-link"><i class="bi bi-twitter-x"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-      </aside>
-    </div>
-  </div>
-</main>
+                      <div class="col-md-6">
+                          <label for="inputName" class="form-label">Nombre</label>
+                          <input type="text" class="form-control" id="inputName" name="name" placeholder="Tu nombre" required>
+                      </div>
+                      
+                      <div class="col-md-6">
+                          <label for="inputEmail" class="form-label">Email</label>
+                          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="tu@email.com" required>
+                      </div>
+                      
+                      <div class="col-12">
+                          <label for="inputSubject" class="form-label">Asunto</label>
+                          <input type="text" class="form-control" id="inputSubject" name="asunto" placeholder="Asunto del mensaje" required>
+                      </div>
+                      
+                      <div class="col-12">
+                          <label for="inputMessage" class="form-label">Mensaje</label>
+                          <textarea class="form-control" id="inputMessage" rows="5" name="message" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                      </div>
+                      
+                      <div class="col-12 mt-4">
+                          <button type="submit" class="btn btn-forest w-100">Enviar Mensaje</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+
+          <div class="contact-info p-4">
+              <div class="contact-card p-4 mb-4">
+                  <h2 class="h4 mb-4" style="color: var(--contact-green);">Nuestra información</h2>
+                  <div class="d-flex align-items-start mb-3">
+                      <i class="bi bi-geo-alt-fill contact-icon me-3"></i> <div>
+                          <p class="mb-0">Dirección</p>
+                          <p class="text-muted mb-0">Calle Falsa 123, Springfield, USA</p>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-start mb-3">
+                      <i class="bi bi-telephone-fill contact-icon me-3"></i> <div>
+                          <p class="mb-0">Teléfono</p>
+                          <p class="text-muted mb-0">+1 (23) 456-7890</p>
+                      </div>
+                  </div>
+                  <div class="d-flex align-items-start mb-3">
+                      <i class="bi bi-envelope-fill contact-icon me-3"></i> <div>
+                          <p class="mb-0">Email</p>
+                          <a href="mailto:woofandbarf@gmail.com" class="contact-accent">woofandbarf@gmail.com</a>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="contact-card p-4">
+                  <h2 class="h4 mb-3" style="color: var(--contact-green);">Síguenos en nuestras redes</h2>
+                  <div class="social-media">
+                      <a href="https://www.instagram.com/woof.and.barf?igsh=MXFzMjg3cXJ0Ym5ueg==" class="social-link me-3"><i class="bi bi-instagram"></i></a> 
+                      <a href="https://www.facebook.com/profile.php?id=61583347141368" class="social-link me-3"><i class="bi bi-facebook"></i></a>
+                      <a href="https://x.com/woofandbarf?t=-SSQ351nCBfI9IIQ2pZ0XQ&s=08" class="social-link"><i class="bi bi-twitter-x"></i></a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </main>
 <footer></footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../scripts/contacto.js"></script>
+
 <script src="../components/Navbar.js"></script>
 <script src="../components/footer.js"></script>
-</body>
-</html>
 </body>
 </html>
