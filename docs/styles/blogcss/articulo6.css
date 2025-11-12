@@ -110,20 +110,37 @@ body {
             color: #6c757d;
         }
 
-        /* ----- ESTILO NAVEGACIÓN (Con tu color) ----- */
+/* Navegación del artículo */
         .article-navigation {
-            padding-top: 1.5rem;
-            margin-top: 2rem;
-            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            padding: 30px 40px;
+            border-top: 2px solid #f0f0f0;
+            gap: 20px;
         }
-        .article-navigation .nav-button {
-            color: #95A617; /* ¡Tu color personalizado! */
+
+        .nav-button {
+            padding: 15px 30px;
+            background: #e0e0e0;
+            color: #333;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1rem;
-            transition: color 0.2s;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Fredoka', sans-serif;
         }
-        .article-navigation .nav-button:hover {
-            color: #99aa19;
-            text-decoration: underline;
+
+        .nav-button:hover {
+            background: #ffb300;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
         }
+
+        .nav-button.back {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .nav-button.back:hover {
+            background: #ffa500;
+        }        
