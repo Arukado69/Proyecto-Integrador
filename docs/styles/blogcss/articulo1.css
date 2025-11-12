@@ -1,5 +1,5 @@
 body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Fredoka', sans-serif;
             background-color: #f8f9fa; 
         }
 
@@ -94,26 +94,39 @@ body {
         }
 
 
-        /* ----- NUEVOS ESTILOS PARA NAVEGACIÓN DE ARTÍCULOS ----- */
+/* ----- NUEVOS ESTILOS PARA NAVEGACIÓN DE ARTÍCULOS ----- */
 
-    /* Contenedor principal de los botones */
-    .article-navigation {
-        padding-top: 1.5rem; /* Espacio superior */
-        margin-top: 2rem;    /* Margen para separarlo del contenido */
-        border-top: 1px solid #dee2e6; /* Una línea divisoria sutil */
-        }
+    /* Navegación del artículo */
+.article-navigation {
+    display: flex;
+    justify-content: space-between;
+    padding: 30px 40px;
+    border-top: 2px solid #f0f0f0;
+    gap: 20px;
+}
 
-    /* Estilo de los botones de navegación */
-    .article-navigation .nav-button {
-        color: #95A617;        
-        text-decoration: none;  
-        font-weight: 700;       /* Texto en negrita */
-        font-size: 1.1rem;      /* Un poco más grande */
-        transition: color 0.2s; /* Transición suave */
-        }
+.nav-button {
+    padding: 15px 30px;
+    background: #e0e0e0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    font-family: 'Fredoka', sans-serif;
+}
 
-    /* Efecto al pasar el mouse */
-    .article-navigation .nav-button:hover {
-        color: #99aa19; /* Un tono de naranja/oro más oscuro */
-        text-decoration: underline;
-    }
+.nav-button:hover {
+    background: #ffb300;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+}
+
+.nav-button.back {
+    background: #e0e0e0;
+    color: #666;
+}
+
+.nav-button.back:hover {
+    background: #ffa500;
+}
