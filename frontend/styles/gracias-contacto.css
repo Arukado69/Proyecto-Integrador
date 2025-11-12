@@ -1,0 +1,266 @@
+/* --- Variables de Color y Tipografía --- */
+:root {
+    --color-primario-1: #F27405; /* Naranja principal */
+    --color-primario-2: #F2A413; /* Naranja/Amarillo */
+    --color-secundario: #BF5111; /* Naranja oscuro (para hovers) */
+    --color-secundario2: #95A617;
+    --fuente-titulos: 'Fredoka', sans-serif;
+    --fuente-cuerpo: 'Roboto', sans-serif;
+    
+    --color-texto: #333;
+    --color-fondo: #fdfaf6; /* Un fondo crema muy claro */
+}
+
+/* --- Estilos Generales --- */
+body {
+    font-family: var(--fuente-cuerpo);
+    background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    margin: 0;
+
+    padding: 40px 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    
+    
+}
+
+/* --- Contenedor Principal --- */
+.contenedor-gracias {
+    /* Quitamos todos los estilos de "caja" (fondo, sombra, borde, etc.) */
+    /* Ahora es solo un contenedor transparente que centra el texto */
+    max-width: 900px; /* Mantenemos un ancho máximo para el texto */
+    margin: 0 auto; /* Centramos el contenedor */
+    width: 100%;
+    text-align: center;
+    padding: 2rem 3rem; /* Mantenemos el padding interno */
+}
+
+/* --- Textos --- */
+h1 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-primario-1);
+    font-size: 2.5rem; 
+    margin-bottom: 0.5rem;
+    
+    /* Aseguramos que el texto esté sobre el perrito */
+    position: relative;
+    z-index: 2;
+}
+
+p {
+    font-size: 1.1rem; 
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    
+    position: relative;
+    z-index: 2;
+}
+
+/* --- Botón de Volver --- */
+.btn-volver {
+    display: inline-block;
+    background-color: var(--color-primario-1);
+    color: #ffffff;
+    font-family: var(--fuente-cuerpo);
+    font-weight: 700; 
+    font-size: 1rem;
+    text-decoration: none;
+    padding: 12px 30px;
+    border-radius: 50px; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    
+    position: relative;
+    z-index: 2;
+}
+
+.btn-volver:hover {
+    background-color: var(--color-secundario); 
+    transform: scale(1.05); 
+}
+
+/* --- Divisor --- */
+.divisor {
+    border: 0;
+    height: 1px;
+    background: #eee; 
+    margin: 2.5rem 0;
+    
+    position: relative;
+    z-index: 2;
+}
+
+/* --- Sección Social --- */
+.seccion-social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* El perrito se saldrá del flujo, así que este flex */
+    /* solo afectará a .social-links, centrándolo. */
+}
+
+.perrito {
+    /* ¡La magia! Lo sacamos del flujo y lo anclamos */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 420px; /* Lo hacemos más grande */
+    max-width: 60%; /* Seguridad */
+    z-index: 1; /* Detrás del texto (que tiene z-index 2) */
+}
+
+.perrito img {
+    max-width: 100%; 
+    height: auto;
+    display: block; /* Evita espacios extra debajo de la imagen */
+}
+
+.social-links {
+    /* Le damos posición relativa y z-index */
+    position: relative;
+    z-index: 2;
+    min-width: 300px;
+    margin-top: 4rem;
+}
+
+/* Título con flechas decorativas */
+.titulo-social {
+    font-family: var(--fuente-titulos);
+    color: var(--color-primario-1);
+    font-size: 1.8rem;
+    position: relative; 
+    display: inline-block; 
+    margin-bottom: 3.5rem; /* Aumentamos margen para las nuevas flechas */
+}
+
+/* Flecha inferior (izquierda) apuntando a los iconos */
+.titulo-social::before {
+    content: '⤺'; /* Flecha curva hacia abajo */
+    position: absolute;
+    font-family: sans-serif; 
+    font-size: 3.5rem;
+    color: var(--color-primario-2);
+    top: auto; /* La movemos de arriba */
+    bottom: -75px; /* Abajo del título */
+    left: 20%; /* Cerca del lado izquierdo */
+    transform: rotate(-10deg);
+}
+
+/* Flecha inferior (derecha) apuntando a los iconos */
+.titulo-social::after {
+    content: '⤻'; /* Flecha curva hacia abajo */
+    position: absolute;
+    font-family: sans-serif;
+    font-size: 3.5rem;
+    color: var(--color-primario-2);
+    bottom: -75px; /* Abajo del título */
+    right: 20%; /* Cerca del lado derecho */
+    transform: rotate(-10deg);
+}
+
+/* Contenedor de todos los iconos */
+.iconos {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap; 
+}
+
+/* Contenedor para CADA icono + texto */
+.social-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 80px;
+}
+
+/* El círculo naranja del icono */
+.social-item a {
+    font-size: 2rem; 
+    color: #ffffff; 
+    background-color: var(--color-primario-1); 
+    border-radius: 50%;
+    width: 55px; 
+    height: 55px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.social-item a:hover {
+    background-color: var(--color-secundario);
+    transform: scale(1.1) rotate(10deg); 
+}
+
+/* Texto debajo del icono */
+.social-item p {
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.9rem;
+    color: var(--color-texto);
+    margin: 0; 
+    font-weight: 700;
+}
+
+
+/* --- Adaptación para Móviles --- */
+@media (max-width: 600px) {
+    .contenedor-gracias {
+        padding: 1.5rem 1rem; /* Menos padding horizontal */
+    }
+    
+    body {
+        padding: 10px; 
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .titulo-social {
+        font-size: 1.5rem;
+        margin-bottom: 2.5rem; /* Reajustamos margen */
+    }
+
+    /* Ocultar flechas en móvil para no saturar */
+    .titulo-social::before,
+    .titulo-social::after {
+        display: none;
+    }
+
+    .seccion-social {
+        flex-direction: column; 
+        gap: 1.5rem;
+    }
+    
+    .perrito {
+        /* Devolvemos el perrito al flujo normal */
+        position: static; 
+        width: 150px; /* Un tamaño adecuado para móvil */
+        margin: 0 auto; /* Lo centramos */
+        order: 2; /* Pone al perrito después de los enlaces */
+        z-index: auto; /* Reseteamos el z-index */
+    }
+    
+    .social-links {
+        order: 1; /* Pone los enlaces primero */
+    }
+
+    .iconos {
+        gap: 1rem;
+        justify-content: space-around; 
+    }
+    
+    .social-item a {
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+    }
+}

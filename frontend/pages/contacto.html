@@ -73,26 +73,27 @@
             <div class="contact-form p-4">
                 <div class="contact-card p-4">
                     <h2 class="h4 mb-4" style="color: var(--contact-green);">Envíanos un mensaje</h2>
-                    <form id="contactForm" class="row g-3">
+                    <form id="contactForm" class="row g-3" 
+                    action="./gracias-contacto.html" method="POST">
                         
                         <div class="col-md-6">
                             <label for="inputName" class="form-label">Nombre</label>
-                            <input type="text" class="form-control" id="inputName" placeholder="Tu nombre" required>
+                            <input type="text" class="form-control" id="inputName" name="nombre" placeholder="Tu nombre" required>
                         </div>
                         
                         <div class="col-md-6">
                             <label for="inputEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="inputEmail" placeholder="tu@email.com" required>
+                            <input type="email" class="form-control" id="inputEmail" name="_replyto" placeholder="tu@email.com" required>
                         </div>
                         
                         <div class="col-12">
                             <label for="inputSubject" class="form-label">Asunto</label>
-                            <input type="text" class="form-control" id="inputSubject" placeholder="Asunto del mensaje" required>
+                            <input type="text" class="form-control" id="inputSubject" name="asunto" placeholder="Asunto del mensaje" required>
                         </div>
                         
                         <div class="col-12">
                             <label for="inputMessage" class="form-label">Mensaje</label>
-                            <textarea class="form-control" id="inputMessage" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                            <textarea class="form-control" id="inputMessage" rows="5" name="mensaje" placeholder="Escribe tu mensaje aquí..." required></textarea>
                         </div>
                         
                         <div class="col-12 mt-4">
