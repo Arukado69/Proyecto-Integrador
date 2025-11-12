@@ -21,12 +21,12 @@
 <body>
   <nav class="navbar-center">
     <div class="container">
-      <a class="navbar-brand" href="/docs/index.html">
+      <a class="navbar-brand" href="/frontend/index.html">
         <img src="../assets/imagenes/iconos/logo-default.png" alt="Logo" id="logo" class="logo">
       </a>
 
       <ul class="navbar-nav-custom" id="navbarNav">
-        <li><a class="nav-link-custom" href="/docs/index.html">Inicio</a></li>
+        <li><a class="nav-link-custom" href="/frontend/index.html">Inicio</a></li>
         <li><a class="nav-link-custom" href="./catalogo.html">Tienda</a></li>
         <li><a class="nav-link-custom" href="./nosotros.html">Nosotros</a></li>
         <li><a class="nav-link-custom" href="./blog.html">Blog</a></li>
@@ -71,10 +71,12 @@
                   <h2 class="h4 mb-4" style="color: var(--contact-green);">Envíanos un mensaje</h2>
                   
                   <form id="contactForm" class="row g-3" 
-                        action="https://formspree.io/f/meovjoka" 
+                        action="https://api.web3forms.com/submit" 
                         method="POST">
                       
-                      <input type="hidden" name="_next" value="https://gracias-contacto-woofand-barf-xccx.vercel.app/">
+                      <input type="hidden" name="access_key" value="27cc5da8-b279-446c-8830-93402441528e">
+
+                      <input type="hidden" name="redirect" value="https://arukado69.github.io/Proyecto-Integrador/pages/gracias-contacto.html">
 
                       <div class="col-md-6">
                           <label for="inputName" class="form-label">Nombre</label>
@@ -83,7 +85,7 @@
                       
                       <div class="col-md-6">
                           <label for="inputEmail" class="form-label">Email</label>
-                          <input type="email" class="form-control" id="inputEmail" name="_replyto" placeholder="tu@email.com" required>
+                          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="tu@email.com" required>
                       </div>
                       
                       <div class="col-12">
