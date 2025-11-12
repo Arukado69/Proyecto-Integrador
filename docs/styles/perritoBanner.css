@@ -12,7 +12,7 @@
   width: 100%;
   max-width: 600px;
   aspect-ratio: 1 / 1;
-  margin: 4rem auto;
+  margin: 10rem auto;
   display: grid;
   place-items: center;
 }
@@ -21,12 +21,12 @@
    2. EL PERRITO CENTRAL
    ================================= */
 .pug-static-image {
-  width: 250px;
-  height: 250px;
+  width: 300px;
+  height: 300px;
   z-index: 10;
-  border-radius: 50%;
+  border-radius: 0%;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
 }
 
 .pug-static-image img {
@@ -64,15 +64,19 @@
 
 /* 🍽️ Los cuadros ahora son platos circulares */
 .orbit-item {
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
   border-radius: 50%;
   padding: 0; /* <-- Cambiado a 0 */
-  box-shadow: 
+
+  
+}
+
+.shadow{
+    box-shadow: 
     0 4px 12px rgba(0, 0, 0, 0.15),
     inset 0 4px 6px rgba(255, 255, 255, 0.2),
     inset 0 -3px 6px rgba(0, 0, 0, 0.2);
-  
 }
 
 /* ✨ Pequeño brillo para simular reflejo del plato */
@@ -87,16 +91,20 @@
   background: radial-gradient(ellipse at top left, rgba(255,255,255,0.25), transparent 70%);
   pointer-events: none;
 }
+.size-ingredients{
+    width: 180px;
+}
+
 
 /* =================================
    5. POSICIONES EN LA ÓRBITA
    ================================= */
-.spoke-1 { transform: rotate(0deg) translateY(-275px); }
-.spoke-2 { transform: rotate(60deg) translateY(-275px); }
-.spoke-3 { transform: rotate(120deg) translateY(-275px); }
-.spoke-4 { transform: rotate(180deg) translateY(-275px); }
-.spoke-5 { transform: rotate(240deg) translateY(-275px); }
-.spoke-6 { transform: rotate(300deg) translateY(-275px); }
+.spoke-1 { transform: rotate(0deg) translateY(-345px); }
+.spoke-2 { transform: rotate(60deg) translateY(-340px); }
+.spoke-3 { transform: rotate(120deg) translateY(-340px); }
+.spoke-4 { transform: rotate(180deg) translateY(-340px); }
+.spoke-5 { transform: rotate(240deg) translateY(-340px); }
+.spoke-6 { transform: rotate(300deg) translateY(-340px); }
 
 /* ✅ Rotación inversa para mantener texto derecho */
 .spoke-1 .orbit-item { transform: rotate(-120deg); }
@@ -110,11 +118,11 @@
    6. COLORES Y TEXTOS
    ================================= */
 .item-one { background-color: #59635b; border: 3px solid #2f4833; }
-.item-two { background-color: #6b705c; border: 3px solid #4a6b49; }
+
 .item-three { background-color: #59635b; border: 3px solid #2b4035; }
-.item-five { background-color: #6b705c; border: 3px solid #8e9c75; color: #2c3e50; }
+
 .item-six { background-color: #59635b; border: 3px solid #4a6b49; }
-.item-seven { background-color: #6b705c; border: 3px solid #585c4c; }
+
 .item-five h2, .item-five p { color: #2c3e50; }
 
 .orbit-item h2 {
@@ -169,10 +177,13 @@
 
 .orbit-item:hover {
   transform: scale(1.15) translateY(-5px); /* se agranda un poco */
-  box-shadow:
+
+  z-index: 20; /* para que quede encima de los demás */
+  
+}
+.shadow:hover{
+    box-shadow: 
     0 6px 18px rgba(0, 0, 0, 0.3),
     inset 0 6px 8px rgba(255, 255, 255, 0.25),
     inset 0 -4px 8px rgba(0, 0, 0, 0.25);
-  z-index: 20; /* para que quede encima de los demás */
-  background-color: #6c856c; /* tono más claro */
 }
