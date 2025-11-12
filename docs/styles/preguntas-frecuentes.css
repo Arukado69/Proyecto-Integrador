@@ -1,0 +1,159 @@
+/* Fondo general */
+.preguntas-body-color {
+    background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Sidebar o contenedores blancos */
+.preguntas-bg-sidebar {
+    background-color: #fff;
+    border-radius: 1.25rem;
+}
+
+/* Tipografías */
+.preguntas-fredoka-h1 {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 600;
+    font-size: 48px;
+}
+
+.preguntas-fredoka-h4 {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 500;
+}
+
+.preguntas-roboto-h4 {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+}
+
+.preguntas-roboto-primary-label {
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+}
+
+.preguntas-roboto-secondary-label {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+}
+
+/* Colores marca */
+.preguntas-primary-button-color {
+    background: #F3A412;
+}
+
+.preguntas-secondary-button-color {
+    background: #FDEDD0;
+    color: #F3A515;
+    border: 1px solid #F3A515;
+}
+
+.preguntas-price-color {
+    color: #F3A412;
+}
+
+.preguntas-h4-color {
+    color: #8A7C60;
+}
+
+/* Cuerpo FAQ */
+.faq-section {
+    padding: 40px 20px;
+    background-color: transparent; /* se ve el fondo */
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.9); /* fondo blanco semitransparente */
+    border-radius: 20px; /* bordes redondeados */
+    padding: 30px 40px; /* espacio interno */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* ligera sombra para destacar */
+}
+
+.faq-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.faq-intro {
+    text-align: center;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.faq-list .faq-item {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1rem;
+}
+
+.faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 1.1rem;
+    padding: 1rem 0;
+    cursor: pointer;
+    color: #333;
+    position: relative;
+}
+
+.faq-question::after {
+    content: "+";
+    position: absolute;
+    right: 0;
+    font-size: 1.2rem;
+}
+
+.faq-item.active .faq-question::after {
+    content: "-";
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    color: #555;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 500px;
+    padding-bottom: 1rem;
+}
+
+/* Botón */
+.btn-custom {
+    background-color: #F3A412;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-custom:hover {
+    background-color: #e2930f;
+    transform: scale(1.05);
+}
+
+/* Navbar */
+.navbar-center {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+.navbar-center.scrolled {
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
