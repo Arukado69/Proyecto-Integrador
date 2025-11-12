@@ -1,31 +1,130 @@
-# Proyecto-Integrador
+# Proyecto Integrador – “Woof & BARF”  
+Creación de una plataforma web de e-commerce para venta de alimento basado en dieta BARF para perros  
+Desarrollado como parte del Bootcamp Java Full Stack  
 
-🖥️ Creación de plataforma web de e-commerce (Woof & Barf) para venta de alimento basado en dieta BARF para perros 🐕 , con interfaces resposivas y navegación fácil e intuitiva para el usuario. 
+---
 
-## ¿Qué secciones incluye esta página web?
+## 🧭 Tabla de contenidos  
+- [Descripción del proyecto](#descripción-del-proyecto)  
+- [Características principales](#características-principales)  
+- [Tecnologías utilizadas](#tecnologías-utilizadas)  
+- [Estructura del proyecto](#estructura-del-proyecto)  
+- [Instalación y puesta en marcha](#instalación-y-puesta-en-marcha)  
+- [Cómo usarlo](#cómo-usarlo)  
+- [Capturas de pantalla](#📸-capturas-de-pantalla)  
+- [Contribuciones](#contribuciones)  
+- [Equipo de desarrollo](#equipo-de-desarrollo)  
+- [Licencia](#licencia)  
+- [Contacto](#contacto)  
 
-#### - 💻  **INICIO**: 
-Con un diseño responsivo que se adapta a distintos tamaños de dispositivos y una interfaz amigable con el usuario.
-#### - 🛍️ **TIENDA**: 
-Muestra nuestro catálogo con los diferentes productos con los que Woof & Barf cuenta; res, pollo y cerdo, por otro lado, el usuario puede añadir cada artículo al carrito.
-#### - 👩‍💻👨‍💻 **NOSOTROS**: 
-Incluye nuestra misión y valores, así como la historia de Woof & Barf 🐕‍🦺 además de los desarrolladores  que colaboraron para la creación de esta web.
-#### - 📱 **BLOG**: 
-Se comparten artículos introductorios sobre la comida tipo BARF así como mitos y verades sobre la alimentación cruda.   
-#### - 📃 **CONTÁCTANOS**: 
-En esta sección el usuario nuevo que desee adquirir algunos productos puede ponerse en contacto directo con el equipo a través de un formulario.
-#### - ✅ **INICIO DE SESIÓN**: 
-En esta página el usuario puede ingresar a su cuenta donde se quedaran guardados sus artículos ingresados al carrito, el usuario también puede crearse una nueva cuenta en caso de no estar registrado.
-#### - 🛒 **TU CARRITO**: 
-Muestra información sobre los artículos que se han añadido desde la sección "Tienda" tales como el número de artículos seleccionados y el total a pagar.
+---
 
-## Tecnologías utilizadas 
-### 🛠️ HTML, Css, JavaScript, y Bootstrap.
+## 🐾 Descripción del proyecto  
+Este proyecto consiste en el desarrollo de una plataforma web de e-commerce llamada **Woof & BARF**, especializada en la venta de alimentos para perros basados en la dieta BARF (Biologically Appropriate Raw Food).  
+El objetivo es ofrecer una experiencia de compra ágil, intuitiva y responsive, con un catálogo de productos, carrito de compras y administración de usuarios.  
+
+Se desarrolló como proyecto integrador del **Bootcamp Java Full Stack**, utilizando HTML, CSS, JavaScript y Bootstrap como principales tecnologías de interfaz de usuario.  
+En las carpetas `backend` y `database` se encuentran los componentes de servidor y base de datos (cuando aplique).  
+
+---
+
+## 🌟 Características principales  
+- Diseño **responsive** adaptable a distintos dispositivos.  
+- Interfaz moderna, clara y funcional.  
+- Páginas principales:  
+  - **Inicio** – Presentación del sitio y la marca.  
+  - **Tienda** – Catálogo de productos que el usuario puede ver y añadir al carrito.  
+  - **Nosotros** – Misión, valores y equipo.  
+  - **Blog** – Artículos sobre alimentación BARF.  
+  - **Contáctanos** – Formulario de contacto funcional.  
+  - **Inicio de sesión / Registro** – Para usuarios registrados.  
+  - **Carrito de compras** – Resumen y control de los productos seleccionados.  
+- Gestión de usuarios y persistencia del carrito (en desarrollo).  
+- Navegación intuitiva con retroalimentación visual.  
+
+---
+
+## 🧰 Tecnologías utilizadas  
+- **HTML5** – estructura del contenido.  
+- **CSS3** – estilos y diseño responsive.  
+- **JavaScript (ES6+)** – interactividad, validaciones y carrito.  
+- **Bootstrap 5** – framework de diseño UI.  
+- **Node.js / Express** *(si aplica)* – backend.  
+- **SQL / MySQL**  – base de datos.  
+- Herramientas: **Git**, **GitHub**, **VS Code**, **Figma** (para diseño).  
+
+---
+
+## 📁 Estructura del proyecto  
+Proyecto-Integrador/
+
+├── .vscode/ ← Configuración del editor (opcional)
+├── backend/ ← Código del servidor (API, lógica de negocio)
+├── database/ ← Scripts o datos de la base de datos
+├── docs/ ← Documentación adicional
+├── public/ ← Archivos públicos (HTML, CSS, JS del frontend)
+│ ├── index.html
+│ ├── tienda.html
+│ ├── carrito.html
+│ ├── blog.html
+│ ├── contacto.html
+│ ├── nosotros.html
+│ ├── js/
+│ └── css/
+├── assets/ ← Imágenes, íconos y multimedia
+├── README.md ← Este archivo
+
+## 🖱️ Cómo usarlo
+
+1. Regístrate o inicia sesión.
+2. Explora la Tienda y añade productos al carrito.
+3. Accede al Carrito para revisar los artículos y el total.
+4. Utiliza el Blog para leer artículos informativos.
+5. En caso de dudas, usa el formulario de Contáctanos.
+6. (Si eres administrador) accede al backend para gestionar usuarios y productos.
+
+## 📸 Capturas de pantalla
+🏠 Página de inicio
+Presentación principal con menú de navegación y banner destacando la marca Woof & BARF.
+![Página de inicio](assets/images/inicio.png)
+
+## 🛍️ Tienda de productos
+Catálogo dinámico donde los usuarios pueden añadir artículos al carrito.
+![Tienda](assets/imagenes/tienda.png)
+
+## 🛒 Carrito de compras
+Vista del carrito donde se resumen los productos seleccionados y el total a pagar.
+![Carrito](assets/imagenes/readme/carrito.png)
+
+## 👥 Página “Nosotros”
+Presentación del equipo de trabajo, misión, visión y valores de la marca.
+![Nosotros](assets/imagenes/readme/nosotros.png)
+
+## 📞 Formulario de contacto
+Sección para que los usuarios se comuniquen con el equipo mediante un formulario funcional.
+![Contacto](assets/imagenes/readme/contacto.png)
 
 
+## 👩‍💻 Equipo de desarrollo
+Proyecto realizado por:
+| Integrante       | Rol / Responsabilidad    |
+| ---------------- | ------------------------ |
+| Brad Robles      | Leader Data base         |
+| Deyanira Ruiz    | Product Owner            |
+| Joana Barbosa    | Data base                |
+| Karen Nava       | Full-stack Developer     |
+| Omar Albis       | Scrum Master             |
+| Ricardo de Jesús | Backend Developer        |
+| Ricardo Avilés   | Data base                |
+| Veaney Vargas    | UX/UI Designer           |
 
-***2025 Woof & BARF todos los derechos reservados.***
+## 📬 Contacto 
+Si tienes dudas o sugerencias, puedes contactar al equipo mediante:
 
-[Brad Robles](https://github.com/bradmrh-dev) | [Deyanira Ruiz](https://github.com/Druiz-leon) | [Joana Barbosa](https://github.com/jobargom6) | [Karen Nava](https://github.com/byannakn) | [Omar Albis](https://github.com/Arukado69) | [Ricardo de Jesús](https://github.com/RicardoSaGa) | [Ricardo Avilés ](https://github.com/ricardoavi304) | [Veaney Vargas](https://github.com/KarenV1) 
+El formulario de “Contáctanos” dentro del sitio.
 
-_"ULTIMA VERSION ESTABLE PULL REQUEST #57"_
+Correo: woofandbarf@gmail.com
+
+Última versión estable: v1.0.0
+Proyecto Integrador – Bootcamp Java Full Stack
+https://github.com/Arukado69/Proyecto-Integrador
