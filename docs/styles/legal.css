@@ -1,0 +1,114 @@
+/* --- Variables de Color (Ajústalas a tu paleta) --- */
+:root {
+    --color-primario: #BF0413; /* Rojo Barf (Principal)  */
+    --color-acento: #F27405;   /* Naranja Cálido (Acento)  */
+    --color-texto: #333;
+    --color-fondo: #f9f9f9;
+    --color-borde: #ddd;
+}
+
+/* --- Estilos Generales --- */
+body {
+    font-family: 'Roboto', Arial, sans-serif; /* Usando Roboto como en tu guía [cite: 227] */
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+.legal-container {
+    max-width: 900px;
+    margin: 30px auto;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--color-borde);
+    overflow: hidden; /* Para contener los bordes */
+}
+
+.legal-container h2 {
+    font-family: 'Fredoka', Arial, sans-serif; /* Usando Fredoka como en tu guía [cite: 227] */
+    font-size: 28px;
+    color: var(--color-primario);
+    padding: 25px 30px 0 30px;
+    margin: 0;
+}
+
+.legal-container p {
+    padding: 0 30px;
+}
+
+/* --- Estilos de Pestañas (Tabs) --- */
+.tabs-nav {
+    display: flex;
+    border-bottom: 2px solid var(--color-borde);
+    margin: 20px 30px 0 30px;
+}
+
+.tab-link {
+    font-family: 'Fredoka', Arial, sans-serif;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: var(--color-texto);
+    font-weight: 600;
+    font-size: 16px;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px; /* Alinea el borde con el borde del contenedor */
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.tab-link:hover {
+    color: var(--color-acento);
+}
+
+.tab-link.active {
+    color: var(--color-primario);
+    border-bottom: 3px solid var(--color-primario);
+}
+
+/* --- Estilos de Contenido --- */
+.tabs-content {
+    padding: 20px 30px 30px 30px;
+}
+
+.tab-pane {
+    display: none; /* Oculto por defecto */
+}
+
+.tab-pane.active {
+    display: block; /* Visible si está activo */
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.tab-pane h3 {
+    font-family: 'Fredoka', Arial, sans-serif;
+    font-size: 22px;
+    color: #000;
+    margin-top: 0;
+}
+
+.tab-pane h4 {
+    font-family: 'Fredoka', Arial, sans-serif;
+    font-size: 18px;
+    color: var(--color-texto);
+    margin-top: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.tab-pane ul {
+    margin-left: 20px;
+    list-style-type: disc;
+}
+
+/* Animación simple de aparición */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
