@@ -63,15 +63,17 @@ cvv int
 
 create table direccion (
 id_direccion int auto_increment primary key, 
-id_usuario int, 
-direccion varchar(100),
-alcaldia varchar(50),
-tipo_direccion varchar(50)
-);
+  id_usuario int not null, 
+  id_alcaldia int not null,
+  direccion varchar(100),
+  tipo_direccion varchar(50),
+  CONSTRAINT fk_direccion_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
+  CONSTRAINT fk_direccion_alcaldia FOREIGN KEY (id_alcaldia) REFERENCES alcaldia(id_alcaldia));
 
 create table alcaldia (
 id_alcaldia int auto_increment primary key,
-alcaldia_name varchar(50)
+delegacion_name varchar(50),
+ubicacion ENUM('Norte', 'Sur', 'Este', 'Oeste', 'Centro')
 );
 
 create table roles (
