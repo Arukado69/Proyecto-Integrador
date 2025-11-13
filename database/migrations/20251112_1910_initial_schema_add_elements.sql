@@ -1,8 +1,9 @@
 -- Script para agregar 
+
 insert into product (id_product, product_name, descripcion, image, formato_venta, cantidad_stock, tamano, precio, categoria, descuento) values
 ();
 
-insert into usuario (id_usuario, nombre, apellidos, email, telefono, fecha_nacimiento, contrasena) values
+insert into usuario ( nombre, apellidos, email, telefono, fecha_nacimiento, contrasena) values
 ();
 
 insert into pedido (id_pedido, id_usuario, direccion, total_venta, numero_rastreador, fecha_crecion) values
@@ -28,5 +29,7 @@ insert into alcaldia (delegacion_name, ubicacion) values
 ('Coyoacán', 'Sur'),
 ('Iztapalapa', 'Este'),
 ('Miguel Hidalgo', 'Oeste');
+
+
 
 

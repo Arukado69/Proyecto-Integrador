@@ -18,7 +18,7 @@ esta_verificado boolean default false
 );
 
 create table product (
-id_product varchar(20) auto_increment primary key,
+id_product varchar(20) primary key,
 product_name varchar(50), 
 descripcion varchar(100),
 image varchar(500), 
@@ -66,10 +66,9 @@ id_direccion int auto_increment primary key,
   id_usuario int not null, 
   id_alcaldia int not null,
   direccion varchar(100),
-  tipo_direccion varchar(50),
-  CONSTRAINT fk_direccion_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario),
-  CONSTRAINT fk_direccion_alcaldia FOREIGN KEY (id_alcaldia) REFERENCES alcaldia(id_alcaldia));
-
+  tipo_direccion varchar(50)
+  );
+  
 create table alcaldia (
 id_alcaldia int auto_increment primary key,
 delegacion_name varchar(50),
@@ -90,7 +89,7 @@ id_user int
 create table carrito_detalle (
 id_carrito_detalle int auto_increment primary key, 
 id_carrito int,
-id_product int, 
+id_product varchar(50), 
 cantidad int, 
 creacion_carrito date
 );
