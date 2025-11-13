@@ -14,5 +14,13 @@ insert into pedido_detalle(id_pedido_detalle, id_pedido, id_producto, cantidad, 
 insert into formato_producto(id_formato_producto, formato) values
 ();
 
+-- Datos para alcaldia 
+insert into alcaldia (delegacion_name, ubicacion) values 
+();
+-- Datos para address
+insert into address (id_user, id_delegacion, tipo_address, address) values
+();
+
+
 
 

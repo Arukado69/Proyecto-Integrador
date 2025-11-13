@@ -63,7 +63,7 @@ cvv int
 
 create table direccion (
 id_direccion int auto_increment primary key, 
-id_usuario int, 
+id_usuario int not null, 
 direccion varchar(100),
 alcaldia varchar(50),
 tipo_direccion varchar(50)
