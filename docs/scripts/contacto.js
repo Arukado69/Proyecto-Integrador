@@ -1,11 +1,11 @@
-// Espera a que el DOM esté completamente cargado
 document.addEventListener('DOMContentLoaded', function() {
     const contactForm = document.getElementById('contactForm');
     const alertPlaceholder = document.getElementById('alertPlaceholder');
+    const submitButton = contactForm.querySelector('button[type="submit"]');
 
     // Función para mostrar la alerta
     const appendAlert = (message, type) => {
-        // Creamos el HTML de la alerta de Bootstrap
+        alertPlaceholder.innerHTML = ''; // Limpiamos alertas anteriores
         const wrapper = document.createElement('div');
         wrapper.innerHTML = [
             `<div class="alert alert-${type} alert-dismissible fade show" role="alert">`,
@@ -13,9 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
             '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>',
             '</div>'
         ].join('');
-
-        // Limpiamos alertas anteriores y añadimos la nueva
-        alertPlaceholder.innerHTML = '';
         alertPlaceholder.append(wrapper);
     };
 
@@ -23,22 +20,51 @@ document.addEventListener('DOMContentLoaded', function() {
     contactForm.addEventListener('submit', function(event) {
         event.preventDefault(); // Detiene el envío real del formulario
 
-        // Simulamos la validación (Bootstrap ya maneja la validación de 'required')
-        if (contactForm.checkValidity()) {
-            // Si es válido, simulamos el envío exitoso y mostramos la alerta de éxito
-            
-            appendAlert('¡Mensaje enviado con éxito! Pronto nos pondremos en contacto contigo.', 'success');
-            
-            // Opcional: Limpiar el formulario después del envío
-            contactForm.reset();
-            
-        } else {
-            // Si falla la validación (aunque Bootstrap lo maneja visualmente), podríamos poner una alerta de error.
-            // Para este ejemplo, solo usaremos la alerta de éxito después de pasar la validación.
+        // Valida el formulario con Bootstrap
+        if (!contactForm.checkValidity()) {
             event.stopPropagation();
+            contactForm.classList.add('was-validated'); // Muestra los errores de validación
+            return; // No hagas nada más si no es válido
         }
+
+        // Si es válido, preparamos el envío a Formspree
+        const formData = new FormData(contactForm);
         
-        // Aplica las clases de validación de Bootstrap
-        contactForm.classList.add('was-validated');
+        // Mostramos un estado de "enviando" en el botón
+        submitButton.disabled = true;
+        submitButton.innerHTML = 'Enviando...';
+
+        // Usamos fetch para enviar los datos a la URL del 'action' del formulario
+        fetch(contactForm.action, {
+            method: contactForm.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json' // Le dice a Formspree que responda con JSON
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                // Éxito: Servidor respondió bien
+                appendAlert('¡Mensaje enviado con éxito! Pronto nos pondremos en contacto contigo.', 'success');
+                contactForm.reset(); // Limpia el formulario
+                contactForm.classList.remove('was-validated'); // Limpia los estilos de validación
+            } else {
+                // Error: El servidor respondió con un error
+                response.json().then(data => {
+                    let errorMessage = data.errors ? data.errors.map(err => err.message).join(', ') : 'Hubo un error al enviar el mensaje.';
+                    appendAlert(errorMessage, 'danger');
+                });
+            }
+        })
+        .catch(error => {
+            // Error de red
+            console.error('Error de red:', error);
+            appendAlert('No se pudo enviar el mensaje. Revisa tu conexión a internet.', 'danger');
+        })
+        .finally(() => {
+            // Re-habilita el botón sin importar el resultado
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Enviar Mensaje';
+        });
     });
 });
