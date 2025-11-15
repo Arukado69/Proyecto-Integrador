@@ -7,12 +7,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css?v=1" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="/components/Navbar.css">
-    <link rel="stylesheet" href="/styles/inicio.css">
-    <link rel="stylesheet" href="/styles/blogcss/articulo1.css">
+    <link rel="stylesheet" href="/styles/blogcss/blog-post.css">
     <link rel="stylesheet" href="/components/footer.css">    
 </head>
 
@@ -91,12 +90,12 @@
                         </div>
                     </header>
 
-                    <div class="mb-4">
+                    <div class="mb-4 featured-image-container">
                         <img src="/assets/imagenes/perritos-varios/blog-articulo1.jpg" 
-                                class="img-fluid rounded shadow-sm" 
+                                class="img-fluid" 
                                 alt="Perro saludable con dieta BARF">
                     </div>
-                </article>
+                
 
                 <p class="lead text-center text-muted mb-4">
                     ¡Felicidades! Has elegido una dieta fresca y nutritiva para tu perro. Ahora, hablemos de algo que en Woof & Barf nos tomamos muy en serio: la seguridad.
@@ -185,11 +184,11 @@
                         </div>
                     </div>
 
-                </div> <h2 class="section-title fw-bold mt-5 mb-4">
+                <h2 class="section-title fw-bold mt-5 mb-4">
                     <i class="bi bi-lightbulb-fill"></i> Un Consejo Extra: La Seguridad Post-Comida
                 </h2>
                 
-                <p>El riesgo no termina cuando tu perro termina de comer. Las bacterias pueden transmitirse desde su boca o sus heces.</p>
+                    <p>El riesgo no termina cuando tu perro termina de comer. Las bacterias pueden transmitirse desde su boca o sus heces.</p>
                 
                 <div class="alert alert-warning" role="alert">
                     <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> ¡Atención!</h4>
@@ -201,31 +200,33 @@
                 </div>
 
 
-                <div class="text-center p-4 mt-5 rounded" style="background-color: #f0f7f2;">
-                    <h2 class="fw-bold" style="color: var(--wb-dark);">¡Lo Estás Haciendo Genial!</h2>
-                    <p class="lead">Puede sonar a mucho, pero te lo prometemos: en un par de días, esta rutina se vuelve totalmente automática. Manejar BARF de forma segura es sencillo. Es un pequeño hábito que te da la enorme recompensa de ver a tu perro sano, fuerte y disfrutando de comida real.</p>
-                    <p class="mt-3">En Woof & Barf, estamos comprometidos con la seguridad de principio a fin. Por eso nuestros productos vienen en porciones selladas y ultra-congeladas, listas para que solo tengas que descongelar y servir.</p>
-                    
-                    <a href="../catalogo.html" class="btn btn-primary btn-lg mt-3" style="background-color: var(--wb-primary); border-color: var(--wb-primary);">
-                        <i class="bi bi-bag-heart-fill me-2"></i>
-                        ¿Listo para tu siguiente entrega?
-                    </a>
+                    <div class="text-center p-4 mt-5 rounded" style="background-color: #f0f7f2;">
+                        <h2 class="fw-bold" style="color: var(--wb-dark);">¡Lo Estás Haciendo Genial!</h2>
+                        <p class="lead">Puede sonar a mucho, pero te lo prometemos: en un par de días, esta rutina se vuelve totalmente automática. Manejar BARF de forma segura es sencillo. Es un pequeño hábito que te da la enorme recompensa de ver a tu perro sano, fuerte y disfrutando de comida real.</p>
+                        <p class="mt-3">En Woof & Barf, estamos comprometidos con la seguridad de principio a fin. Por eso nuestros productos vienen en porciones selladas y ultra-congeladas, listas para que solo tengas que descongelar y servir.</p>
+                        
+                        <a href="../catalogo.html" class="btn btn-primary btn-lg mt-3" style="background-color: var(--wb-primary); border-color: var(--wb-primary);">
+                            <i class="bi bi-bag-heart-fill me-2"></i>
+                            ¿Listo para tu siguiente entrega?
+                        </a>
+                    </div>
                 </div>
+            <!-- Navegación al siguiente artículo -->
+                    <div class="article-navigation d-flex justify-content-between">
+                            <a href="/pages/blog.html" class="nav-button back">← Volver al Blog</a>
+                            <a href="/pages/Blog/articulo2.html" class="nav-button next">Siguiente Artículo →</a>
+                        </div>
+                </article>
             </div>
         </div>
     </div>
 
-    <!-- Navegación al siguiente artículo -->
-        <div class="article-navigation d-flex justify-content-between">
-            <a href="/pages/blog.html" class="nav-button back">← Volver al Blog</a>
-            <a href="/pages/Blog/articulo2.html" class="nav-button next">Siguiente Artículo →</a>
-        </div>
-    </article>
+                
+                    
 </main>
 <footer></footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script src="/scripts/indexblog.js"></script>
     <script src="/components/Navbar.js"></script>
     <script src="/components/footer.js"></script>
 </body>
