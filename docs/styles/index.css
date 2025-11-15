@@ -1,4 +1,4 @@
-
+    @import url('./variables.css');
     * {
       margin: 0;
       padding: 0;
@@ -322,138 +322,100 @@
       color: #6f6f6f;
     }
 
-/* --- FOOTER --- */
-.footer {
-  background-color: #f2a413;
-  padding: 40px 16px 20px;
-}
+    /* Footer */
+    .footer {
+      width: 100%;
+      background-color: #f2a413;
+      padding: 40px 16px 20px;
+    }
 
-.footer-container {
-  max-width: auto;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
+    .footer-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
 
-/*  Grid base con 4 columnas */
 .footer-content {
   display: grid;
-  grid-template-columns: repeat(4, minmax(200px, 1fr));
+  grid-template-columns: repeat(4,1fr);
   gap: 40px;
   align-items: start;
-  text-align: left;
 }
 
-/* Síguenos */
-.footer-section:last-child {
-  text-align: center;
-  grid-column: 4 / 5;
-  justify-self: center;
-}
+    .footer-logo {
+      color: #ac5204;
+      width: 80px;
+      height: auto;
+      margin-bottom: 20px;
+    }
 
-/* Logo */
-.footer-logo {
-  color: #ac5204;
-  width: 80px;
-  height: auto;
-  margin-bottom: 20px;
-}
+    .footer-section h3 {
+      display: flex,;
+      font-size: 20px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 500;
+      color: #ac5204;
+      margin-bottom: 16px;
 
-/* Títulos */
-.footer-section h3 {
-  font-size: 20px;
-  font-family: 'Fredoka', sans-serif;
-  font-weight: 500;
-  color: #ac5204;
-  margin-bottom: 16px;
-}
+    }
 
-/* Enlaces */
-.footer-links {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 0px;
+    }
 
-.footer-links a {
-  font-size: 14px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  color: #ac5204;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
+    .footer-links a {
+      font-size: 14px;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      color: #ac5204;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
 
-.footer-links a:hover {
-  color: #ffffff;
-}
+    .footer-links a:hover {
+      color: #ffffff;
+    }
 
-/* Redes sociales */
-.footer-social {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
-}
+    .footer-social {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 16px;
+    }
 
-.footer-social-icon {
-  width: 48px;
-  height: 48px;
-  background-color: #ffffff;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px;
-  transition: transform 0.2s ease-in-out;
-}
+    .footer-social-icon {
+      width: 48px;
+      height: 48px;
+      background-color: #ffffff;
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+    }
 
-.footer-social-icon:hover {
-  transform: scale(1.1);
-}
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #ac5204;
+    }
 
-/* Parte inferior */
-.footer-bottom {
-  text-align: center;
-  padding-top: 20px;
-  border-top: 1px solid #ac5204;
-}
+    .footer-bottom p {
+      font-size: 14px;
+      font-family: 'Roboto', sans-serif;
+      color: #ac5204;
+      margin-bottom: 10px;
+    }
 
-.footer-bottom p {
-  font-size: 14px;
-  font-family: 'Roboto', sans-serif;
-  color: #ac5204;
-  margin-bottom: 10px;
-}
-
-.footer-bottom .team-credits {
-  font-weight: 500;
-}
-
-/* --- 📱 Responsive --- */
-
-/* Tablets (máx. 768px) */
-@media (max-width: 768px) {
-  .footer-content {
-    grid-template-columns: repeat(2, 1fr);
-    text-align: center;
-  }
-
-  .footer-section:last-child {
-    grid-column: 1 / -1; /* ocupa todo el ancho */
-    justify-self: center;
-  }
-}
-
-/* Móviles (máx. 480px) */
-@media (max-width: 480px) {
-  .footer-content {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-}
+    .footer-bottom .team-credits {
+      font-weight: 500;
+    }
 
     /* Responsive media */
     @media (min-width: 640px) {
@@ -484,9 +446,7 @@
         border-radius: 40px;
       }
 
-      .footer-content {
-        grid-template-columns: repeat(2, 1fr);
-      }
+    
     }
 
     @media (min-width: 768px) {
@@ -560,10 +520,6 @@
         gap: 34px;
       }
 
-      .footer-content {
-        grid-template-columns: auto 1fr auto;
-        align-items: start;
-      }
 
       .footer-logo {
         width: 100px;
@@ -598,3 +554,4 @@
         padding: 52px 32px;
       }
     }
+
