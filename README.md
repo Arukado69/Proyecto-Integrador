@@ -86,7 +86,7 @@ Proyecto-Integrador/
 ## 📸 Capturas de pantalla
 🏠 Página de inicio
 Presentación principal con menú de navegación y banner destacando la marca Woof & BARF.
-![Página de inicio](docs/assets/images/readme/inicio.png)
+![Página de inicio](docs/assets/imagenes/readme/inicio.png)
 
 ## 🛍️ Tienda de productos
 Catálogo dinámico donde los usuarios pueden añadir artículos al carrito.
