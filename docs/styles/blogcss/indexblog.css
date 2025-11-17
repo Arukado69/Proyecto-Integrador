@@ -1,12 +1,11 @@
 body {
             font-family: 'Fredoka', sans-serif;
-            background-color: #f8f9fa; 
+            background-color: #f8f9fa;
+            background-image: url('/assets/imagenes/perritos-varios/fondo-web.jpg'); 
+ 
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Fredoka', sans-serif;
-        }
-
+       
         /* ----- Estilos de Marca "Woof & Barf" ----- */
         :root {
             --wb-primary: #95A617; 
@@ -20,6 +19,21 @@ body {
             padding-bottom: 10px;
             display: inline-block;
             font-weight: 600;
+        }
+
+        /* ============================================= */
+        /* ----- ANIMACIÓN AL HACER SCROLL ----- */
+        /* ============================================= */
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* ----- ESTILO TARJETA DE ARTÍCULO (Destacados y Recientes) ----- */
@@ -36,9 +50,17 @@ body {
             box-shadow: 0 4px 12px rgba(0,0,0,0.10);
             color: #212529;
         }
-        .article-card .card-title {
-            color: var(--wb-dark);
-            font-weight: 700;
+       
+        /* Esto cambia el color del enlace <a> dentro del título */
+        .article-card .card-title a {
+            color: var(--wb-dark); 
+            transition: color 0.2s ease;
+            font-weight: 500;
+        }
+        
+        /*Hacemos que se oscurezca al pasar el mouse */
+        .article-card .card-title a:hover {
+            color: var(--wb-primary); 
         }
         .article-card .article-image img {
             transition: transform 0.3s ease;
@@ -110,20 +132,4 @@ body {
             background-color: var(--wb-dark);
             border-color: var(--wb-dark);
             color: white;
-        }
-
-        /* ----- ESTILO PAGINACIÓN ----- */
-        .pagination .page-link {
-            color: var(--wb-primary);
-        }
-        .pagination .page-link:hover {
-            color: var(--wb-dark);
-        }
-        .pagination .page-item.active .page-link {
-            background-color: var(--wb-primary);
-            border-color: var(--wb-primary);
-            color: white;
-        }
-        .pagination .page-item.disabled .page-link {
-            color: #6c757d;
         }
