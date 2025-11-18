@@ -86,23 +86,23 @@ Proyecto-Integrador/
 ## 📸 Capturas de pantalla
 🏠 Página de inicio
 Presentación principal con menú de navegación y banner destacando la marca Woof & BARF.
-![Página de inicio](assets/images/inicio.png)
+![Página de inicio](docs/assets/imagenes/readme/inicio.png)
 
 ## 🛍️ Tienda de productos
 Catálogo dinámico donde los usuarios pueden añadir artículos al carrito.
-![Tienda](assets/imagenes/tienda.png)
+![Tienda](docs/assets/imagenes/readme/tienda.png)
 
 ## 🛒 Carrito de compras
 Vista del carrito donde se resumen los productos seleccionados y el total a pagar.
-![Carrito](assets/imagenes/readme/carrito.png)
+![Carrito](docs/assets/imagenes/readme/carrito.png)
 
 ## 👥 Página “Nosotros”
 Presentación del equipo de trabajo, misión, visión y valores de la marca.
-![Nosotros](assets/imagenes/readme/nosotros.png)
+![Nosotros](docs/assets/imagenes/readme/nosotros.png)
 
 ## 📞 Formulario de contacto
 Sección para que los usuarios se comuniquen con el equipo mediante un formulario funcional.
-![Contacto](assets/imagenes/readme/contacto.png)
+![Contacto](docs/assets/imagenes/readme/contacto.png)
 
 
 ## 👩‍💻 Equipo de desarrollo
