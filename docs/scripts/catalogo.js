@@ -116,6 +116,7 @@ function applyFilters() {
   const term   = (searchInput.value || '').trim().toLowerCase();
   const flavor = getRadioValue('flavor'); // '' = Todos
   const size   = getRadioValue('size');   // '' = Todos
+  const category  = getRadioValue('category'); // Nuevo
 
   filtered = listaDeProductos.filter(p => {
     // texto
@@ -129,7 +130,11 @@ function applyFilters() {
     // tamaño
     const okSize = !size || (p.size && p.size.toLowerCase() === size.toLowerCase());
 
-    return okTerm && okFlavor && okSize;
+    // categoría (nuevo)
+    const okCategory = !category ||
+      (p.category && p.category.toLowerCase() === category.toLowerCase());
+
+    return okTerm && okFlavor && okSize && okCategory;
   });
 
   renderPage(1);
