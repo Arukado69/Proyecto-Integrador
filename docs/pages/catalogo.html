@@ -66,8 +66,9 @@
                   <input id="searchInput" type="text" class="form-control rounded-4 catalogo-h4-color" placeholder="🔍 Buscar por nombre..." />
                 </div>
 
-                <!-- Tipo de carne -->
-                <p class="form-label catalogo-roboto-primary-label ms-1 mb-2">Tipo de carne</p>
+
+                <!-- Sabor del producto -->
+                <p class="form-label catalogo-roboto-primary-label ms-1 mb-2">Sabor del producto</p>
                 <div class="ms-1 mb-4 d-flex flex-column gap-2">
                   <div class="form-check">
                     <input class="form-check-input" type="radio" name="flavor" id="flavorAll" value="" checked>
@@ -76,8 +77,19 @@
                   <div class="form-check"><input class="form-check-input" type="radio" name="flavor" id="flavorRes" value="Res"><label class="form-check-label catalogo-roboto-secundary-label" for="flavorRes">Res</label></div>
                   <div class="form-check"><input class="form-check-input" type="radio" name="flavor" id="flavorPollo" value="Pollo"><label class="form-check-label catalogo-roboto-secundary-label" for="flavorPollo">Pollo</label></div>
                   <div class="form-check"><input class="form-check-input" type="radio" name="flavor" id="flavorCerdo" value="Cerdo"><label class="form-check-label catalogo-roboto-secundary-label" for="flavorCerdo">Cerdo</label></div>
-                  <div class="form-check"><input class="form-check-input" type="radio" name="flavor" id="flavorPavo" value="Pavo"><label class="form-check-label catalogo-roboto-secundary-label" for="flavorPavo">Pavo</label></div>
                 </div>
+                
+                <!-- Categoría del producto -->
+                 <p class="form-label catalogo-roboto-primary-label ms-1 mb-2">Categoría del producto</p>
+                 <div class="ms-1 mb-4 d-flex flex-column gap-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="category" id="categoryAll" value="" checked>
+                    <label class="form-check-label catalogo-roboto-secundary-label" for="categoryAll">Todos</label>
+                  </div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="category" id="categoryAlimento" value="Alimento"><label class="form-check-label catalogo-roboto-secundary-label" for="categoryAlimento">Alimento</label></div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="category" id="categoryAccesorio" value="Accesorio"><label class="form-check-label catalogo-roboto-secundary-label" for="categoryAccesorio">Accesorios</label></div>
+                </div>
+
 
                 <!-- Tamaño -->
                 <p class="form-label catalogo-roboto-primary-label ms-1 mb-2">Tamaño de porción</p>
@@ -98,12 +110,15 @@
             </div>
           </aside>
 
-          <!-- GRID (Productos) -->
           <section class="col-12 col-lg-9 col-xl-10">
-            <div id="results-info" class="text-end text-muted small mb-2"></div>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="product-row"></div>
-            <div id="pagination-container" class="my-4"></div>
-          </section>
+            <!-- Grid de productos -->
+             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="product-row"></div>
+             <!-- Indicador de resultados centrado debajo del grid -->
+              <div id="results-info" class="text-center text-muted small my-2"></div>
+              <!-- Paginación -->
+               <div id="pagination-container" class="my-4"></div>
+              </section>
+
         </div>
       </div>
     </section>
