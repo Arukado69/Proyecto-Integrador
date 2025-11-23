@@ -1,6 +1,8 @@
 package org.proyecto_integrador.woofandbarf.model;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -28,6 +30,10 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "id_category")
     private Category category;
+
+    //Relacion Producto -> Pedido_detalle / 1:N
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    private List<PedidoDetalle> pedidoDetalle;
 
     // --- Getters y Setters ---
 
@@ -64,6 +70,17 @@ public class Product {
     public Category getCategory() { return category; }
 
     public void setCategory(Category category) { this.category = category; }
+
+    //Getter y Setter de PedidoDetalle
+
+    public List<PedidoDetalle> getPedidoDetalle() {
+        return pedidoDetalle;
+    }
+
+    public void setPedidoDetalle(List<PedidoDetalle> pedidoDetalle) {
+        this.pedidoDetalle = pedidoDetalle;
+    }
+
 
     // --- equals y hashCode (simples, como el profe) ---
 

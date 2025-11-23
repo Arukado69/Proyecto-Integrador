@@ -1,5 +1,6 @@
 package org.proyecto_integrador.woofandbarf.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Objects;
 
@@ -29,6 +30,11 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "id_alcaldia", nullable = false)
     private Alcaldia alcaldia;
+    //Relacion de Address -> User / N:1
+    @ManyToOne
+    @JoinColumn(name = "user_id_address",nullable = false)
+    @JsonIgnore
+    private User user;
 
     // Getters y Setters
 
@@ -55,6 +61,17 @@ public class Address {
     public Alcaldia getAlcaldia() { return alcaldia; }
 
     public void setAlcaldia(Alcaldia alcaldia) { this.alcaldia = alcaldia; }
+
+    //Getter y Setter de User
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public boolean equals(Object o) {
