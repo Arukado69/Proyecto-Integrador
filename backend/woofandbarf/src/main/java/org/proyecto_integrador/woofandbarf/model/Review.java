@@ -1,5 +1,6 @@
 package org.proyecto_integrador.woofandbarf.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -17,6 +18,12 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "id_product", nullable = false)
     private Product product;
+
+    //Relacion de Review -> User / N:1
+    @ManyToOne
+    @JoinColumn(name = "user_id_review")
+    @JsonIgnore
+    private User user;
 
     // No nos complicamos con User, solo guardamos el id
     @Column(name = "id_user", nullable = false)
@@ -57,6 +64,16 @@ public class Review {
     public LocalDateTime getCreatedAt() { return createdAt; }
 
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    //Getter y Setter de User
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     @Override
     public boolean equals(Object o) {

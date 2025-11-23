@@ -42,6 +42,11 @@ public class PedidoDetalle {
     @JoinColumn(name = "pedido_id_pedido_detalle")
     private Pedido pedido;
 
+    //Relacion PedidoDetalle -> Product / N:1
+    @ManyToOne
+    @JoinColumn(name = "pedidoDetalle_producto")
+    private Product product;
+
     /*
     // Fk relacion pedido_detalle con productos, la comento porque no se si esta bien
     @ManyToOne
@@ -94,9 +99,24 @@ public class PedidoDetalle {
         Precio = precio;
     }
 
-    // getter and setter de pedido esto tiene relacion con las FK
+    //Getter y Setter de Prdduct
 
-    // getter and setter de producto tiene relacion con FK
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     // toString()
     @Override
