@@ -419,3 +419,12 @@ body.login-body-bg {
   width: 100%; /* estira el input completamente */
   box-sizing: border-box; /* evita que el padding sume al ancho */
 }
+/* === Para permitir filas con 2 columnas === */
+.form-row.row-2col {
+  flex-direction: row !important;
+  gap: 15px;
+}
+
+.form-row.row-2col .form-group {
+  width: 50%;
+}

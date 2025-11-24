@@ -1,0 +1,70 @@
+/* Contenedor principal */
+.account-container {
+  width: 90%;
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Título */
+.account-container h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Sección que agrupa foto e info */
+.profile-section {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Foto del usuario */
+.profile-photo {
+  text-align: center;
+}
+
+.profile-photo img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.profile-photo button {
+  margin-top: 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* Información del usuario */
+.profile-info p {
+  margin: 5px 0;
+}
+
+/* Botones */
+.primary-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 20px;
+  background-color: #573bfc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
