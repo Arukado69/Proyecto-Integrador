@@ -25,7 +25,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Long id) {
+    public ResponseEntity<Product> getById(@PathVariable Integer id) {
         try {
             return ResponseEntity.ok(productService.getById(id));
         } catch (ProductNotFoundException e) {
@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         try {
             productService.delete(id);
             return ResponseEntity.noContent().build();
@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Product> update(@PathVariable Integer id, @RequestBody Product product) {
         try {
             return ResponseEntity
                     .status(HttpStatus.CREATED)

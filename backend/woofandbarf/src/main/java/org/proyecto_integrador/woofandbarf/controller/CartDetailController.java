@@ -15,8 +15,8 @@ public class CartDetailController {
     // Endpoint: Agregar producto al carrito
     // Ejemplo de uso: POST /api/cart-details?cartId=1&productId=5&quantity=2
     @PostMapping
-    public CartDetail addDetail(@RequestParam Long cartId,
-                                @RequestParam Long productId,
+    public CartDetail addDetail(@RequestParam Integer cartId,
+                                @RequestParam Integer productId,
                                 @RequestParam Integer quantity) {
         return cartDetailService.addProductToCart(cartId, productId, quantity);
     }

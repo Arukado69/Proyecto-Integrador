@@ -1,6 +1,7 @@
 package org.proyecto_integrador.woofandbarf.service;
 
 import org.proyecto_integrador.woofandbarf.exceptions.ResourceNotFoundException;
+import org.proyecto_integrador.woofandbarf.model.Pedido;
 import org.proyecto_integrador.woofandbarf.model.PedidoDetalle;
 import org.proyecto_integrador.woofandbarf.repository.PedidoDetalleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class PedidoDetalleService {
     public PedidoDetalle createDetalle(PedidoDetalle detalle) {
         return pedidoDetalleRepository.save(detalle);
     }
+
 
 
     // Actualizar detalle

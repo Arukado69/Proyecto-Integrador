@@ -1,5 +1,6 @@
 package org.proyecto_integrador.woofandbarf.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -41,6 +42,7 @@ public class User {
 
     //Relacion User -> Pedido / 1:N
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
     private List<Pedido> pedidos;
     //Relacion User -> Direccion / 1:N
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -74,7 +76,7 @@ public class User {
     //Getters y Setter de clase
 
 
-    public int getIdUsuario() {
+    public Integer getIdUsuario() {
         return idUsuario;
     }
 

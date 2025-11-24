@@ -18,8 +18,8 @@ public class Pedido {
 
     //Los otros atributos
     // es FK que viene de la tabla usuario
-    @Column(name = "id_usuario", nullable = false)
-    private Integer idUsuario;
+    // @Column(name = "id_usuario", nullable = false)
+    // private Integer idUsuario;
 
     @Column(name = "direccion_envio", nullable = false, unique = true, length = 100)
     private String direccionEnvio;
@@ -39,13 +39,12 @@ public class Pedido {
     private User user;
     */
     @ManyToOne
-    @JoinColumn(name = "user_id_pedido",nullable = false, unique = true)
-    @JsonIgnore
+    @JoinColumn(name = "id_user",nullable = false)
     private User user;
 
-    public Pedido(Integer idPedido, Integer idUsuario, String direccionEnvio, Double totalVenta, String numeroRastreador, LocalDateTime fechaCreacion) {
+    public Pedido(Integer idPedido, User user, String direccionEnvio, Double totalVenta, String numeroRastreador, LocalDateTime fechaCreacion) {
         this.idPedido = idPedido;
-        this.idUsuario = idUsuario;
+        this.user = user;
         this.direccionEnvio = direccionEnvio;
         this.totalVenta = totalVenta;
         this.numeroRastreador = numeroRastreador;
@@ -65,12 +64,10 @@ public class Pedido {
         this.idPedido = idPedido;
     }
 
-    public Integer getIdUsuario() {
-        return idUsuario;
-    }
+    public User getUser() { return user; }
 
-    public void setIdUsuario(Integer idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getDireccionEnvio() {
@@ -105,20 +102,12 @@ public class Pedido {
         this.fechaCreacion = fechaCreacion;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     // toString()
     @Override
     public String toString() {
         return "Pedido{" +
                 "idPedido=" + idPedido +
-                ", idUsuario=" + idUsuario +
                 ", direccionEnvio='" + direccionEnvio + '\'' +
                 ", totalVenta=" + totalVenta +
                 ", numeroRastreador='" + numeroRastreador + '\'' +
@@ -130,11 +119,11 @@ public class Pedido {
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Pedido pedido)) return false;
-        return Objects.equals(idPedido, pedido.idPedido) && Objects.equals(idUsuario, pedido.idUsuario) && Objects.equals(direccionEnvio, pedido.direccionEnvio) && Objects.equals(totalVenta, pedido.totalVenta) && Objects.equals(numeroRastreador, pedido.numeroRastreador) && Objects.equals(fechaCreacion, pedido.fechaCreacion);
+        return Objects.equals(idPedido, pedido.idPedido);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idPedido, idUsuario, direccionEnvio, totalVenta, numeroRastreador, fechaCreacion);
+        return Objects.hash(idPedido);
     }
 }

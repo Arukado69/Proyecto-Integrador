@@ -25,7 +25,7 @@ public class ReviewService {
         return reviewRepository.findByProduct_Id(idProduct);
     }
 
-    public Review create(Long idProduct, Review review) {
+    public Review create(Integer idProduct, Review review) {
         Product product = productRepository.findById(idProduct)
                 .orElseThrow(() -> new ProductNotFoundException(idProduct));
 

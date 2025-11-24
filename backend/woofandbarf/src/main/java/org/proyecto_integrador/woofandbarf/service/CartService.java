@@ -36,7 +36,7 @@ public class CartService {
 
     // Agregar producto al carrito
     // ID de producto es Integer.
-    public CartDetail addProductToCart(Integer cartId, Long productId, Integer quantity) {
+    public CartDetail addProductToCart(Integer cartId, Integer productId, Integer quantity) {
 
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Carrito no encontrado id: " + cartId));

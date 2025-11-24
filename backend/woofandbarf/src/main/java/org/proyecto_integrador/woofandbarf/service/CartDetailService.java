@@ -21,12 +21,12 @@ public class CartDetailService {
     @Autowired
     private ProductRepository productRepository;
 
-    public CartDetail addProductToCart(Long cartId, Long productId, Integer quantity) {
+    public CartDetail addProductToCart(Integer cartId, Integer productId, Integer quantity) {
         Cart cart = cartRepository.findById(cartId)
                 .orElseThrow(() -> new CartNotFoundException("Carrito no existe"));
 
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Producto no existe"));
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         CartDetail detail = new CartDetail();
         detail.setCart(cart);

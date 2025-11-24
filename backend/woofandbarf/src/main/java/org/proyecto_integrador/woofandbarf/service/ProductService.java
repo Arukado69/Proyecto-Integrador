@@ -20,7 +20,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getById(Long id) {
+    public Product getById(Integer id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
     }
@@ -29,14 +29,14 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public void delete(Long id) {
+    public void delete(Integer id) {
         if (!productRepository.existsById(id)) {
             throw new ProductNotFoundException(id);
         }
         productRepository.deleteById(id);
     }
 
-    public Product update(Long id, Product product) {
+    public Product update(Integer id, Product product) {
         return productRepository.findById(id)
                 .map(p -> {
                     p.setName(product.getName());

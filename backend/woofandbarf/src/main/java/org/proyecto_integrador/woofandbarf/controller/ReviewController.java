@@ -30,7 +30,7 @@ public class ReviewController {
     }
 
     @PostMapping("/product/{idProduct}")
-    public ResponseEntity<?> create(@PathVariable Long idProduct, @RequestBody Review review) {
+    public ResponseEntity<?> create(@PathVariable Integer idProduct, @RequestBody Review review) {
         try {
             Review saved = reviewService.create(idProduct, review);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);

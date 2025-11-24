@@ -25,7 +25,7 @@ public class PedidoDetalleController {
     }
 
     // GET: Obtener detalle por su ID del pedido detalle
-    @GetMapping("/obtener-pedido=detalle/{idDetalle}")
+    @GetMapping("/obtener-pedido-detalle/{idDetalle}")
     public ResponseEntity<PedidoDetalle> getById(@PathVariable Integer idDetalle) {
         return ResponseEntity.ok(pedidoDetalleService.findById(idDetalle));
     }

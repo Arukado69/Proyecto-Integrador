@@ -12,7 +12,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
-    private Long id;
+    private Integer id;
 
     @Column(nullable = false, length = 80)
     private String name;
@@ -37,11 +37,11 @@ public class Product {
 
     // --- Getters y Setters ---
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) { this.id = id; }
+    public void setId(Integer id) { this.id = id; }
 
     public String getName() {
         return name;
