@@ -140,7 +140,7 @@ window.irAPagar = function() {
     }));
 
     // Redireccionar
-    window.location.href = './datos.html';
+    window.location.href = '/pages/carrito/datos.html';
 };
 
 // ==========================================
