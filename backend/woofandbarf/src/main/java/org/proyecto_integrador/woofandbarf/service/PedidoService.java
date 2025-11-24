@@ -2,9 +2,7 @@ package org.proyecto_integrador.woofandbarf.service;
 
 import org.proyecto_integrador.woofandbarf.exceptions.ResourceNotFoundException;
 import org.proyecto_integrador.woofandbarf.model.Pedido;
-import org.proyecto_integrador.woofandbarf.model.User;
 import org.proyecto_integrador.woofandbarf.repository.PedidoRepository;
-import org.proyecto_integrador.woofandbarf.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,66 +10,30 @@ import java.util.List;
 
 @Service
 public class PedidoService {
-    private final PedidoRepository pedidoRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private PedidoRepository pedidoRepository;
 
-    @Autowired
-    public PedidoService(PedidoRepository pedidoRepository) {
-        this.pedidoRepository = pedidoRepository;
-    }
-
-    // Obtener los pedidos
-    public List<Pedido> getPedido() {
+    public List<Pedido> findAll() {
         return pedidoRepository.findAll();
     }
 
-    // Crear pedido
-    public Pedido createPedido(Pedido newPedido) {
-
-        if (newPedido.getUser() == null || newPedido.getUser().getIdUsuario() == null) {
-            throw new ResourceNotFoundException("Debes enviar user.idUsuario en el JSON");
-        }
-
-        // verificar que el usuario existe
-        User userDB = userRepository.findById(newPedido.getUser().getIdUsuario())
+    public Pedido findById(Long id) {
+        return pedidoRepository.findById(id.longValue())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "El usuario con id " + newPedido.getUser().getIdUsuario() + " no existe"));
-
-        // asignar el usuario real desde BD
-        newPedido.setUser(userDB);
-
-        return pedidoRepository.save(newPedido);
+                        "No se encontró el pedido con id: " + id));
     }
 
-
-    // Buscar por id
-    public Pedido findById(Integer idPedido) {
-        return pedidoRepository.findById(idPedido)
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado: " + idPedido));
+    public Pedido save(Pedido pedido) {
+        return pedidoRepository.save(pedido);
     }
 
-    // Eliminar pedido
-    public void deletePedido(Integer idPedido) {
-        if (pedidoRepository.existsById(idPedido)) {
-            pedidoRepository.deleteById(idPedido);
-        } else {
-            throw new ResourceNotFoundException("Pedido no encontrado: " + idPedido);
+    public void delete(Long id) {
+        Long key = id.longValue();
+        if (!pedidoRepository.existsById(key)) {
+            throw new ResourceNotFoundException(
+                    "No se encontró el pedido con id: " + id);
         }
-    }
-
-    // Actualizar todos los campos del pedido
-    public Pedido updatePedido(Pedido pedido, Integer idPedido) {
-        return pedidoRepository.findById(idPedido)
-                .map(pedidoMap -> {
-                    pedidoMap.setUser(pedido.getUser());
-                    pedidoMap.setDireccionEnvio(pedido.getDireccionEnvio());
-                    pedidoMap.setTotalVenta(pedido.getTotalVenta());
-                    pedidoMap.setNumeroRastreador(pedido.getNumeroRastreador());
-                    // pedidoMap.setFechaCreacion(pedido.getFechaCreacion());
-                    return pedidoRepository.save(pedidoMap);
-                })
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado: " + idPedido));
+        pedidoRepository.deleteById(key);
     }
 }

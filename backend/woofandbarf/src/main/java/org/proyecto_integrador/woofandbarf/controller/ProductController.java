@@ -20,14 +20,14 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll() {
-        return productService.getAll();
+    public ResponseEntity<List<Product>> getAll() {
+        return ResponseEntity.ok(productService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable Integer id) {
+    public ResponseEntity<Product> getById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(productService.getById(id));
+            return ResponseEntity.ok(productService.findById(id));
         } catch (ProductNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -35,12 +35,24 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<Product> create(@RequestBody Product product) {
-        Product created = productService.create(product);
+        Product created = productService.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> update(@PathVariable Long id,
+                                          @RequestBody Product product) {
+        try {
+            productService.findById(id);
+            Product updated = productService.save(product);
+            return ResponseEntity.ok(updated);
+        } catch (ProductNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             productService.delete(id);
             return ResponseEntity.noContent().build();
@@ -48,16 +60,4 @@ public class ProductController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> update(@PathVariable Integer id, @RequestBody Product product) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(productService.update(id, product));
-        } catch (ProductNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }
-

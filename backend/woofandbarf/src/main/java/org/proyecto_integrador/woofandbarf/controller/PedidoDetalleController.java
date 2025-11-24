@@ -1,55 +1,63 @@
 package org.proyecto_integrador.woofandbarf.controller;
 
+import org.proyecto_integrador.woofandbarf.exceptions.ResourceNotFoundException;
 import org.proyecto_integrador.woofandbarf.model.PedidoDetalle;
 import org.proyecto_integrador.woofandbarf.service.PedidoDetalleService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/pedido-detalle")
+@RequestMapping("/api/v1/pedido-detalles")
 public class PedidoDetalleController {
+
     private final PedidoDetalleService pedidoDetalleService;
 
-    @Autowired
     public PedidoDetalleController(PedidoDetalleService pedidoDetalleService) {
         this.pedidoDetalleService = pedidoDetalleService;
     }
 
-    // GET: Obtener detalles por ID del pedido
-    @GetMapping("/lista-id-pedido/{idPedido}")
-    public ResponseEntity<List<PedidoDetalle>> getByPedido(@PathVariable Integer idPedido) {
-        return ResponseEntity.ok(pedidoDetalleService.getDetalleByPedido(idPedido));
+    @GetMapping
+    public ResponseEntity<List<PedidoDetalle>> getAll() {
+        return ResponseEntity.ok(pedidoDetalleService.findAll());
     }
 
-    // GET: Obtener detalle por su ID del pedido detalle
-    @GetMapping("/obtener-pedido-detalle/{idDetalle}")
-    public ResponseEntity<PedidoDetalle> getById(@PathVariable Integer idDetalle) {
-        return ResponseEntity.ok(pedidoDetalleService.findById(idDetalle));
+    @GetMapping("/{id}")
+    public ResponseEntity<PedidoDetalle> getById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(pedidoDetalleService.findById(id));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // POST: Crear detalle
-    @PostMapping("/crear-pedido-detalle")
+    @PostMapping
     public ResponseEntity<PedidoDetalle> create(@RequestBody PedidoDetalle detalle) {
-        return ResponseEntity.status(201).body(pedidoDetalleService.createDetalle(detalle));
+        PedidoDetalle created = pedidoDetalleService.save(detalle);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // PUT: Actualizar detalle
-    @PutMapping("/actualizar-pedido-detalle/{idDetalle}")
-    public ResponseEntity<PedidoDetalle> update(
-            @PathVariable Integer idDetalle,
-            @RequestBody PedidoDetalle detalle
-    ) {
-        return ResponseEntity.ok(pedidoDetalleService.updateDetalle(detalle, idDetalle));
+    @PutMapping("/{id}")
+    public ResponseEntity<PedidoDetalle> update(@PathVariable Long id,
+                                                @RequestBody PedidoDetalle detalle) {
+        try {
+            pedidoDetalleService.findById(id);
+            PedidoDetalle updated = pedidoDetalleService.save(detalle);
+            return ResponseEntity.ok(updated);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-
-    // DELETE: Eliminar detalle
-    @DeleteMapping("/eliminar-pedido-detalle/{idDetalle}")
-    public ResponseEntity<String> delete(@PathVariable Integer idDetalle) {
-        pedidoDetalleService.deleteDetalle(idDetalle);
-        return ResponseEntity.ok("Detalle eliminado correctamente");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        try {
+            pedidoDetalleService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

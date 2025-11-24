@@ -1,129 +1,80 @@
 package org.proyecto_integrador.woofandbarf.model;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table (name = "pedido")
+@Table(name = "pedidos")
 public class Pedido {
-    // PK
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pedido")
-    private Integer idPedido;
+    private Long id;
 
-    //Los otros atributos
-    // es FK que viene de la tabla usuario
-    // @Column(name = "id_usuario", nullable = false)
-    // private Integer idUsuario;
-
-    @Column(name = "direccion_envio", nullable = false, unique = true, length = 100)
-    private String direccionEnvio;
-
-    @Column(name = "total_venta", nullable = false, columnDefinition = "DECIMAL(10,2)")
-    private Double totalVenta;
-
-    @Column(name = "numero_rastreador", nullable = false)
-    private String numeroRastreador;
-
-    @Column(name = "fecha_creacion", nullable = false, columnDefinition = "DATETIME")
-    @org.hibernate.annotations.CreationTimestamp
-    private LocalDateTime fechaCreacion;
-
-    // Relacion de FK 1:N (Un usuario puede tener varios pedidos) LO COMENTE PORQUE ME DABA ERROR Y NO SUPE JEJE
-    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
-    private User user;
-    */
+    // Usuario que hace el pedido
     @ManyToOne
-    @JoinColumn(name = "id_user",nullable = false)
+    @JoinColumn(name = "id_usuario", nullable = false)
     private User user;
 
-    public Pedido(Integer idPedido, User user, String direccionEnvio, Double totalVenta, String numeroRastreador, LocalDateTime fechaCreacion) {
-        this.idPedido = idPedido;
-        this.user = user;
-        this.direccionEnvio = direccionEnvio;
-        this.totalVenta = totalVenta;
-        this.numeroRastreador = numeroRastreador;
-        this.fechaCreacion = fechaCreacion;
-    }
+    // Dirección seleccionada para el envío
+    @ManyToOne
+    @JoinColumn(name = "id_direccion", nullable = false)
+    private Address address;
 
-    // Constructor vacio
-    public Pedido(){
-    }
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
-    // getters and setter
-    public Integer getIdPedido() {
-        return idPedido;
-    }
+    @Column(nullable = false)
+    private Double total;
 
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
-    }
+    @Column(length = 50)
+    private String numeroRastreador; // ahora puede ser null
+
+    @Column(nullable = false, length = 20)
+    private String estado = "PENDIENTE";
+
+    // Relación con los detalles del pedido
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PedidoDetalle> detalles;
+
+    public Pedido() {}
+
+    // Getters & Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public Address getAddress() { return address; }
+    public void setAddress(Address address) { this.address = address; }
 
-    public String getDireccionEnvio() {
-        return direccionEnvio;
-    }
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 
-    public void setDireccionEnvio(String direccionEnvio) {
-        this.direccionEnvio = direccionEnvio;
-    }
+    public Double getTotal() { return total; }
+    public void setTotal(Double total) { this.total = total; }
 
-    public Double getTotalVenta() {
-        return totalVenta;
-    }
+    public String getNumeroRastreador() { return numeroRastreador; }
+    public void setNumeroRastreador(String numeroRastreador) { this.numeroRastreador = numeroRastreador; }
 
-    public void setTotalVenta(Double totalVenta) {
-        this.totalVenta = totalVenta;
-    }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
-    public String getNumeroRastreador() {
-        return numeroRastreador;
-    }
+    public List<PedidoDetalle> getDetalles() { return detalles; }
+    public void setDetalles(List<PedidoDetalle> detalles) { this.detalles = detalles; }
 
-    public void setNumeroRastreador(String numeroRastreador) {
-        this.numeroRastreador = numeroRastreador;
-    }
-
-    public LocalDateTime getFechaCreacion() {
-        return fechaCreacion;
-    }
-
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
-    }
-
-
-    // toString()
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "idPedido=" + idPedido +
-                ", direccionEnvio='" + direccionEnvio + '\'' +
-                ", totalVenta=" + totalVenta +
-                ", numeroRastreador='" + numeroRastreador + '\'' +
-                ", fechaCreacion=" + fechaCreacion +
-                '}';
-    }
-
-    // HashCode and equals
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Pedido pedido)) return false;
-        return Objects.equals(idPedido, pedido.idPedido);
+        if (!(o instanceof Pedido p)) return false;
+        return Objects.equals(id, p.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idPedido);
+        return Objects.hash(id);
     }
 }

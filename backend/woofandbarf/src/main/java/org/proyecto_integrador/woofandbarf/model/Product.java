@@ -1,18 +1,17 @@
 package org.proyecto_integrador.woofandbarf.model;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "products")
+@Table(name = "productos")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
-    private Integer id;
+    private Long id;
 
     @Column(nullable = false, length = 80)
     private String name;
@@ -26,60 +25,51 @@ public class Product {
     @Column(nullable = false)
     private Integer stock;
 
-    // Relación simple hacia Category (sin listas, sin drama)
+    // RELACIÓN: muchos productos pertenecen a 1 categoría
     @ManyToOne
-    @JoinColumn(name = "id_category")
+    @JoinColumn(name = "id_categoria")
     private Category category;
 
-    //Relacion Producto -> Pedido_detalle / 1:N
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private List<PedidoDetalle> pedidoDetalle;
+    // RELACIÓN: un producto tiene muchas reviews
+    @OneToMany(mappedBy = "product")
+    private List<Review> reviews;
+
+    // RELACIÓN: un producto tiene muchos detalles de carrito
+    @OneToMany(mappedBy = "product")
+    private List<CartDetail> cartDetails;
+
+    // RELACIÓN: un producto tiene muchos detalles de pedido
+    @OneToMany(mappedBy = "product")
+    private List<PedidoDetalle> pedidoDetalles;
 
     // --- Getters y Setters ---
 
-    public Integer getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Integer id) { this.id = id; }
-
-    public String getName() {
-        return name;
-    }
-
+    public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getDescription() {
-        return description;
-    }
-
+    public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public Double getPrice() {
-        return price;
-    }
-
+    public Double getPrice() { return price; }
     public void setPrice(Double price) { this.price = price; }
 
-    public Integer getStock() {
-        return stock;
-    }
-
+    public Integer getStock() { return stock; }
     public void setStock(Integer stock) { this.stock = stock; }
 
     public Category getCategory() { return category; }
-
     public void setCategory(Category category) { this.category = category; }
 
-    //Getter y Setter de PedidoDetalle
+    public List<Review> getReviews() { return reviews; }
+    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
 
-    public List<PedidoDetalle> getPedidoDetalle() {
-        return pedidoDetalle;
-    }
+    public List<CartDetail> getCartDetails() { return cartDetails; }
+    public void setCartDetails(List<CartDetail> cartDetails) { this.cartDetails = cartDetails; }
 
-    public void setPedidoDetalle(List<PedidoDetalle> pedidoDetalle) {
-        this.pedidoDetalle = pedidoDetalle;
-    }
+    public List<PedidoDetalle> getPedidoDetalles() { return pedidoDetalles; }
+    public void setPedidoDetalles(List<PedidoDetalle> pedidoDetalles) { this.pedidoDetalles = pedidoDetalles; }
 
 
     // --- equals y hashCode (simples, como el profe) ---

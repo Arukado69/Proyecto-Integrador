@@ -1,145 +1,80 @@
 package org.proyecto_integrador.woofandbarf.model;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table (name = "pedido_detalle")
-
+@Table(name = "pedido_detalle")
 public class PedidoDetalle {
-    // PK
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pedido_detalle")
-    private Integer idPedidoDetalle;
+    private Long id;
 
-    // FK tiene relacion con el id_pedido
-    @Column(name = "id_pedido", nullable = false)
-    private Integer idPedido;
-
-    // Fk tiene relacion con el id_producto
-    @Column(name = "id_producto", nullable = false, length = 50)
-    private String idProducto;
-
-    @Column(name = "cantidad", nullable = false)
-    private Integer Cantidad;
-
-    @Column(name = "precio", nullable = false, columnDefinition = "DECIMAL(10,2)")
-    private Double Precio;
-
-    public PedidoDetalle(Integer idPedidoDetalle, Integer idPedido, String idProducto, Integer Cantidad, Double Precio) {
-        this.idPedidoDetalle = idPedidoDetalle;
-        this.idPedido = idPedido;
-        this.idProducto = idProducto;
-        this.Cantidad = Cantidad;
-        this.Precio = Precio;
-    }
-
-    // FK Relación muchos detalles en un pedido
+    // Relación: muchos detalles -> un pedido
     @ManyToOne
-    @JoinColumn(name = "pedido_id_pedido_detalle")
+    @JoinColumn(name = "id_pedido", nullable = false)
     private Pedido pedido;
 
-    //Relacion PedidoDetalle -> Product / N:1
+    // Relación: muchos detalles -> un producto
     @ManyToOne
-    @JoinColumn(name = "pedidoDetalle_producto")
+    @JoinColumn(name = "id_product", nullable = false)
     private Product product;
 
-    /*
-    // Fk relacion pedido_detalle con productos, la comento porque no se si esta bien
-    @ManyToOne
-    @JoinColumn(name = "id_producto")
-    private Producto producto;
-     */
+    @Column(nullable = false)
+    private Integer quantity;
 
-    // constructor vacio
-    public PedidoDetalle() {
-    }
+    @Column(nullable = false)
+    private Double price;
 
-    // getters and setters
-    public Integer getIdPedidoDetalle() {
-        return idPedidoDetalle;
-    }
+    @Column(nullable = false)
+    private Double subtotal;
 
-    public void setIdPedidoDetalle(Integer idPeidoDetalle) {
-        this.idPedidoDetalle = idPeidoDetalle;
-    }
+    public PedidoDetalle() {}
 
-    public Integer getIdPedido() {
-        return idPedido;
-    }
-
-    public void setIdPedido(Integer idPedido) {
-        this.idPedido = idPedido;
-    }
-
-    public String getIdProducto() {
-        return idProducto;
-    }
-
-    public void setIdProducto(String idProducto) {
-        this.idProducto = idProducto;
-    }
-
-    public Integer getCantidad() {
-        return Cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        Cantidad = cantidad;
-    }
-
-    public Double getPrecio() {
-        return Precio;
-    }
-
-    public void setPrecio(Double precio) {
-        Precio = precio;
-    }
-
-    //Getter y Setter de Prdduct
-
-
-    public Pedido getPedido() {
-        return pedido;
-    }
-
-    public void setPedido(Pedido pedido) {
+    public PedidoDetalle(Pedido pedido, Product product, Integer quantity, Double price) {
         this.pedido = pedido;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
         this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+        this.subtotal = price * quantity;
     }
 
-    // toString()
-    @Override
-    public String toString() {
-        return "PedidoDetalle{" +
-                "idPedidoDetalle=" + idPedidoDetalle +
-                ", idPedido=" + idPedido +
-                ", idProducto='" + idProducto + '\'' +
-                ", Cantidad=" + Cantidad +
-                ", Precio=" + Precio +
-                '}';
+    // Getters & Setters
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Pedido getPedido() { return pedido; }
+    public void setPedido(Pedido pedido) { this.pedido = pedido; }
+
+    public Product getProduct() { return product; }
+    public void setProduct(Product product) { this.product = product; }
+
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+        this.subtotal = this.price * quantity;
     }
 
-    // HashCode and equals
+    public Double getPrice() { return price; }
+    public void setPrice(Double price) {
+        this.price = price;
+        this.subtotal = this.quantity * price;
+    }
+
+    public Double getSubtotal() { return subtotal; }
+
+    // Equals & Hash
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof PedidoDetalle that)) return false;
-        return Objects.equals(idPedidoDetalle, that.idPedidoDetalle) && Objects.equals(idPedido, that.idPedido) && Objects.equals(idProducto, that.idProducto) && Objects.equals(Cantidad, that.Cantidad) && Objects.equals(Precio, that.Precio);
+        if (!(o instanceof PedidoDetalle d)) return false;
+        return Objects.equals(id, d.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idPedidoDetalle, idPedido, idProducto, Cantidad, Precio);
+        return Objects.hash(id);
     }
 }
-

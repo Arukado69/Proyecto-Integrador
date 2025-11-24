@@ -1,52 +1,63 @@
 package org.proyecto_integrador.woofandbarf.controller;
 
+import org.proyecto_integrador.woofandbarf.exceptions.ResourceNotFoundException;
 import org.proyecto_integrador.woofandbarf.model.Pedido;
 import org.proyecto_integrador.woofandbarf.service.PedidoService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/pedido")
+@RequestMapping("/api/v1/pedidos")
 public class PedidoController {
+
     private final PedidoService pedidoService;
 
-    @Autowired
     public PedidoController(PedidoService pedidoService) {
         this.pedidoService = pedidoService;
     }
 
-    // Obtener todos los pedidos
-    @GetMapping("/listar-pedidos")
-    public List<Pedido> getPedidos() {
-        return pedidoService.getPedido();
+    @GetMapping
+    public ResponseEntity<List<Pedido>> getAll() {
+        return ResponseEntity.ok(pedidoService.findAll());
     }
 
-    // Obtener pedido por ID
-    @GetMapping("/obtener-pedido/{id}")
-    public Pedido findById(@PathVariable Integer id) {
-        return pedidoService.findById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Pedido> getById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(pedidoService.findById(id));
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // Crear pedido
-    @PostMapping("/crear-pedido")
-    public Pedido createPedido(@RequestBody Pedido pedido) {
-        return pedidoService.createPedido(pedido);
+    @PostMapping
+    public ResponseEntity<Pedido> create(@RequestBody Pedido pedido) {
+        Pedido created = pedidoService.save(pedido);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    // Actualizar pedido
-    @PutMapping("/actualizar-pedido/{id}")
-    public Pedido updatePedido(@PathVariable Integer id, @RequestBody Pedido pedido) {
-        return pedidoService.updatePedido(pedido, id);
+    @PutMapping("/{id}")
+    public ResponseEntity<Pedido> update(@PathVariable Long id,
+                                         @RequestBody Pedido pedido) {
+        try {
+            pedidoService.findById(id);
+            Pedido updated = pedidoService.save(pedido);
+            return ResponseEntity.ok(updated);
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // Eliminar pedido
-    @DeleteMapping("/eliminar-pedido/{id}")
-    public ResponseEntity<String> deletePedido(@PathVariable Integer id) {
-        pedidoService.deletePedido(id);
-        return ResponseEntity.ok("Pedido eliminado correctamente");
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        try {
+            pedidoService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
-
 }
