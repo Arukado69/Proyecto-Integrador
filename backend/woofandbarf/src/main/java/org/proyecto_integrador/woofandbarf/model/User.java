@@ -3,6 +3,7 @@ package org.proyecto_integrador.woofandbarf.model;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -37,6 +38,17 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "rol_id_user", nullable = false)
     private Rol rol;
+
+    //Relacion User -> Pedido / 1:N
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Pedido> pedidos;
+    //Relacion User -> Direccion / 1:N
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Address> address;
+    //Relacion de User -> Review / 1:N
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Review> review;
+
     //Constructores (Normal y vacio)
 
 
@@ -125,7 +137,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    //Getter y Setter de Rol
     public Rol getRol() {
         return rol;
     }
@@ -133,6 +145,34 @@ public class User {
     public void setRol(Rol rol) {
         this.rol = rol;
     }
+    //Getter y Setter de Address y Pedidos
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    public List<Address> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<Address> address) {
+        this.address = address;
+    }
+
+    //Getter y setter de Review
+
+    public List<Review> getReview() {
+        return review;
+    }
+
+    public void setReview(List<Review> review) {
+        this.review = review;
+    }
+
 
     //ToString()
 

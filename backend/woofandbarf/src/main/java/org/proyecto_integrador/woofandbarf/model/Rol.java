@@ -1,5 +1,6 @@
 package org.proyecto_integrador.woofandbarf.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -20,6 +21,7 @@ public class Rol {
 
     //relacion 1: N
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol")
+    @JsonIgnore
     private List<User> user;
 
 

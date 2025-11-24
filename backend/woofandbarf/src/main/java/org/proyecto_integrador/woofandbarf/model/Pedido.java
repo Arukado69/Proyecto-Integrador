@@ -1,6 +1,7 @@
 package org.proyecto_integrador.woofandbarf.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -30,12 +31,17 @@ public class Pedido {
     private String numeroRastreador;
 
     @Column(name = "fecha_creacion", nullable = false, columnDefinition = "DATETIME")
+    @org.hibernate.annotations.CreationTimestamp
     private LocalDateTime fechaCreacion;
 
     // Relacion de FK 1:N (Un usuario puede tener varios pedidos) LO COMENTE PORQUE ME DABA ERROR Y NO SUPE JEJE
     /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "pedido")
     private User user;
     */
+    @ManyToOne
+    @JoinColumn(name = "user_id_pedido",nullable = false, unique = true)
+    @JsonIgnore
+    private User user;
 
     public Pedido(Integer idPedido, Integer idUsuario, String direccionEnvio, Double totalVenta, String numeroRastreador, LocalDateTime fechaCreacion) {
         this.idPedido = idPedido;
@@ -99,8 +105,6 @@ public class Pedido {
         this.fechaCreacion = fechaCreacion;
     }
 
-    // getter y setter de User
-    /*
     public User getUser() {
         return user;
     }
@@ -108,7 +112,6 @@ public class Pedido {
     public void setUser(User user) {
         this.user = user;
     }
-     */
 
     // toString()
     @Override
