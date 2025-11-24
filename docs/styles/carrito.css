@@ -291,3 +291,64 @@ input:focus-visible{
   0% { background-position: 0% 0; }
   100% { background-position: -200% 0; }
 }
+
+/* ================================================= */
+/* ESTILOS DEL CARRUSEL (Igualando al Catálogo)      */
+/* ================================================= */
+
+/* 1. La Tarjeta (Contenedor) */
+.card-carrusel {
+    border: none;
+    border-radius: 1.25rem; /* Mismo radio que catálogo */
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06); /* Sombra suave original */
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+    overflow: hidden; /* Para que la imagen respete el borde */
+}
+
+/* Efecto Hover (Levantar) */
+.card-carrusel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,.08);
+}
+
+/* 2. La Imagen */
+.card-carrusel img {
+    width: 100%;
+    height: 200px; /* Altura fija para uniformidad */
+    object-fit: contain; /* Que no se corte, igual que catálogo */
+    background-color: #fff;
+    padding: 15px; /* Espacio interno para que respire */
+    border-bottom: 1px solid rgba(0,0,0,0.03); /* Separación sutil */
+}
+
+/* 3. Tipografía y Textos */
+.card-carrusel .titulo-producto {
+    font-family: "Fredoka", sans-serif; /* Tu fuente de marca */
+    font-weight: 500;
+    color: #8A7C60; /* Color café del catálogo (.catalogo-h4-color) */
+    font-size: 1.1rem;
+}
+
+.card-carrusel .precio-producto {
+    color: #F3A412; /* Color naranja/dorado (.catalogo-price-color) */
+    font-weight: 700;
+    font-size: 1.2rem;
+    font-family: "Roboto", sans-serif;
+}
+
+/* 4. El Botón (Estilo Secundario del Catálogo) */
+.btn-carrusel {
+    background: #FDEDD0; /* Fondo crema */
+    color: #F3A515;      /* Texto naranja */
+    border: 1px solid #F3A515;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-carrusel:hover {
+    background: #F3A412; /* Cambio a naranja sólido */
+    color: #fff;
+}
