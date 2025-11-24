@@ -41,7 +41,7 @@
 
 /* Estilo de la cara frontal */
 .flip-card-front {
-  background-color: rgb(248, 244, 245); /* Un gris claro */
+  background-image:url('../assets/imagenes/perritos-varios/fondo\ flipcard.jpg');
   color: black;
   display: flex;
   flex-direction: column;

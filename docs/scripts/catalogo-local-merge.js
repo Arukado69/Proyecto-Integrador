@@ -1,3 +1,6 @@
+// 1. IMPORTS (Solo una vez al inicio)
+import { listaDeProductos } from '/scripts/productos.js'; 
+
 // scripts/catalogo_local_merge.js (corregido)
 (() => {
   try {

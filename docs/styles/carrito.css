@@ -164,7 +164,7 @@ body {
 .item-actions .fav:hover{ transform: scale(1.1); color: var(--brand-accent-2); }
 .item-actions .fav.active{ color: var(--brand-accent); transform: scale(1.15); }
 
-/* ---------- Recomendaciones ---------- */
+/* ---------- Recomendaciones ---------- 
 .reco-card{ min-height:100%; overflow: hidden; }
 .reco-img{
   height:140px; background:#f6f2ef; border-top-left-radius:12px; border-top-right-radius:12px;
@@ -177,6 +177,41 @@ body {
   background-image: linear-gradient(90deg, #eee 0px, #f6f6f6 40px, #eee 80px);
   background-size: 600px 100%;
   animation: shimmer 1.2s infinite linear;
+}*/
+
+/* Ajustes para el Carrusel de Recomendaciones */
+
+/* 1. Mueve las flechas hacia afuera en pantallas grandes para que no tapen el producto */
+@media (min-width: 992px) {
+    .reco-section .carousel-control-prev {
+        left: -50px; /* Saca la flecha a la izquierda */
+    }
+    .reco-section .carousel-control-next {
+        right: -50px; /* Saca la flecha a la derecha */
+    }
+}
+
+/* 2. Estilo de las tarjetas de producto */
+.card-reco {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #eee;
+}
+
+/* Efecto al pasar el mouse: se levanta un poco */
+.card-reco:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* 3. Ajuste de imágenes placeholder */
+.placeholder-img {
+    height: 200px;
+    background-color: #f8f9fa;
+    color: #adb5bd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
 }
 
 /* ---------- Badges de pago ---------- */
@@ -206,7 +241,25 @@ input:focus-visible{
 }
 
 /* ---------- Estado vacío ---------- */
-#estadoVacio .btn{ animation: pulse 2.2s ease infinite; }
+#estadoVacio .btn { 
+    animation: none; 
+    
+    /* suavidad al cambio de color */
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+  /* comportamiento al pasar el mouse */
+#estadoVacio .btn:hover {
+    background-color: #0b5ed7; /* Un azul un poco más intenso */
+    border-color: #0a58ca;
+    transform: translateY(-2px); /* Opcional: que suba un poquito (2 píxeles) para dar sensación de clic */
+}
+
+  /* al hacer clic */
+#estadoVacio .btn:active {
+    transform: none; /* Se queda quieto al presionar */
+    background-color: #0a58ca;
+}
 
 /* ---------- Utilidades ---------- */
 .d-none{ display: none !important; }
@@ -237,4 +290,65 @@ input:focus-visible{
 @keyframes fillFlow {
   0% { background-position: 0% 0; }
   100% { background-position: -200% 0; }
+}
+
+/* ================================================= */
+/* ESTILOS DEL CARRUSEL (Igualando al Catálogo)      */
+/* ================================================= */
+
+/* 1. La Tarjeta (Contenedor) */
+.card-carrusel {
+    border: none;
+    border-radius: 1.25rem; /* Mismo radio que catálogo */
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06); /* Sombra suave original */
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+    overflow: hidden; /* Para que la imagen respete el borde */
+}
+
+/* Efecto Hover (Levantar) */
+.card-carrusel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,.08);
+}
+
+/* 2. La Imagen */
+.card-carrusel img {
+    width: 100%;
+    height: 200px; /* Altura fija para uniformidad */
+    object-fit: contain; /* Que no se corte, igual que catálogo */
+    background-color: #fff;
+    padding: 15px; /* Espacio interno para que respire */
+    border-bottom: 1px solid rgba(0,0,0,0.03); /* Separación sutil */
+}
+
+/* 3. Tipografía y Textos */
+.card-carrusel .titulo-producto {
+    font-family: "Fredoka", sans-serif; /* Tu fuente de marca */
+    font-weight: 500;
+    color: #8A7C60; /* Color café del catálogo (.catalogo-h4-color) */
+    font-size: 1.1rem;
+}
+
+.card-carrusel .precio-producto {
+    color: #F3A412; /* Color naranja/dorado (.catalogo-price-color) */
+    font-weight: 700;
+    font-size: 1.2rem;
+    font-family: "Roboto", sans-serif;
+}
+
+/* 4. El Botón (Estilo Secundario del Catálogo) */
+.btn-carrusel {
+    background: #FDEDD0; /* Fondo crema */
+    color: #F3A515;      /* Texto naranja */
+    border: 1px solid #F3A515;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-carrusel:hover {
+    background: #F3A412; /* Cambio a naranja sólido */
+    color: #fff;
 }
