@@ -1,6 +1,7 @@
 package org.proyecto_integrador.woofandbarf.controller;
 
 import org.proyecto_integrador.woofandbarf.exceptions.AlcaldiaNotFoundException;
+import org.proyecto_integrador.woofandbarf.exceptions.ResourceNotFoundException;
 import org.proyecto_integrador.woofandbarf.model.Alcaldia;
 import org.proyecto_integrador.woofandbarf.service.AlcaldiaService;
 import org.springframework.http.HttpStatus;
@@ -20,29 +21,41 @@ public class AlcaldiaController {
     }
 
     @GetMapping
-    public List<Alcaldia> getAll() {
-        return alcaldiaService.getAll();
+    public ResponseEntity<List<Alcaldia>> getAll() {
+        return ResponseEntity.ok(alcaldiaService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Alcaldia> getById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(alcaldiaService.getById(id));
+            return ResponseEntity.ok(alcaldiaService.findById(id));
         } catch (AlcaldiaNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/search/by-name")
+    public ResponseEntity<Alcaldia> getByName(@RequestParam("name") String name) {
+        try {
+            return ResponseEntity.ok(alcaldiaService.findByNombre(name));
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping
     public ResponseEntity<Alcaldia> create(@RequestBody Alcaldia alcaldia) {
-        Alcaldia created = alcaldiaService.create(alcaldia);
+        Alcaldia created = alcaldiaService.save(alcaldia);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Alcaldia> update(@PathVariable Long id, @RequestBody Alcaldia alcaldia) {
+    public ResponseEntity<Alcaldia> update(@PathVariable Long id,
+                                           @RequestBody Alcaldia alcaldia) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(alcaldiaService.update(id, alcaldia));
+            alcaldiaService.findById(id);
+            Alcaldia updated = alcaldiaService.save(alcaldia);
+            return ResponseEntity.ok(updated);
         } catch (AlcaldiaNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
@@ -58,4 +71,3 @@ public class AlcaldiaController {
         }
     }
 }
-

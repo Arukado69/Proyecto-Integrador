@@ -14,24 +14,17 @@ public class Review {
     @Column(name = "id_review")
     private Long id;
 
-    // Relación simple al producto
     @ManyToOne
     @JoinColumn(name = "id_product", nullable = false)
     private Product product;
 
-    //Relacion de Review -> User / N:1
     @ManyToOne
-    @JoinColumn(name = "user_id_review")
+    @JoinColumn(name = "id_usuario", nullable = false)
     @JsonIgnore
     private User user;
 
-    // No nos complicamos con User, solo guardamos el id
-    @Column(name = "id_user", nullable = false)
-    private Long userId;
-
-    // 1 a 5
     @Column(nullable = false)
-    private Integer rating;
+    private Integer rating; // 1–5
 
     @Column(length = 255)
     private String comment;
@@ -39,46 +32,31 @@ public class Review {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
+    public Review() {}
+
     // Getters y Setters
-
     public Long getId() { return id; }
-
     public void setId(Long id) { this.id = id; }
 
     public Product getProduct() { return product; }
-
     public void setProduct(Product product) { this.product = product; }
 
-    public Long getUserId() { return userId; }
-
-    public void setUserId(Long userId) { this.userId = userId; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
     public Integer getRating() { return rating; }
-
     public void setRating(Integer rating) { this.rating = rating; }
 
     public String getComment() { return comment; }
-
     public void setComment(String comment) { this.comment = comment; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
-
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-    //Getter y Setter de User
-
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Review review)) return false;
-        return Objects.equals(id, review.id);
+        if (!(o instanceof Review r)) return false;
+        return Objects.equals(id, r.id);
     }
 
     @Override
@@ -86,4 +64,3 @@ public class Review {
         return Objects.hash(id);
     }
 }
-

@@ -1,11 +1,9 @@
 package org.proyecto_integrador.woofandbarf.service;
 
-import org.proyecto_integrador.woofandbarf.exceptions.ProductNotFoundException;
 import org.proyecto_integrador.woofandbarf.exceptions.ReviewNotFoundException;
-import org.proyecto_integrador.woofandbarf.model.Product;
 import org.proyecto_integrador.woofandbarf.model.Review;
-import org.proyecto_integrador.woofandbarf.repository.ProductRepository;
 import org.proyecto_integrador.woofandbarf.repository.ReviewRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,36 +11,30 @@ import java.util.List;
 @Service
 public class ReviewService {
 
-    private final ReviewRepository reviewRepository;
-    private final ProductRepository productRepository;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
-    public ReviewService(ReviewRepository reviewRepository, ProductRepository productRepository) {
-        this.reviewRepository = reviewRepository;
-        this.productRepository = productRepository;
+    public List<Review> findAll() {
+        return reviewRepository.findAll();
     }
 
-    public List<Review> getByProduct(Long idProduct) {
-        return reviewRepository.findByProduct_Id(idProduct);
+    public Review findById(Long id) {
+        return reviewRepository.findById(id)
+                .orElseThrow(() -> new ReviewNotFoundException(id));
     }
 
-    public Review create(Long idProduct, Review review) {
-        Product product = productRepository.findById(idProduct)
-                .orElseThrow(() -> new ProductNotFoundException(idProduct));
+    public List<Review> findByProductId(Long productId) {
+        return reviewRepository.findByProduct_Id(productId);
+    }
 
-        review.setProduct(product);
-
-        if (review.getRating() < 1 || review.getRating() > 5) {
-            throw new IllegalArgumentException("La calificación debe ser entre 1 y 5");
-        }
-
+    public Review save(Review review) {
         return reviewRepository.save(review);
     }
 
-    public void delete(Long idReview) {
-        if (!reviewRepository.existsById(idReview)) {
-            throw new ReviewNotFoundException(idReview);
+    public void delete(Long id) {
+        if (!reviewRepository.existsById(id)) {
+            throw new ReviewNotFoundException(id);
         }
-        reviewRepository.deleteById(idReview);
+        reviewRepository.deleteById(id);
     }
 }
-
