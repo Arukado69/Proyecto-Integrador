@@ -529,6 +529,14 @@
       .footer-logo {
         width: 100px;
       }
+
+      .hero-icon-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 40px; /* Ajusta según lo que necesites */
+        transition: transform 0.3s ease;
+    }
     }
 
     @media (min-width: 1024px) {
