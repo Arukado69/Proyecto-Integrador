@@ -80,7 +80,7 @@
                 <ul class="nav nav-pills gap-2 align-items-center small fw-semibold">
                     
                     <li class="nav-item">
-                        <a href="./carrito.html" class="text-decoration-none text-muted">
+                        <a href="/pages/carrito.html" class="text-decoration-none text-muted">
                             <span class="badge bg-light text-muted border px-3 py-2">1. Carrito</span>
                         </a>
                     </li>
@@ -162,13 +162,22 @@
 
                             <div class="col-12">
                                 <label for="direccion" class="form-label">Calle y número</label>
-                                <input type="text" class="form-control" id="direccion" placeholder="Ej: Av. Reforma 222, Depto 401" minlength="5" required>
-                                <div class="invalid-feedback">La dirección es muy corta.</div>
+                                <input type="text" class="form-control" id="direccion" 
+                                        placeholder="Ej: Av. Reforma 222 #4" 
+                                        minlength="5" 
+                                        pattern="^[a-zA-Z0-9À-ÿ\u00f1\u00d1 .,#-]+$"
+                                        title="Usa letras, números y caracteres válidos (.,#-)"
+                                        required>
+                            <div class="invalid-feedback">Dirección inválida o muy corta.</div>
                             </div>
 
                             <div class="col-12">
                                 <label for="colonia" class="form-label">Colonia / Barrio</label>
-                                <input type="text" class="form-control" id="colonia" minlength="3" required>
+                                <input type="text" class="form-control" id="colonia" 
+                                        minlength="3" 
+                                        pattern="^[a-zA-Z0-9À-ÿ\u00f1\u00d1 .,#-]+$"
+                                        required>
+                            <div class="invalid-feedback">Ingresa una colonia válida.</div>
                             </div>
 
                             <div class="col-md-5">
@@ -204,13 +213,14 @@
 
                             <div class="col-12">
                                 <label for="telefono" class="form-label">Teléfono móvil</label>
-                                <input type="tel" class="form-control" id="telefono" placeholder="10 dígitos" 
-                                       pattern="[0-9]{10}" 
-                                       maxlength="10" 
-                                       inputmode="numeric" 
-                                       required>
-                                <div class="invalid-feedback">Ingresa 10 dígitos sin guiones ni espacios.</div>
-                                <div class="form-text">Para contactarte en caso de incidencias con la entrega.</div>
+                                <input type="tel" class="form-control" id="telefono" 
+                                        placeholder="10 dígitos" 
+                                        pattern="[0-9]{10}" 
+                                        maxlength="10" 
+                                        inputmode="numeric" 
+                                        required>
+                            <div class="invalid-feedback">Deben ser 10 dígitos.</div>
+                            <div class="form-text">Para contactarte en caso de incidencias con la entrega.</div>
                             </div>
 
                             <div class="col-12 mt-4 d-flex justify-content-between align-items-center border-top pt-4">
