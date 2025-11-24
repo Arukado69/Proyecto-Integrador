@@ -2,91 +2,52 @@ package org.proyecto_integrador.woofandbarf.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
-
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "roles")
 public class Rol {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //VARIABLES DE INSTANCIA
-    private Integer idRol;
-
+    @Column(name = "id_rol")
+    private Long idRol;
 
     @Column(name = "rol_pagina", nullable = false, unique = true, length = 30)
     private String rolPagina;
 
-    //relacion 1: N
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "rol")
-    @JsonIgnore
-    private List<User> user;
+    @OneToMany(mappedBy = "rol")
+    @JsonIgnore // No es tan necesario , pero lo dejamos por si las dudas.
+    private List<User> users;
 
+    // Constructores
+    public Rol() {}
 
-    //constructores
-
-
-    public Rol(int idRol, String rolPagina) {
-        this.idRol = idRol;
+    public Rol(String rolPagina) {
         this.rolPagina = rolPagina;
     }
 
-    public Rol(){
+    // Getters y Setters
+    public Long getIdRol() { return idRol; }
+    public void setIdRol(Long idRol) { this.idRol = idRol; }
 
-    }
+    public String getRolPagina() { return rolPagina; }
+    public void setRolPagina(String rolPagina) { this.rolPagina = rolPagina; }
 
-    //Getters y Setters
+    public List<User> getUsers() { return users; }
+    public void setUsers(List<User> users) { this.users = users; }
 
-    public void setIdRol(Integer idRol) {
-        this.idRol = idRol;
-    }
-
-    public int getIdRol() {
-        return idRol;
-    }
-
-    public void setIdRol(int idRol) {
-        this.idRol = idRol;
-    }
-
-    public String getRolPagina() {
-        return rolPagina;
-    }
-
-    public void setRolPagina(String rolPagina) {
-        this.rolPagina = rolPagina;
-    }
-
-    public List<User> getUser() {
-        return user;
-    }
-
-    public void setUser(List<User> user) {
-        this.user = user;
-    }
-
-//ToString()
-
-    @Override
-    public String toString() {
-        return "Roles{" +
-                "idRol=" + idRol +
-                ", rolPagina='" + rolPagina + '\'' +
-                '}';
-    }
-
-    //Equals() y HashCode()
-
+    // equals & hashCode
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (!(o instanceof Rol rol)) return false;
-        return idRol == rol.idRol && Objects.equals(rolPagina, rol.rolPagina);
+        return Objects.equals(idRol, rol.idRol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idRol, rolPagina);
+        return Objects.hash(idRol);
     }
 }

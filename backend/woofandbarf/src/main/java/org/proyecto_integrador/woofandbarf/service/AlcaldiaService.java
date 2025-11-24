@@ -1,8 +1,10 @@
 package org.proyecto_integrador.woofandbarf.service;
 
 import org.proyecto_integrador.woofandbarf.exceptions.AlcaldiaNotFoundException;
+import org.proyecto_integrador.woofandbarf.exceptions.ResourceNotFoundException;
 import org.proyecto_integrador.woofandbarf.model.Alcaldia;
 import org.proyecto_integrador.woofandbarf.repository.AlcaldiaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,32 +12,28 @@ import java.util.List;
 @Service
 public class AlcaldiaService {
 
-    private final AlcaldiaRepository alcaldiaRepository;
+    @Autowired
+    private AlcaldiaRepository alcaldiaRepository;
 
-    public AlcaldiaService(AlcaldiaRepository alcaldiaRepository) {
-        this.alcaldiaRepository = alcaldiaRepository;
-    }
-
-    public List<Alcaldia> getAll() {
+    public List<Alcaldia> findAll() {
         return alcaldiaRepository.findAll();
     }
 
-    public Alcaldia getById(Long id) {
+    public Alcaldia findById(Long id) {
         return alcaldiaRepository.findById(id)
                 .orElseThrow(() -> new AlcaldiaNotFoundException(id));
     }
 
-    public Alcaldia create(Alcaldia alcaldia) {
+    public Alcaldia findByNombre(String nombre) {
+        Alcaldia alcaldia = alcaldiaRepository.findByNombre(nombre);
+        if (alcaldia == null) {
+            throw new ResourceNotFoundException("No se encontró la Alcaldía con nombre: " + nombre);
+        }
+        return alcaldia;
+    }
+
+    public Alcaldia save(Alcaldia alcaldia) {
         return alcaldiaRepository.save(alcaldia);
-    }
-
-    public Alcaldia update(Long id, Alcaldia alcaldia) {
-        return alcaldiaRepository.findById(id)
-                .map(a -> {
-                    a.setName(alcaldia.getName());
-                    return alcaldiaRepository.save(a);
-                })
-                .orElseThrow(() -> new AlcaldiaNotFoundException(id));
     }
 
     public void delete(Long id) {
@@ -45,4 +43,3 @@ public class AlcaldiaService {
         alcaldiaRepository.deleteById(id);
     }
 }
-

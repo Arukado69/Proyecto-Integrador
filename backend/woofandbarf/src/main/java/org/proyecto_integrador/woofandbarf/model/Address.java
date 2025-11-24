@@ -13,38 +13,37 @@ public class Address {
     @Column(name = "id_direccion")
     private Long id;
 
-    // User externo: solo guardamos id
-    @Column(name = "id_user", nullable = false)
-    private Long userId;
-
     @Column(nullable = false, length = 120)
     private String street;
 
     @Column(nullable = false, length = 20)
     private String number;
 
+    @Column(length = 20)
+    private String interior;
+
+    @Column(nullable = false, length = 120)
+    private String colonia;
+
     @Column(nullable = false, length = 10)
     private String postalCode;
 
-    // Alcaldía de la dirección
+    // RELACIÓN CON USER (1:N)
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @JsonIgnore
+    private User user;
+
+    // RELACIÓN CON ALCALDÍA
     @ManyToOne
     @JoinColumn(name = "id_alcaldia", nullable = false)
     private Alcaldia alcaldia;
-    //Relacion de Address -> User / N:1
-    @ManyToOne
-    @JoinColumn(name = "user_id_address",nullable = false)
-    @JsonIgnore
-    private User user;
 
     // Getters y Setters
 
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
-
-    public Long getUserId() { return userId; }
-
-    public void setUserId(Long userId) { this.userId = userId; }
 
     public String getStreet() { return street; }
 
@@ -71,6 +70,22 @@ public class Address {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getInterior() {
+        return interior;
+    }
+
+    public void setInterior(String interior) {
+        this.interior = interior;
+    }
+
+    public String getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(String colonia) {
+        this.colonia = colonia;
     }
 
     @Override

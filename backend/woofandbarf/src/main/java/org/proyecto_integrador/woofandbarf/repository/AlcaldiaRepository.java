@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AlcaldiaRepository extends JpaRepository<Alcaldia, Long> {
-    Alcaldia findByName(String name);
+
+    Alcaldia findByNombre(String nombre);
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "usuarios")
 public class User {
 
     /*
@@ -17,30 +17,37 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //autoincrementable con IDENTITY
     @Column(name = "id_usuario")
-    private Integer idUsuario;
-    @Column(name = "nombre", nullable = false, length = 30)
+    private Long idUsuario;
+
+    @Column(name = "nombre", nullable = false, length = 80)
     private String nombre;
-    @Column(name = "apellido_paterno", nullable = false, length = 30)
+
+    @Column(name = "apellido_paterno", nullable = false, length = 80)
     private String apellidoPaterno;
-    @Column(name = "apellido_materno", nullable = false, length = 30)
+
+    @Column(name = "apellido_materno", nullable = false, length = 80)
     private String apellidoMaterno;
-    @Column(name = "email", nullable = false,unique = true,length = 60)
+
+    @Column(name = "email", nullable = false, unique = true,length = 80)
     private String email;
-    @Column(name = "telefono", nullable = false, unique = true, length = 15)
+
+    @Column(name = "telefono", nullable = false, length = 25)
     private String telefono;
-    @Column(name = "fecha_nacimiento", nullable = false, columnDefinition = "DATE")
+
+    @Column(name = "fecha_nacimiento")
     private Date fechaNacimiento;
-    @Column(name = "password", nullable = false, length = 30)
+
+    @Column(name = "password", nullable = false, length = 60)
     private String password;
 
 
     //Relaciones User -> Rol N:1
     @ManyToOne
-    @JoinColumn(name = "rol_id_user", nullable = false)
+    @JoinColumn(name = "id_rol")
     private Rol rol;
 
     //Relacion User -> Pedido / 1:N
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     private List<Pedido> pedidos;
     //Relacion User -> Direccion / 1:N
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -48,16 +55,27 @@ public class User {
     //Relacion de User -> Review / 1:N
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Review> review;
+    // RELACIÓN: un usuario tiene 1 carrito
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 
     //Constructores (Normal y vacio)
 
 
-    public User(Rol rol) {
+    public User(Rol rol)
+    {
         this.rol = rol;
     }
 
-    public User(Integer idUsuario, String nombre, String apellidoPaterno, String apellidoMaterno, String telefono, String email, Date fechaNacimiento, String password) {
-        this.idUsuario = idUsuario;
+    public User(
+                String nombre,
+                String apellidoPaterno,
+                String apellidoMaterno,
+                String telefono,
+                String email,
+                Date fechaNacimiento,
+                String password) {
+
         this.nombre = nombre;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
@@ -74,11 +92,11 @@ public class User {
     //Getters y Setter de clase
 
 
-    public int getIdUsuario() {
+    public Long getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(Integer idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -191,14 +209,17 @@ public class User {
 
     //Equals() y HashCode
 
+
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (!(o instanceof User user)) return false;
-        return idUsuario == user.idUsuario && Objects.equals(nombre, user.nombre) && Objects.equals(apellidoPaterno, user.apellidoPaterno) && Objects.equals(apellidoMaterno, user.apellidoMaterno) && Objects.equals(email, user.email) && Objects.equals(telefono, user.telefono) && Objects.equals(fechaNacimiento, user.fechaNacimiento);
+        return Objects.equals(idUsuario, user.idUsuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idUsuario, nombre, apellidoPaterno, apellidoMaterno, email, telefono, fechaNacimiento);
+        return Objects.hash(idUsuario);
     }
+
 }

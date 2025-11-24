@@ -10,49 +10,30 @@ import java.util.List;
 
 @Service
 public class PedidoService {
-    private final PedidoRepository pedidoRepository;
 
     @Autowired
-    public PedidoService(PedidoRepository pedidoRepository) {
-        this.pedidoRepository = pedidoRepository;
-    }
+    private PedidoRepository pedidoRepository;
 
-    // Obtener los pedidos
-    public List<Pedido> getPedido() {
+    public List<Pedido> findAll() {
         return pedidoRepository.findAll();
     }
 
-    // Crear pedido
-    public Pedido createPedido(Pedido newPedido) {
-        return pedidoRepository.save(newPedido);
+    public Pedido findById(Long id) {
+        return pedidoRepository.findById(id.longValue())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No se encontró el pedido con id: " + id));
     }
 
-    // Buscar por id
-    public Pedido findById(Integer idPedido) {
-        return pedidoRepository.findById(idPedido)
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado: " + idPedido));
+    public Pedido save(Pedido pedido) {
+        return pedidoRepository.save(pedido);
     }
 
-    // Eliminar pedido
-    public void deletePedido(Integer idPedido) {
-        if (pedidoRepository.existsById(idPedido)) {
-            pedidoRepository.deleteById(idPedido);
-        } else {
-            throw new ResourceNotFoundException("Pedido no encontrado: " + idPedido);
+    public void delete(Long id) {
+        Long key = id.longValue();
+        if (!pedidoRepository.existsById(key)) {
+            throw new ResourceNotFoundException(
+                    "No se encontró el pedido con id: " + id);
         }
-    }
-
-    // Actualizar todos los campos del pedido
-    public Pedido updatePedido(Pedido pedido, Integer idPedido) {
-        return pedidoRepository.findById(idPedido)
-                .map(pedidoMap -> {
-                    pedidoMap.setIdUsuario(pedido.getIdUsuario());
-                    pedidoMap.setDireccionEnvio(pedido.getDireccionEnvio());
-                    pedidoMap.setTotalVenta(pedido.getTotalVenta());
-                    pedidoMap.setNumeroRastreador(pedido.getNumeroRastreador());
-                    pedidoMap.setFechaCreacion(pedido.getFechaCreacion());
-                    return pedidoRepository.save(pedidoMap);
-                })
-                .orElseThrow(() -> new ResourceNotFoundException("Pedido no encontrado: " + idPedido));
+        pedidoRepository.deleteById(key);
     }
 }

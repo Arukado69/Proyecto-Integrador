@@ -1,7 +1,6 @@
 package org.proyecto_integrador.woofandbarf.controller;
 
 import org.proyecto_integrador.woofandbarf.exceptions.AddressNotFoundException;
-import org.proyecto_integrador.woofandbarf.exceptions.AlcaldiaNotFoundException;
 import org.proyecto_integrador.woofandbarf.model.Address;
 import org.proyecto_integrador.woofandbarf.service.AddressService;
 import org.springframework.http.HttpStatus;
@@ -20,35 +19,41 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    @GetMapping("/user/{userId}")
-    public List<Address> getByUser(@PathVariable Long userId) {
-        return addressService.getByUser(userId);
+    @GetMapping
+    public ResponseEntity<List<Address>> getAll() {
+        return ResponseEntity.ok(addressService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Address> getById(@PathVariable Long id) {
         try {
-            return ResponseEntity.ok(addressService.getById(id));
+            return ResponseEntity.ok(addressService.findById(id));
         } catch (AddressNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Address>> getByUser(@PathVariable Long userId) {
+        List<Address> addresses = addressService.findByUserId(userId);
+        return ResponseEntity.ok(addresses);
+    }
+
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Address address) {
-        try {
-            Address created = addressService.create(address);
-            return ResponseEntity.status(HttpStatus.CREATED).body(created);
-        } catch (AlcaldiaNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<Address> create(@RequestBody Address address) {
+        Address created = addressService.save(address);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Address address) {
+    public ResponseEntity<Address> update(@PathVariable Long id,
+                                          @RequestBody Address address) {
         try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(addressService.update(id, address));
-        } catch (AddressNotFoundException | AlcaldiaNotFoundException e) {
+            // Verificamos que exista
+            addressService.findById(id);
+            Address updated = addressService.save(address);
+            return ResponseEntity.ok(updated);
+        } catch (AddressNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -63,4 +68,3 @@ public class AddressController {
         }
     }
 }
-
