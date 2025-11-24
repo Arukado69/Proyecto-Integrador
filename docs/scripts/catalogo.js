@@ -1,3 +1,5 @@
+// 1. IMPORTS (Solo una vez al inicio)
+import { listaDeProductos } from '/scripts/productos.js'; 
 // ------- Config -------
 const ITEMS_PER_PAGE = 6;
 

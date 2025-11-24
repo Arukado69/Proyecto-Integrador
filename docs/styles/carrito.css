@@ -164,7 +164,7 @@ body {
 .item-actions .fav:hover{ transform: scale(1.1); color: var(--brand-accent-2); }
 .item-actions .fav.active{ color: var(--brand-accent); transform: scale(1.15); }
 
-/* ---------- Recomendaciones ---------- */
+/* ---------- Recomendaciones ---------- 
 .reco-card{ min-height:100%; overflow: hidden; }
 .reco-img{
   height:140px; background:#f6f2ef; border-top-left-radius:12px; border-top-right-radius:12px;
@@ -177,6 +177,41 @@ body {
   background-image: linear-gradient(90deg, #eee 0px, #f6f6f6 40px, #eee 80px);
   background-size: 600px 100%;
   animation: shimmer 1.2s infinite linear;
+}*/
+
+/* Ajustes para el Carrusel de Recomendaciones */
+
+/* 1. Mueve las flechas hacia afuera en pantallas grandes para que no tapen el producto */
+@media (min-width: 992px) {
+    .reco-section .carousel-control-prev {
+        left: -50px; /* Saca la flecha a la izquierda */
+    }
+    .reco-section .carousel-control-next {
+        right: -50px; /* Saca la flecha a la derecha */
+    }
+}
+
+/* 2. Estilo de las tarjetas de producto */
+.card-reco {
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid #eee;
+}
+
+/* Efecto al pasar el mouse: se levanta un poco */
+.card-reco:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+
+/* 3. Ajuste de imágenes placeholder */
+.placeholder-img {
+    height: 200px;
+    background-color: #f8f9fa;
+    color: #adb5bd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
 }
 
 /* ---------- Badges de pago ---------- */
@@ -206,7 +241,25 @@ input:focus-visible{
 }
 
 /* ---------- Estado vacío ---------- */
-#estadoVacio .btn{ animation: pulse 2.2s ease infinite; }
+#estadoVacio .btn { 
+    animation: none; 
+    
+    /* suavidad al cambio de color */
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+  /* comportamiento al pasar el mouse */
+#estadoVacio .btn:hover {
+    background-color: #0b5ed7; /* Un azul un poco más intenso */
+    border-color: #0a58ca;
+    transform: translateY(-2px); /* Opcional: que suba un poquito (2 píxeles) para dar sensación de clic */
+}
+
+  /* al hacer clic */
+#estadoVacio .btn:active {
+    transform: none; /* Se queda quieto al presionar */
+    background-color: #0a58ca;
+}
 
 /* ---------- Utilidades ---------- */
 .d-none{ display: none !important; }

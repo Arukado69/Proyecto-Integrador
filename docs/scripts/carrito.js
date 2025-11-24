@@ -1,422 +1,355 @@
-/* === Woof & Barf · Carrito animado (sin tocar HTML) ===
-   - Estado centralizado + persistencia (localStorage)
-   - Antirrebote en +/−, contador en ícono
-   - Cupones: WOOF10 (-10%), ENVIOGRATIS (envío $0)
-   - Estimador de entrega por CP (2–4 días hábiles)
-   - Recomendaciones en carousel con skeleton + load fade
-   - Totales = (subtotal - descuento) + IVA + envío
-   - Toasts Bootstrap para feedback + "Deshacer" en eliminar
-*/
-(() => {
-  // --------- Constantes / DOM
-  const LS_CART   = 'cart:v1';
-  const LS_COUPON = 'coupon:v1';
+// 1. IMPORTS
+import { listaDeProductos } from '/scripts/productos.js'; 
 
-  const $miniCount = $('#miniCount');
-  const $lista     = $('#listaItems');
-  const $vacio     = $('#estadoVacio');
-  const $hint      = $('#hintMostrando');
+// ==========================================
+// A. CONFIGURACIÓN Y MODELO (Estado)
+// ==========================================
+const CLAVE_CARRITO = 'carritoWoofBarf';
 
-  const $rSubtotal = $('#rSubtotal');
-  const $rDescuento= $('#rDescuento');
-  const $rEnvio    = $('#rEnvio');
-  const $rIva      = $('#rIva');
-  const $rTotal    = $('#rTotal');
+// Variables de Estado Temporal (Para la sesión actual)
+let descuentoAplicado = 0;   // Porcentaje (ej: 0.10)
+let costoEnvioManual = null; // Si el usuario calcula envío y no aplica gratis
 
-  const $btnVaciar = $('#btnVaciar');
-  const $btnPagar  = $('#btnPagar');
+// Obtener carrito almacenado o devolver array vacío
+function obtenerCarrito() {
+    const almacenado = localStorage.getItem(CLAVE_CARRITO);
+    return almacenado ? JSON.parse(almacenado) : [];
+}
 
-  const $cupon         = $('#cupon');
-  const $btnCupon      = $('#btnAplicarCupon');
-  const $cuponFeedback = $('#cuponFeedback');
+// Guardar el array actualizado
+function guardarCarrito(carrito) {
+    localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+}
 
-  const $cp         = $('#cp');
-  const $btnCP      = $('#btnCalcularCP');
-  const $cpResultado= $('#cpResultado');
+// ==========================================
+// B. CONTROLADOR (Lógica del Negocio)
+// ==========================================
 
-  const $recoSlides = $('#recoSlides');
-  const $toasts     = $('#toasts');
+// --- ACCIONES DE PRODUCTOS ---
 
-  // --------- Helpers
-  const $ = (sel, ctx=document) => ctx.querySelector(sel);
-  const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
-  const money = n => Number(n || 0).toLocaleString('es-MX', { style:'currency', currency:'MXN' });
-  const safeJSON = s => { try{ return JSON.parse(s) } catch { return null } };
+window.agregarAlCarrito = function(idProducto) {
+    let carrito = obtenerCarrito();
+    const itemExistente = carrito.find(item => item.id === idProducto);
 
-  const COUPONS = {
-    'WOOF10':      { type:'percent', value:0.10, label:'10% de descuento' },
-    'ENVIOGRATIS': { type:'shipping', value:1,    label:'Envío gratis' }
-  };
-
-  // --------- Estado central
-  const state = {
-    items: readCart(),
-    coupon: readCoupon(),
-
-    get subtotal(){
-      return this.items.reduce((acc,it)=> acc + (Number(it.price)||0)*(Number(it.qty)||0), 0);
-    },
-    get discount(){
-      const c = this.coupon;
-      if (!c) return 0;
-      if (c.type === 'percent') return +(this.subtotal * c.value).toFixed(2);
-      return 0;
-    },
-    get envio(){
-      const after = Math.max(0, this.subtotal - this.discount);
-      let envio = (after >= 499 || after === 0) ? 0 : 89;
-      if (this.coupon?.type === 'shipping') envio = 0;
-      return envio;
-    },
-    get iva(){
-      return +((Math.max(0, this.subtotal - this.discount)) * 0.16).toFixed(2);
-    },
-    get total(){
-      return Math.max(0, this.subtotal - this.discount) + this.iva + this.envio;
+    if (itemExistente) {
+        itemExistente.cantidad++;
+        alert("¡Cantidad actualizada (+1) en el carrito!"); 
+    } else {
+        const productoInfo = listaDeProductos.find(p => p.id === idProducto);
+        if (productoInfo) {
+            carrito.push({ ...productoInfo, cantidad: 1 });
+            alert("¡Producto agregado al carrito!");
+        } else {
+            console.error("Error: Producto no encontrado con ID", idProducto);
+            return;
+        }
     }
-  };
+    guardarCarrito(carrito);
+    renderizarCarritoUI();
+};
 
-  // --------- Storage
-  function readCart(){
-    const data = safeJSON(localStorage.getItem(LS_CART));
-    return Array.isArray(data) ? data : [];
-  }
-  function writeCart(list){
-    state.items = list;
-    localStorage.setItem(LS_CART, JSON.stringify(list));
-    updateBadge();
-  }
-  function readCoupon(){
-    return safeJSON(localStorage.getItem(LS_COUPON)) || null;
-  }
-  function writeCoupon(c){
-    state.coupon = c;
-    if (c) localStorage.setItem(LS_COUPON, JSON.stringify(c));
-    else localStorage.removeItem(LS_COUPON);
-  }
+window.cambiarCantidad = function(id, cambio) {
+    let carrito = obtenerCarrito();
+    const item = carrito.find(p => p.id === id);
 
-  // --------- Throttle para +/−
-  const throttles = new Map();
-  function throttle(key, ms=180){
-    const now = Date.now(), last = throttles.get(key) || 0;
-    if (now - last < ms) return false;
-    throttles.set(key, now);
-    return true;
-  }
-
-  // --------- Render
-  function render(){
-    const list = state.items;
-
-    // Estado vacío
-    if (!list.length){
-      $lista.innerHTML = '';
-      $vacio.classList.remove('d-none');
-      $hint.textContent = 'Mostrando 0 artículos';
-      paintTotals();
-      updateBadge();
-      return;
+    if (item) {
+        item.cantidad += cambio;
+        if (item.cantidad < 1) item.cantidad = 1;
+        guardarCarrito(carrito);
+        renderizarCarritoUI();
     }
-    $vacio.classList.add('d-none');
-    $hint.textContent = `Mostrando ${list.length} artículo${list.length===1?'':'s'}`;
+};
 
-    $lista.innerHTML = list.map(itemTemplate).join('');
-
-    // Delegación de eventos de items
-    $$('#listaItems [data-btn="plus"]').forEach(b => b.addEventListener('click', onPlus));
-    $$('#listaItems [data-btn="minus"]').forEach(b => b.addEventListener('click', onMinus));
-    $$('#listaItems [data-btn="remove"]').forEach(b => b.addEventListener('click', onRemove));
-    $$('#listaItems [data-btn="fav"]').forEach(b => b.addEventListener('click', e => e.currentTarget.classList.toggle('active')));
-
-    // QTY bounce visual
-    requestAnimationFrame(() => {
-      $$('#listaItems .qty-input').forEach(q => {
-        q.classList.remove('qty-bounce'); void q.offsetWidth; q.classList.add('qty-bounce');
-      });
-    });
-
-    paintTotals();
-    updateBadge();
-  }
-
-  function itemTemplate({ id, name, price, qty, image, meta }){
-    const src = image || '../assets/imagenes/productos/placeholder.png';
-    const q = Number(qty)||1;
-    const metaText = meta || 'Paquete 500 g';
-    return `
-      <article class="item reveal-on-scroll">
-        <img class="item-img" src="${src}" alt="${escapeHtml(name||'Producto')}" onerror="this.src='../assets/imagenes/productos/placeholder.png'">
-        <div class="item-info">
-          <h3 class="item-title">${escapeHtml(name||'Producto')}</h3>
-          <div class="item-meta">${escapeHtml(metaText)}</div>
-          <div class="item-price mt-1">${money(price)}</div>
-          <div class="small text-muted mt-1">
-            <span class="badge text-bg-light">Fresco</span>
-            <span class="badge text-bg-light">Sin conservadores</span>
-          </div>
-        </div>
-        <div class="item-qty">
-          <button class="qty-btn" data-btn="minus" data-id="${id}" aria-label="Restar">−</button>
-          <input class="qty-input" value="${q}" inputmode="numeric" aria-label="Cantidad" readonly>
-          <button class="qty-btn" data-btn="plus" data-id="${id}" aria-label="Sumar">+</button>
-        </div>
-        <div class="item-actions">
-          <button class="fav" data-btn="fav" title="Mover a favoritos"><i class="bi bi-heart"></i></button>
-          <button class="btn-remove" data-btn="remove" data-id="${id}" title="Eliminar"><i class="bi bi-x-lg"></i> Eliminar</button>
-        </div>
-      </article>
-    `;
-  }
-
-  function escapeHtml(s){ return String(s??'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
-
-  // --------- Totales
-  function paintTotals(){
-    $rSubtotal.textContent = money(state.subtotal);
-    $rDescuento.textContent= '−' + money(state.discount);
-    $rEnvio.textContent    = money(state.envio);
-    $rIva.textContent      = money(state.iva);
-    $rTotal.textContent    = money(state.total);
-    $btnPagar.disabled     = state.items.length === 0;
-  }
-
-  function updateBadge(){
-    const count = state.items.reduce((a,it)=> a+(Number(it.qty)||0), 0);
-    if ($miniCount) $miniCount.textContent = String(count);
-  }
-
-  // --------- Handlers (items)
-  function onPlus(e){
-    const id = e.currentTarget.dataset.id;
-    if (!throttle('plus:'+id)) return;
-    const i = state.items.findIndex(it => String(it.id) === String(id));
-    if (i>=0){
-      state.items[i].qty = Math.min(99, Number(state.items[i].qty||1)+1);
-      writeCart(state.items); render(); toast('Cantidad actualizada','primary');
+window.eliminarItem = function(id) {
+    if(confirm("¿Seguro que quieres eliminar este producto?")) {
+        let carrito = obtenerCarrito();
+        carrito = carrito.filter(p => p.id !== id);
+        guardarCarrito(carrito);
+        renderizarCarritoUI();
     }
-  }
+};
 
-  function onMinus(e){
-    const id = e.currentTarget.dataset.id;
-    if (!throttle('minus:'+id)) return;
-    const i = state.items.findIndex(it => String(it.id) === String(id));
-    if (i>=0){
-      const next = Math.max(0, Number(state.items[i].qty||1)-1);
-      if (next===0){
-        if (!confirm('¿Eliminar este producto del carrito?')) return;
-        const removed = state.items.splice(i,1)[0];
-        writeCart(state.items); render();
-        toast(`Producto eliminado <a href="#" data-undo='${removed.id}'>Deshacer</a>`, 'danger');
-        lastRemoved = removed;
-      } else {
-        state.items[i].qty = next;
-        writeCart(state.items); render(); toast('Cantidad actualizada','primary');
-      }
+window.vaciarCarrito = function() {
+    if(confirm("¿Vaciar todo el carrito?")) {
+        localStorage.removeItem(CLAVE_CARRITO);
+        renderizarCarritoUI();
     }
-  }
+};
 
-  function onRemove(e){
-    const id = e.currentTarget.dataset.id;
-    const i = state.items.findIndex(it => String(it.id) === String(id));
-    if (i>=0){
-      const removed = state.items.splice(i,1)[0];
-      writeCart(state.items); render();
-      toast(`Producto eliminado <a href="#" data-undo='${removed.id}'>Deshacer</a>`, 'danger');
-      lastRemoved = removed;
+// --- ACCIONES DEL SIDEBAR (CUPONES Y ENVÍO) ---
+
+window.aplicarCupon = function() {
+    const inputCupon = document.getElementById('cupon');
+    const feedback = document.getElementById('cuponFeedback');
+    const codigo = inputCupon.value.trim().toUpperCase();
+
+    // Simulación de cupones válidos
+    const cuponesValidos = {
+        'WOOF10': 0.10, // 10%
+        'BARF20': 0.20, // 20%
+        'JO': 0.50      // 50% (Tu cupón secreto)
+    };
+
+    if (cuponesValidos[codigo]) {
+        descuentoAplicado = cuponesValidos[codigo];
+        feedback.innerHTML = `<span class="text-success small"><i class="bi bi-check-circle"></i> Cupón aplicado: -${descuentoAplicado * 100}%</span>`;
+        inputCupon.classList.add('is-valid');
+        inputCupon.classList.remove('is-invalid');
+        inputCupon.disabled = true; 
+        document.getElementById('btnAplicarCupon').disabled = true;
+    } else {
+        descuentoAplicado = 0;
+        feedback.innerHTML = `<span class="text-danger small"><i class="bi bi-x-circle"></i> Cupón no válido</span>`;
+        inputCupon.classList.add('is-invalid');
     }
-  }
-  let lastRemoved = null;
+    renderizarCarritoUI(); // Recalcular precios
+};
 
-  // Undo desde toast
-  $toasts.addEventListener('click', ev => {
-    const id = ev.target?.getAttribute?.('data-undo');
-    if (!id || !lastRemoved) return;
-    ev.preventDefault();
-    const exists = state.items.find(it => String(it.id)===String(id));
-    if (!exists){
-      state.items.push(lastRemoved);
-      writeCart(state.items); render(); toast('Se restauró el producto','success');
+window.calcularEnvioCP = function() {
+    const cpInput = document.getElementById('cp');
+    const resultado = document.getElementById('cpResultado');
+    const cp = cpInput.value.trim();
+
+    if (cp.length === 5 && !isNaN(cp)) {
+        if (cp.startsWith('0') || cp.startsWith('1')) { // Simulación CDMX
+            costoEnvioManual = 100;
+            resultado.innerHTML = '<span class="text-success small">Envío local: $100.00</span>';
+        } else {
+            costoEnvioManual = 180;
+            resultado.innerHTML = '<span class="text-info small">Envío nacional: $180.00</span>';
+        }
+    } else {
+        resultado.innerHTML = '<span class="text-danger small">Ingresa un CP válido de 5 dígitos</span>';
+        costoEnvioManual = null;
     }
-    lastRemoved = null;
-  });
+    renderizarCarritoUI(); // Recalcular precios
+};
 
-  // --------- Vaciar / Pagar
-  $btnVaciar?.addEventListener('click', () => {
-    if (!state.items.length) return;
-    if (confirm('¿Vaciar todo el carrito?')){
-      writeCart([]); render(); toast('Carrito vacío','secondary');
+window.irAPagar = function() {
+    const carrito = obtenerCarrito();
+    if (carrito.length === 0) {
+        alert("Tu carrito está vacío.");
+        return;
     }
-  });
 
-  $btnPagar?.addEventListener('click', () => {
-    if (!state.items.length) return;
-    localStorage.setItem('lastOrder', JSON.stringify({
-      id: 'WBF-' + Math.random().toString(36).slice(2,8).toUpperCase(),
-      date: new Date().toISOString(),
-      items: state.items,
-      total: state.total
+    // Guardar resumen para la página "Datos"
+    const totalString = document.getElementById('rTotal').innerText;
+    localStorage.setItem('resumenPedido', JSON.stringify({
+        totalString: totalString,
+        itemsCount: carrito.length
     }));
-    window.location.href = './confirmacion.html';
-  });
 
-  // --------- Cupones
-  $btnCupon?.addEventListener('click', () => {
-    const code = String($cupon.value||'').trim().toUpperCase();
-    if (!code) { setFeedback($cuponFeedback,'Escribe un código.','error'); return; }
-    const c = COUPONS[code];
-    if (!c){ setFeedback($cuponFeedback,'Código inválido o expirado.','error'); toast('Cupón inválido','warning'); return; }
-    writeCoupon({ code, ...c });
-    setFeedback($cuponFeedback, `Aplicado: ${c.label}`,'ok');
-    render(); toast('Cupón aplicado','success');
-  });
+    // Redireccionar
+    window.location.href = './datos.html';
+};
 
-  function setFeedback(el, text, type){
-    el.textContent = text;
-    el.classList.remove('ok','error');
-    if (type) el.classList.add(type);
-  }
+// ==========================================
+// C. VISTA (Renderizado del Carrito Principal)
+// ==========================================
 
-  // --------- Estimador de entrega por CP
-  $btnCP?.addEventListener('click', () => {
-    const cp = String($cp.value||'').trim();
-    if (!/^\d{5}$/.test(cp)){ $cpResultado.textContent='Ingresa un CP válido (5 dígitos).'; return; }
-    const dias = 2 + Math.floor(Math.random()*3); // 2–4 días hábiles
-    const fecha = addBusinessDays(new Date(), dias);
-    $cpResultado.innerHTML = `Entrega estimada: <b>${fecha.toLocaleDateString('es-MX')}</b> (2–4 días hábiles).`;
-    toast('Estimación generada','info');
-  });
+function renderizarCarritoUI() {
+    const carrito = obtenerCarrito();
+    
+    // Referencias al DOM
+    const contenedorItems = document.getElementById('listaItems');
+    const estadoVacio = document.getElementById('estadoVacio');
+    const hintMostrando = document.getElementById('hintMostrando');
+    const actionsBar = document.getElementById('actionsBar');
 
-  function addBusinessDays(date, days){
-    let d = new Date(date), added = 0;
-    while (added < days){
-      d.setDate(d.getDate()+1);
-      const w = d.getDay();
-      if (w!==0 && w!==6) added++;
+    // 1. Estado Vacío
+    if (carrito.length === 0) {
+        estadoVacio.classList.remove('d-none');
+        contenedorItems.innerHTML = '';
+        actionsBar.classList.add('d-none');
+        hintMostrando.innerText = 'Mostrando 0 artículos';
+        actualizarTotales(0);
+        return;
     }
-    return d;
-  }
 
-  // --------- Recomendaciones (carousel)
-  const recoData = [
-    { id:'r1', name:'Tenias BARF pollo 500g', price:109, image:'../assets/imagenes/productos/barf1.jpg' },
-    { id:'r2', name:'Snack hígado 120g',     price:79,  image:'../assets/imagenes/productos/snack1.jpg' },
-    { id:'r3', name:'Mix res 1kg',           price:199, image:'../assets/imagenes/productos/barf2.jpg' },
-    { id:'r4', name:'Aceite de salmón 250ml',price:149, image:'../assets/imagenes/productos/oil.jpg' },
-    { id:'r5', name:'Premio deshidratado',   price:95,  image:'../assets/imagenes/productos/snack2.jpg' },
-    { id:'r6', name:'Suplemento antipulgas', price:129, image:'../assets/imagenes/productos/sup.jpg' },
-    { id:'r7', name:'Pack semanal cachorro', price:499, image:'../assets/imagenes/productos/pack.jpg' },
-    { id:'r8', name:'Hueso recreativo',      price:69,  image:'../assets/imagenes/productos/bone.jpg' },
-  ];
+    // 2. Estado Con Productos
+    estadoVacio.classList.add('d-none');
+    actionsBar.classList.remove('d-none');
+    hintMostrando.innerText = `Mostrando ${carrito.length} artículos`;
 
-  function buildRecoCarousel(){
-    // skeleton mientras carga
-    $recoSlides.innerHTML = `
-      <div class="carousel-item active">
-        <div class="row g-3">
-          ${Array.from({length:4}).map(()=>`
-            <div class="col-6 col-md-3">
-              <div class="card reco-card h-100">
-                <div class="reco-img skeleton"></div>
-                <div class="card-body">
-                  <div class="placeholder-wave">
-                    <span class="placeholder col-8"></span>
-                  </div>
-                  <p class="small text-muted mb-2">&nbsp;</p>
-                  <button class="btn btn-sm btn-outline-primary disabled">Agregar</button>
+    contenedorItems.innerHTML = '';
+    
+    carrito.forEach(item => {
+        const totalItem = item.price * item.cantidad;
+        
+        const htmlItem = `
+            <div class="card shadow-sm border-light mb-2"> 
+                <div class="card-body p-3">
+                    <div class="row align-items-center g-3">
+                        <div class="col-4 col-md-2 text-center">
+                            <img src="${item.imageURL}" alt="${item.name}" class="img-fluid rounded" style="max-height: 80px;">
+                        </div>
+                        
+                        <div class="col-8 col-md-4">
+                            <h6 class="fw-bold text-dark mb-1 text-truncate">${item.name}</h6>
+                            <small class="text-muted">${item.category} | ${item.size || 'Unitalla'}</small>
+                        </div>
+
+                        <div class="col-6 col-md-3 d-flex justify-content-center">
+                            <div class="input-group input-group-sm" style="width: 100px;">
+                                <button class="btn btn-outline-secondary" onclick="window.cambiarCantidad(${item.id}, -1)">-</button>
+                                <span class="form-control text-center bg-white">${item.cantidad}</span>
+                                <button class="btn btn-outline-secondary" onclick="window.cambiarCantidad(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-3 text-end">
+                            <div class="fw-bold text-primary mb-1">$${totalItem.toFixed(2)}</div>
+                            <button class="btn btn-link text-danger p-0 small text-decoration-none" onclick="window.eliminarItem(${item.id})">
+                                <i class="bi bi-trash3"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          `).join('')}
-        </div>
-      </div>`;
-
-    // construir slides reales
-    const chunk = 4;
-    const frag = document.createDocumentFragment();
-    for (let i=0; i<recoData.length; i+=chunk){
-      const group = recoData.slice(i, i+chunk);
-      const slide = document.createElement('div');
-      slide.className = `carousel-item ${i===0 ? 'active' : ''}`;
-      slide.innerHTML = `
-        <div class="row g-3">
-          ${group.map(r => `
-            <div class="col-6 col-md-3">
-              <div class="card reco-card h-100">
-                <div class="reco-img">
-                  <img src="${r.image}" alt="${escapeHtml(r.name)}">
-                </div>
-                <div class="card-body">
-                  <h4 class="h6 mb-1">${escapeHtml(r.name)}</h4>
-                  <p class="small text-muted mb-2">${money(r.price)}</p>
-                  <button class="btn btn-sm btn-outline-primary" data-reco="${r.id}">Agregar</button>
-                </div>
-              </div>
-            </div>
-          `).join('')}
-        </div>`;
-      frag.appendChild(slide);
-    }
-    // reemplazar skeleton
-    setTimeout(()=>{ $recoSlides.innerHTML=''; $recoSlides.appendChild(frag); hookReco(); lazyLoadRecoImages(); }, 400);
-  }
-
-  function hookReco(){
-    $('#recoCarousel')?.addEventListener('click', e => {
-      const id = e.target?.getAttribute('data-reco');
-      if (!id) return;
-      const prod = recoData.find(x => x.id===id);
-      if (!prod) return;
-      const i = state.items.findIndex(it => String(it.id)===id);
-      if (i>=0) state.items[i].qty = Math.min(99, Number(state.items[i].qty||1)+1);
-      else state.items.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1, image: prod.image });
-      writeCart(state.items); render(); toast('Agregado a tu carrito','success');
+        `;
+        contenedorItems.innerHTML += htmlItem;
     });
-  }
 
-  function lazyLoadRecoImages(){
-    $$('#recoSlides img').forEach(img=>{
-      img.addEventListener('load', () => img.classList.add('loaded'), { once:true });
-      const parent = img.closest('.reco-img');
-      parent?.classList.remove('skeleton');
-    });
-  }
+    actualizarTotales(carrito);
+}
 
-  // --------- Toasts Bootstrap (+ ripple en btn-dark)
-  function toast(html, tone='primary'){
-    const el = document.createElement('div');
-    el.className = `toast align-items-center text-bg-${tone} border-0`;
-    el.innerHTML = `
-      <div class="d-flex">
-        <div class="toast-body">${html}</div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Cerrar"></button>
-      </div>`;
-    $toasts.appendChild(el);
-    const t = new bootstrap.Toast(el, { delay: 2400 });
-    t.show();
-    el.addEventListener('hidden.bs.toast', ()=> el.remove());
-  }
-
-  // efecto luz en btn-dark (sin cambiar HTML)
-  document.addEventListener('pointerdown', e => {
-    const b = e.target.closest('.btn-dark');
-    if (!b) return;
-    const r = b.getBoundingClientRect();
-    b.style.setProperty('--x', `${e.clientX - r.left}px`);
-    b.style.setProperty('--y', `${e.clientY - r.top}px`);
-  });
-
-  // --------- Init
-  (function seed(){
-    // ?demo=1 para poblar
-    if (new URL(location.href).searchParams.get('demo')==='1' && state.items.length===0){
-      writeCart([
-        { id:'p1', name:'Mix BARF Res x 500g', price:129, qty:1, image:'../assets/imagenes/productos/barf1.jpg' },
-        { id:'p2', name:'Snack deshidratado 250g', price:89, qty:2, image:'../assets/imagenes/productos/snack1.jpg' }
-      ]);
+// Función MATEMÁTICA Mejorada (Incluye lógica Sidebar)
+function actualizarTotales(carrito) {
+    if (carrito === 0 || carrito.length === 0) {
+        document.getElementById('rSubtotal').innerText = '$0.00';
+        document.getElementById('rEnvio').innerText = '$0.00';
+        document.getElementById('rIva').innerText = '$0.00';
+        document.getElementById('rTotal').innerText = '$0.00';
+        if(document.getElementById('rDescuento')) document.getElementById('rDescuento').innerText = '-$0.00';
+        return;
     }
-  })();
 
-  buildRecoCarousel();
-  render();
+    // 1. Subtotal Base
+    let subtotal = carrito.reduce((acc, item) => acc + (item.price * item.cantidad), 0);
+    
+    // 2. Descuento
+    const montoDescuento = subtotal * descuentoAplicado;
+    const subtotalConDescuento = subtotal - montoDescuento;
 
-})();
+    // 3. Envío (Regla: Gratis si > 499, si no usa el manual calculado, si no default 150)
+    let envioFinal = 0;
+    if (subtotalConDescuento >= 499) {
+        envioFinal = 0;
+    } else if (costoEnvioManual !== null) {
+        envioFinal = costoEnvioManual;
+    } else {
+        envioFinal = 150;
+    }
+
+    // 4. IVA (Sobre el subtotal ya descontado) y Total
+    const iva = subtotalConDescuento * 0.16; 
+    const totalAPagar = subtotalConDescuento + iva + envioFinal;
+
+    // 5. Renderizado
+    const formato = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
+
+    document.getElementById('rSubtotal').innerText = formato.format(subtotal);
+    
+    // Pintar descuento si existe la etiqueta en HTML
+    const elDescuento = document.getElementById('rDescuento');
+    if (elDescuento) {
+        elDescuento.innerText = `-${formato.format(montoDescuento)}`;
+        elDescuento.classList.toggle('text-success', montoDescuento > 0);
+    }
+
+    document.getElementById('rIva').innerText = formato.format(iva);
+    
+    const elEnvio = document.getElementById('rEnvio');
+    if (envioFinal === 0) {
+        elEnvio.innerHTML = '<span class="text-success fw-bold">Gratis</span>';
+    } else {
+        elEnvio.innerText = formato.format(envioFinal);
+    }
+
+    document.getElementById('rTotal').innerText = formato.format(totalAPagar);
+}
+
+// ==========================================
+// D. LÓGICA DEL CARRUSEL
+// ==========================================
+
+const contenedorCarrusel = document.getElementById('recoSlides');
+let ultimoAncho = window.innerWidth; 
+
+function renderizarCarrusel(productos) {
+    if(!contenedorCarrusel) return; 
+
+    contenedorCarrusel.innerHTML = '';
+    const esMovil = window.innerWidth < 992;
+    const itemsPorSlide = esMovil ? 1 : 3;
+    const claseColumna = esMovil ? 'col-12' : 'col-4';
+
+    for (let i = 0; i < productos.length; i += itemsPorSlide) {
+        const grupo = productos.slice(i, i + itemsPorSlide);
+        const claseActiva = i === 0 ? 'active' : '';
+
+        let slideHTML = `
+            <div class="carousel-item ${claseActiva}">
+                <div class="row justify-content-center g-3"> 
+        `;
+
+        grupo.forEach(prod => {
+            slideHTML += `
+                <div class="${claseColumna}">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="d-flex align-items-center justify-content-center bg-light rounded-top" style="height: 180px; overflow: hidden;">
+                            <img src="${prod.imageURL}" alt="${prod.name}" class="img-fluid" style="max-height: 100%; width: auto;">
+                        </div>
+                        <div class="card-body text-center d-flex flex-column p-3">
+                            <h6 class="card-title fw-bold text-dark">${prod.name}</h6>
+                            <p class="card-text text-primary fw-bold mb-3">$${prod.price} MXN</p>
+                            <button class="btn btn-outline-dark w-100 mt-auto rounded-pill" onclick="window.agregarAlCarrito(${prod.id})">
+                                Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        slideHTML += `</div></div>`;
+        contenedorCarrusel.innerHTML += slideHTML;
+    }
+}
+
+// ==========================================
+// E. INICIALIZACIÓN ÚNICA
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Cargar items del carrito guardados
+    renderizarCarritoUI();
+
+    // 2. Cargar carrusel 
+    renderizarCarrusel(listaDeProductos.slice(0, 6));
+
+    // 3. LISTENERS DEL DOM (Para botones que no se generan dinámicamente)
+    
+    // Botón Vaciar
+    const btnVaciar = document.getElementById('btnVaciar');
+    if(btnVaciar) btnVaciar.addEventListener('click', window.vaciarCarrito);
+
+    // Botones Sidebar (Cupones, Envío, Pagar)
+    const btnCupon = document.getElementById('btnAplicarCupon');
+    if(btnCupon) btnCupon.addEventListener('click', window.aplicarCupon);
+
+    const btnCP = document.getElementById('btnCalcularCP');
+    if(btnCP) btnCP.addEventListener('click', window.calcularEnvioCP);
+
+    const btnPagar = document.getElementById('btnPagar');
+    if(btnPagar) btnPagar.addEventListener('click', window.irAPagar);
+});
+
+// Listener Resize
+window.addEventListener('resize', () => {
+    const anchoActual = window.innerWidth;
+    const eraMovil = ultimoAncho < 992;
+    const esMovilAhora = anchoActual < 992;
+    if (eraMovil !== esMovilAhora) {
+        renderizarCarrusel(listaDeProductos.slice(0, 6));
+    }
+    ultimoAncho = anchoActual;
+});
