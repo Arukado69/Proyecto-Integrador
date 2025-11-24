@@ -1,5 +1,6 @@
-// 1. IMPORTS (Solo una vez al inicio)
+// 1. IMPORTS
 import { listaDeProductos } from '/scripts/productos.js'; 
+
 // ------- Config -------
 const ITEMS_PER_PAGE = 6;
 
@@ -13,15 +14,111 @@ const filtersForm  = document.getElementById('filtersForm');
 
 // ------- Estado -------
 let currentPage = 1;
-let filtered = [...listaDeProductos]; // viene de productos.js
+let filtered = [...listaDeProductos]; 
 
-// ------- Render card -------
+// ======================================================
+// A. UTILIDADES: MODAL BOOTSTRAP Y CARRITO
+// ======================================================
+
+let modalInstancia = null; 
+
+// 1. Función para mostrar el Modal (Igual que en carrito.js)
+function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText, onConfirm }) {
+    const modalEl = document.getElementById('modalWoof');
+    if(!modalEl) return; 
+
+    document.getElementById('modalTitulo').innerText = title || 'Aviso';
+    document.getElementById('modalMensaje').innerText = text || '';
+
+    const imgEl = document.getElementById('modalImagen');
+    if (imageUrl) {
+        imgEl.src = imageUrl;
+        imgEl.classList.remove('d-none');
+    } else {
+        imgEl.classList.add('d-none');
+    }
+
+    const btnConfirmar = document.getElementById('btnConfirmar');
+    const btnCancelar = document.getElementById('btnCancelar');
+
+    btnConfirmar.innerText = confirmText || 'Aceptar';
+    
+    if (cancelText) {
+        btnCancelar.innerText = cancelText;
+        btnCancelar.classList.remove('d-none');
+    } else {
+        btnCancelar.classList.add('d-none');
+    }
+
+    btnConfirmar.onclick = function() {
+        if (onConfirm) onConfirm(); 
+        modalInstancia.hide();
+    };
+
+    if (!modalInstancia) {
+        modalInstancia = new bootstrap.Modal(modalEl);
+    }
+    modalInstancia.show();
+}
+
+// 2. Función Global para AGREGAR (Conectada al botón)
+window.agregarAlCarrito = function(idProducto) {
+    const CLAVE_CARRITO = 'carritoWoofBarf';
+    let carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
+    
+    const productoInfo = listaDeProductos.find(p => p.id === idProducto);
+
+    if (!productoInfo) {
+        console.error("Producto no encontrado ID:", idProducto);
+        return;
+    }
+
+    const itemExistente = carrito.find(item => item.id === idProducto);
+
+    if (itemExistente) {
+        itemExistente.cantidad++;
+        
+        mostrarModalBootstrap({
+            title: '¡Sumado!',
+            text: `Agregamos otra unidad de ${productoInfo.name} a tu carrito.`,
+            confirmText: 'Seguir viendo'
+        });
+
+    } else {
+        carrito.push({ ...productoInfo, cantidad: 1 });
+        
+        // Ajuste de ruta para que se vea bien en el modal
+        const rutaImg = productoInfo.imageURL.replace('..', ''); 
+
+        mostrarModalBootstrap({
+            title: '¡Al carrito!',
+            text: `${productoInfo.name} se agregó exitosamente. ¿Qué deseas hacer?`,
+            imageUrl: rutaImg,
+            confirmText: 'Seguir comprando',  
+            cancelText: 'Ir al carrito'       
+        });
+
+        // Configurar botón "Ir al carrito"
+        document.getElementById('btnCancelar').onclick = function() {
+            window.location.href = '/pages/carrito.html'; 
+        };
+    }
+
+    localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+};
+
+
+// ======================================================
+// B. RENDERIZADO DE TARJETAS
+// ======================================================
+
 function createProductCard(item) {
-  const { name, price, imageURL, description, flavor, size, category } = item;
+  const { id, name, price, imageURL, description, flavor, size, category } = item;
 
+  // CAMBIO AQUÍ: Agregamos el onclick con el ID del producto
   return `
     <div class="col d-flex">
-      <div class="card rounded-5 shadow-sm hover-zoom w-100">
+      <div class="card card-producto rounded-5 shadow-sm hover-zoom w-100">
         <img src="${imageURL}" class="catalogo-img-size rounded-top-5" alt="${name}">
         <div class="card-body text-center">
           <h5 class="card-title catalogo-roboto-h4 mb-1">${name}</h5>
@@ -35,14 +132,22 @@ function createProductCard(item) {
             </ul>` : ''}
 
           <h4 class="catalogo-price-color catalogo-roboto-h4 mb-3">$${price}</h4>
-          <button class="btn rounded-4 catalogo-secundary-button-color catalogo-roboto-primary-label">Añadir al carrito</button>
+          
+          <button class="btn rounded-4 catalogo-secundary-button-color catalogo-roboto-primary-label w-100 mt-auto" 
+                  onclick="window.agregarAlCarrito(${id})">
+              Añadir al carrito
+          </button>
+
         </div>
       </div>
     </div>
   `;
 }
 
-// ------- Paginación y render -------
+// ======================================================
+// C. PAGINACIÓN Y RENDER
+// ======================================================
+
 function renderPage(page = 1) {
   const total = filtered.length;
   const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
@@ -51,17 +156,17 @@ function renderPage(page = 1) {
   const start = (currentPage - 1) * ITEMS_PER_PAGE;
   const end = Math.min(start + ITEMS_PER_PAGE, total);
 
-  // cosa que puse Brad, lo de arriba lo comente para no borrar todo el row, pero no se si esta bien, segun se debe de borrar
   const cardsHTML = filtered.slice(start, end).map(createProductCard).join('');
-productRow.querySelectorAll('.col').forEach(el => el.remove()); // Limpia solo las columnas
-productRow.insertAdjacentHTML('beforeend', cardsHTML);
+  
+  // Limpiamos y rellenamos
+  productRow.innerHTML = cardsHTML;
 
   // Indicador
   resultsInfo.textContent = total
     ? `Mostrando ${start + 1}–${end} de ${total} productos`
     : 'No hay resultados para los filtros aplicados.';
 
-  // Controles
+  // Controles Paginación
   let html = `
     <nav aria-label="Paginación">
       <ul class="pagination justify-content-center">
@@ -82,8 +187,7 @@ productRow.insertAdjacentHTML('beforeend', cardsHTML);
     </nav>`;
   paginationEl.innerHTML = html;
 
-
-  // cosa que puse Brad
+  // Eventos Paginación
   paginationEl.querySelectorAll('a.page-link').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
@@ -91,48 +195,33 @@ productRow.insertAdjacentHTML('beforeend', cardsHTML);
       if (!Number.isNaN(page)) {
         renderPage(page);
         window.scrollTo({ top: 0, behavior: 'smooth' });
-
-        // --- Ajuste visual uniforme ---
-setTimeout(() => {
-  const imgs = document.querySelectorAll('.catalogo-img-size');
-  imgs.forEach(img => {
-    img.style.height = '250px'; // asegúrate de coincidir con el CSS
-    img.style.objectFit = 'cover';
-  });
-}, 200);
-// Aqui termina
-
-
       }
     });
   });
 }
 
-// ------- Filtros -------
+// ======================================================
+// D. FILTROS
+// ======================================================
+
 function getRadioValue(name) {
   const el = filtersForm.querySelector(`input[name="${name}"]:checked`);
   return el ? el.value : '';
 }
 
 function applyFilters() {
-  const term   = (searchInput.value || '').trim().toLowerCase();
-  const flavor = getRadioValue('flavor'); // '' = Todos
-  const size   = getRadioValue('size');   // '' = Todos
-  const category  = getRadioValue('category'); // Nuevo
+  const term     = (searchInput.value || '').trim().toLowerCase();
+  const flavor = getRadioValue('flavor'); 
+  const size   = getRadioValue('size');   
+  const category  = getRadioValue('category'); 
 
   filtered = listaDeProductos.filter(p => {
-    // texto
     const okTerm = !term ||
       (p.name && p.name.toLowerCase().includes(term)) ||
       (p.description && p.description.toLowerCase().includes(term));
 
-    // sabor
     const okFlavor = !flavor || (p.flavor && p.flavor.toLowerCase() === flavor.toLowerCase());
-
-    // tamaño
     const okSize = !size || (p.size && p.size.toLowerCase() === size.toLowerCase());
-
-    // categoría (nuevo)
     const okCategory = !category ||
       (p.category && p.category.toLowerCase() === category.toLowerCase());
 
@@ -142,13 +231,11 @@ function applyFilters() {
   renderPage(1);
 }
 
-// Live search + botones
+// Listeners Filtros
 searchInput.addEventListener('keyup', applyFilters);
 applyBtn.addEventListener('click', applyFilters);
 filtersForm.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', applyFilters));
 
 // Init
+
 applyFilters();
-
-if (window.syncCartBadge) window.syncCartBadge();
-
