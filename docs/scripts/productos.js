@@ -1,4 +1,4 @@
-const listaDeProductos = [
+export const listaDeProductos = [
   {
     id: 1,
     name: "Menú de Pollo 500g",

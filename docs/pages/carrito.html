@@ -137,20 +137,25 @@
           </div>
 
           <!-- Recomendaciones - Carousel -->
-          <section class="mt-5">
-            <h3 class="h5 fw-bold mb-3">Nuestras recomendaciones</h3>
-            <div id="recoCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="6000">
-              <div class="carousel-inner" id="recoSlides">
-                <!-- Slides por JS -->
+          
+          <section class="mt-5 reco-section position-relative">
+            <div class="container">
+              <h3 class="h5 fw-bold mb-4">Nuestras recomendaciones</h3>
+              
+              <div id="recoCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel" data-bs-interval="6000">
+                
+                <div class="carousel-inner p-1" id="recoSlides">
+                  </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#recoCarousel" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#recoCarousel" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Siguiente</span>
+                </button>
               </div>
-              <button class="carousel-control-prev" type="button" data-bs-target="#recoCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Anterior</span>
-              </button>
-              <button class="carousel-control-next" type="button" data-bs-target="#recoCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Siguiente</span>
-              </button>
             </div>
           </section>
 
@@ -275,6 +280,32 @@
       </div>
     </div>
   </main>
+  
+<!--Mensajes de alerta-->
+
+  <div class="modal fade" id="modalWoof" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold" id="modalTitulo">Título</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body text-center p-4">
+          <img id="modalImagen" src="" alt="Producto" class="img-fluid rounded mb-3 d-none" style="max-height: 150px;">
+          
+          <p id="modalMensaje" class="text-muted mb-0 fs-5">Mensaje aquí</p>
+        </div>
+
+        <div class="modal-footer border-0 justify-content-center pb-4">
+          <button type="button" id="btnCancelar" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnConfirmar" class="btn btn-dark rounded-pill px-4">Aceptar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER (igual que index) -->
   <footer id="siteFooter"></footer>
@@ -286,6 +317,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../components/Navbar.js"></script>
   <script src="../components/footer.js"></script>
-  <script src="../scripts/carrito.js"></script>
+  <script type="module" src="/scripts/carrito.js"></script>
 </body>
 </html>

@@ -132,6 +132,30 @@
       </div>
     </section>
   </main>
+  
+<!--alerta productos agregados al carrito-->
+  <div class="modal fade" id="modalWoof" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold" id="modalTitulo">Aviso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body text-center p-4">
+          <img id="modalImagen" src="" alt="Producto" class="img-fluid rounded mb-3 d-none" style="max-height: 150px;">
+          <p id="modalMensaje" class="text-muted mb-0 fs-5">Mensaje</p>
+        </div>
+
+        <div class="modal-footer border-0 justify-content-center pb-4">
+          <button type="button" id="btnCancelar" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnConfirmar" class="btn btn-dark rounded-pill px-4">Aceptar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer></footer>
@@ -140,9 +164,8 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   <script src="../components/footer.js"></script>
   <script src="../components/Navbar.js"></script>
-  <script src="../scripts/productos.js"></script>
-  <script src="../scripts/catalogo-local-merge.js"></script>
-  <script src="../scripts/formulario-productos.js"></script>
-  <script src="../scripts/catalogo.js"></script>
+  <script type="module" src="../scripts/catalogo-local-merge.js"></script>
+  <script type="module" src="../scripts/formulario-productos.js"></script>
+  <script type="module" src="../scripts/catalogo.js"></script>
 </body>
 </html>
