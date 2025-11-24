@@ -350,7 +350,7 @@ input.is-invalid {
 .hint { display:block; color:#7a7a7a; font-size:.85rem; margin-top:6px; }
 
 /* botón ojo dentro del input */
-.form-group.with-toggle { position: relative; }
+.form-group.with-toggle { position: relative; width: 100%; }
 .form-group.with-toggle input { padding-right: 56px; }
 .toggle-password{
   position: absolute;
@@ -359,6 +359,18 @@ input.is-invalid {
   font-weight: 700; cursor: pointer; padding: 4px 6px;
 }
 .toggle-password:hover { opacity:.8; }
+
+
+/* Estados verde/rojo */
+.password-requirements li.valid {
+  color: green;
+  font-weight: 600;
+}
+
+.password-requirements li.invalid {
+  color: red;
+  font-weight: 600;
+}
 
 /* --- Overrides locales para que el footer quede debajo del login --- */
 body.login-body-bg { 
@@ -413,6 +425,7 @@ body.login-body-bg {
 
 .form-group {
   width: 100%; /* asegura que el input use todo el espacio disponible */
+  position: relative;
 }
 
 .form-group input {
@@ -422,9 +435,24 @@ body.login-body-bg {
 /* === Para permitir filas con 2 columnas === */
 .form-row.row-2col {
   flex-direction: row !important;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+/* Lista con requisitos de contraseña */
+.password-requirements {
+  display: none;             /* Oculta inicialmente */
+  font-size: 12px;           
+  color: #777;              
+  margin-top: 5px;
+  margin-left: 4px;
+  line-height: 1.3;
 }
 
-.form-row.row-2col .form-group {
-  width: 50%;
+.password-requirements li {
+  margin-bottom: 2px;
+}
+
+.d-none {
+  display: none;
 }
