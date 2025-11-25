@@ -528,3 +528,11 @@ body {
         .nav-button.back:hover {
             background: #ffa500;
         }
+/* Forzar Roboto específicamente en los enlaces del menú del Blog */
+.navbar-center, 
+.navbar-center a, 
+.nav-link-custom, 
+.navbar-brand {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 500;
+}
