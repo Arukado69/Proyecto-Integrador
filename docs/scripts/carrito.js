@@ -1,5 +1,6 @@
 // 1. IMPORTS
-import { listaDeProductos } from '/scripts/productos.js'; 
+//import { listaDeProductos } from '/scripts/productos.js';  //ya no cargar base de datos local
+
 
 // ==========================================
 // A. CONFIGURACIÓN Y MODELO (Estado)

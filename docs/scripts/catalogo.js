@@ -1,5 +1,5 @@
 // 1. IMPORTS
-import { listaDeProductos } from '/scripts/productos.js'; 
+// import { listaDeProductos } from '/scripts/productos.js';  //ya no cargar base de datos local
 
 // ------- Config -------
 const ITEMS_PER_PAGE = 6;

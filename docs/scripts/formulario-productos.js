@@ -1,5 +1,5 @@
 // 1. IMPORTS (Solo una vez al inicio)
-import { listaDeProductos } from '/scripts/productos.js'; 
+// import { listaDeProductos } from '/scripts/productos.js'; //// quitar base de datos local 
 // scripts/formulario-productos.js
 (function () {
   const $ = (sel) => document.querySelector(sel);
