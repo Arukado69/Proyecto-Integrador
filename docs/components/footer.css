@@ -16,20 +16,33 @@
   gap: 24px;
 }
 
-/* Grid principal
-   Col 1: Logo + formulario
-   Col 2: Soporte
-   Col 3: Recursos
-   Col 4: Legal
-   Col 5: Síguenos  */
+/* Grid principal */
 .footer-content {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 24px;
   align-items: flex-start;
+  justify-items: start;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
-/* Ajustes responsivos */
+/* Uniformar altura interna de columnas */
+.footer-content > .footer-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6px;
+  text-align: left;
+  width: 100%;
+}
+
+/* Evitar que la primera columna se estire */
+.footer-brand {
+  align-self: start;
+}
+
+/* Responsive */
 @media (max-width: 992px) {
   .footer-content {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -57,7 +70,7 @@
   }
 }
 
-/* Secciones */
+/* Títulos */
 .footer-section h3 {
   font-size: 18px;
   font-family: "Fredoka", sans-serif;
@@ -66,15 +79,11 @@
   margin-bottom: 10px;
 }
 
+/* Logo */
 .footer-brand .footer-logo {
-  width: 80px;
+  width: 100px;
   height: auto;
   margin-bottom: 12px;
-}
-
-.footer-section.especial h3 {
-  margin-top: 8px;
-  font-weight: 600;
 }
 
 /* Listas */
@@ -82,12 +91,16 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  text-align: left;
 }
 
 .footer ul li {
   margin-bottom: 6px;
+  padding-left: 1rem;
+  text-indent: -1rem; /* sangría francesa */
 }
 
+/* Viñetas */
 .footer ul li::before {
   content: "• ";
   color: #4b2e05;
@@ -109,7 +122,7 @@
   text-decoration: underline;
 }
 
-/* Bloque Síguenos (derecha) */
+/* Síguenos */
 .footer-social-section {
   justify-self: flex-end;
   text-align: right;
@@ -117,7 +130,7 @@
 
 .footer-social {
   display: flex;
-  flex-direction: column; /* iconos en columna */
+  flex-direction: column;
   gap: 8px;
   align-items: flex-end;
   margin-top: 8px;
@@ -161,4 +174,24 @@
 
 .footer-bottom .team-credits {
   font-weight: 500;
+}
+
+/* Redes sociales horizontales centradas */
+.footer-social-horizontal {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+/* Título de redes sociales horizontales */
+.footer-social-title {
+  font-size: 18px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+  color: #4b2e05;
+  margin: 0 0 10px 0;
+  text-align: center;
 }
