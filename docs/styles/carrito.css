@@ -1,340 +1,365 @@
+/* =======================================================
+   ESTILOS CARRITO - WOOF & BARF (FINAL V3)
+   ======================================================= */
 
-:root{
-  --brand-ink: #111;          /* texto principal */
-  --brand-accent: #7a4a29;    /* acento Woof&Barf */
-  --brand-accent-2: #c77a43;  /* acento claro */
-  --brand-100: #f8efe9;       /* fondo cálido */
-  --ok: #2fbf71;
+:root {
+  /* --- COLORES DE MARCA --- */
+  --brand-ink: #111;          /* Texto principal */
+  --brand-accent: #7a4a29;    /* Acento (Marrón base) */
+  --brand-accent-2: #c77a43;  /* Acento claro */
+  --brand-100: #f8efe9;       /* Fondo cálido */
+  
+  /* Estados */
+  --ok: #95a617;              /* Verde Oliva (Éxito) */
+  --ok-hover: #889715;
   --warn: #e0a800;
-  --danger: #e03131;
+  --danger: #bf0413;          /* Rojo Intenso (Eliminar) */
+  --danger-hover: #ae0411;
 
+  /* Bootstrap Override */
   --bs-primary: var(--brand-accent);
   --bs-primary-rgb: 122,74,41;
 }
 
 /* ---------- Reset suave + tipografía ---------- */
-*{ box-sizing:border-box; }
+* { box-sizing: border-box; }
+
 body {
-  font-family: 'Fredoka', sans-serif;
+  font-family: 'Roboto', sans-serif; /* Texto general */
+  color: #111;
   background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
-  background-repeat: no-repeat;       /* No repetir la imagen */
-  background-size: cover;             /* Que cubra todo el fondo */
-  background-position: center center; /* Centrada */
-  background-attachment: fixed;       /* 👈 Imagen estática al hacer scroll */
-  min-height: 100vh;                  /* Para que ocupe toda la ventana */
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  min-height: 100vh;
 }
 
+/* Títulos en Fredoka (Identidad de Marca) */
+h1, h2, h3, h4, h5, h6,
+.titulo-pagina,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #111; 
+}
 
 /* Scrollbar */
-::-webkit-scrollbar{ height:10px; width:10px; }
-::-webkit-scrollbar-thumb{
-  background:linear-gradient(180deg, var(--bs-secondary), var(--bs-primary));
-  border-radius:999px;
+::-webkit-scrollbar { height: 10px; width: 10px; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--brand-accent-2), var(--brand-accent));
+  border-radius: 999px;
 }
-::-webkit-scrollbar-track{ background:rgba(255,255,255,.04); }
+::-webkit-scrollbar-track { background: rgba(255,255,255,.04); }
 
 /* =================== Layout base =================== */
 
-/* Contador automático de items (fallback visual; el JS ya actualiza badge con cantidades) */
-.contenedor-carrito{ counter-reset:cartItems; }
-.carrito-productos .producto-item{ counter-increment:cartItems; }
+.contenedor-carrito { counter-reset: cartItems; }
+.carrito-productos .producto-item { counter-increment: cartItems; }
 
-/* Barra retorno + título */
-.nav-retorno{
-  position:sticky; top:0; z-index:30;
-  display:flex; align-items:center; gap:1rem;
-  padding:1.25rem 1.5rem;
-  background:linear-gradient(180deg, rgba(31,31,31,.95), rgba(31,31,31,.5));
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid var(--stroke);
-  animation:dropFade .5s ease both;
+/* Barra retorno */
+.nav-retorno {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(180deg, rgba(31,31,31,.95), rgba(31,31,31,.5));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  animation: dropFade .5s ease both;
 }
-.btn-regresar{
-  display:inline-flex; align-items:center; gap:.5rem;
-  text-decoration:none; color:var(--bs-info);
-  font-weight:600;
-  padding:.5rem .75rem; border:1px solid var(--stroke);
-  border-radius:.75rem; transition:.25s ease;
+
+/* Botón regresar (Marrón marca) */
+.btn-regresar {
+  display: inline-flex; align-items: center; gap: .5rem;
+  text-decoration: none; 
+  color: #A04B00; 
+  font-weight: 600;
+  padding: .5rem .75rem; border: 1px solid rgba(0,0,0,0.1);
+  border-radius: .75rem; transition: .25s ease;
+  background: #fff;
 }
-.btn-regresar:hover{
-  color:var(--brand-dark); background:var(--bs-info);
-  box-shadow:var(--glow); transform:translateY(-1px);
-}
-.titulo-pagina{
-  font-family: 'Fredoka','Roboto',sans-serif;
-  letter-spacing:.2px;
+.btn-regresar:hover {
+  color: #fff; 
+  background: #A04B00;
+  border-color: #A04B00;
+  transform: translateY(-1px);
 }
 
 /* ---------- Animaciones base ---------- */
-@keyframes rise{ from{transform:translateY(6px);opacity:0} to{transform:none;opacity:1} }
-@keyframes pulse{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
-@keyframes bounce{ 0%{transform:scale(1)} 40%{transform:scale(1.13)} 100%{transform:scale(1)} }
-@keyframes shine{ 0%{background-position:-200% 0} 100%{background-position:200% 0} }
-@keyframes shimmer{ 0%{background-position:-450px 0} 100%{background-position:450px 0} }
-@keyframes fadein{ from{opacity:0} to{opacity:1} }
+@keyframes rise { from { transform: translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+@keyframes bounce { 0% { transform: scale(1); } 40% { transform: scale(1.13); } 100% { transform: scale(1); } }
+@keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
 
-/* Entrada suave del main */
-.fade-in{ animation: fadein .28s ease both; }
+.fade-in { animation: fadein .28s ease both; }
 
 /* ---------- Cards y elevación ---------- */
-.card{
+.card {
   border: 1px solid rgba(0,0,0,.06);
   border-radius: 14px;
   transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
   will-change: transform;
 }
-.card:hover{
+.card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 28px rgba(0,0,0,.08);
   border-color: rgba(0,0,0,.10);
 }
 
-.card-empty{
+.card-empty {
   background: linear-gradient(180deg, #fff, var(--brand-100));
 }
 
-/* Borde superior animado para cards destacadas (resumen) */
-.resumen-card{
-  top: 90px; /* sticky */
+/* Borde superior animado (Resumen) */
+.resumen-card {
+  top: 90px; 
   position: sticky;
 }
-.resumen-card .card-body{
+.resumen-card .card-body {
   position: relative;
   isolation: isolate;
 }
-.resumen-card .card-body::before{
-  content:"";
-  position:absolute; inset: -1px -1px auto -1px; height:4px; border-top-left-radius:14px; border-top-right-radius:14px;
+.resumen-card .card-body::before {
+  content: "";
+  position: absolute; inset: -1px -1px auto -1px; height: 4px; 
+  border-top-left-radius: 14px; border-top-right-radius: 14px;
   background: linear-gradient(90deg, var(--brand-accent), var(--brand-accent-2), var(--brand-accent));
   background-size: 200% 100%;
   animation: shine 3.5s linear infinite;
-  z-index:-1;
+  z-index: -1;
 }
 
 /* ---------- Lista de items ---------- */
-.item{
-  display:grid;
+.item {
+  display: grid;
   grid-template-columns: 96px 1fr auto;
-  grid-template-areas:
-    "img info qty"
-    "img info act";
+  grid-template-areas: "img info qty" "img info act";
   gap: 12px 16px;
   padding: 14px;
   border: 1px solid rgba(0,0,0,.06);
   border-radius: 12px;
-  background:#fff;
+  background: #fff;
   animation: rise .25s ease both;
 }
-.item + .item{ margin-top: 10px; }
+.item + .item { margin-top: 10px; }
 
-.item-img{
+.item-img {
   grid-area: img;
   width: 96px; height: 96px;
   border-radius: 12px; object-fit: cover; background: #f5f5f5;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
 }
-.item-info{ grid-area: info; }
-.item-title{ font-weight: 700; margin:0 0 2px; letter-spacing:.2px; }
-.item-meta{ color:#666; font-size:.9rem; }
-.item-price{ color:#111; font-weight:600; }
+.item-info { grid-area: info; }
+.item-title { font-weight: 700; margin: 0 0 2px; letter-spacing: .2px; }
+.item-meta { color: #666; font-size: .9rem; }
+.item-price { color: #111; font-weight: 600; }
 
-.item-qty{ grid-area: qty; display:flex; align-items:center; gap:8px; }
-.qty-btn{
+.item-qty { grid-area: qty; display: flex; align-items: center; gap: 8px; }
+
+.qty-btn {
   width: 36px; height: 36px; border-radius: 10px;
   border: 1px solid rgba(0,0,0,.12);
   background: #fff; font-size: 18px; line-height: 1;
-  transition: transform .06s ease, background .2s ease, box-shadow .2s ease;
+  transition: transform .06s ease, background .2s ease;
 }
-.qty-btn:hover{ background:#f7f7f7; box-shadow:0 4px 10px rgba(0,0,0,.05); }
-.qty-btn:active{ transform: scale(.97); }
-.qty-btn:disabled{ opacity:.5; cursor:not-allowed; }
+.qty-btn:hover { background: #f7f7f7; box-shadow: 0 4px 10px rgba(0,0,0,.05); }
+.qty-btn:active { transform: scale(.97); }
+.qty-btn:disabled { opacity: .5; cursor: not-allowed; }
 
-.qty-input{
+.qty-input {
   width: 48px; text-align: center; border: 1px solid rgba(0,0,0,.12);
   height: 36px; border-radius: 10px; background: #fff;
 }
-.qty-bounce{ animation: bounce .28s ease; }
+.qty-bounce { animation: bounce .28s ease; }
 
-.item-actions{ grid-area: act; display:flex; gap:10px; align-items:center; }
-.item-actions .btn-remove{
-  border:none; background:transparent; color: var(--danger); font-weight:600;
+/* Botones de acción (Eliminar / Favorito) */
+.item-actions { grid-area: act; display: flex; gap: 10px; align-items: center; }
+
+.item-actions .btn-remove {
+  border: none; background: transparent; 
+  color: var(--danger); /* Rojo Marca */
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
-.item-actions .fav{
-  border:none; background:transparent; color:#666; transition: transform .12s ease, color .2s ease;
+.item-actions .btn-remove:hover { color: var(--danger-hover); }
+
+.item-actions .fav {
+  border: none; background: transparent; color: #666; 
+  transition: transform .12s ease, color .2s ease;
 }
-.item-actions .fav:hover{ transform: scale(1.1); color: var(--brand-accent-2); }
-.item-actions .fav.active{ color: var(--brand-accent); transform: scale(1.15); }
+.item-actions .fav:hover { transform: scale(1.1); color: var(--brand-accent-2); }
+.item-actions .fav.active { color: var(--brand-accent); transform: scale(1.15); }
 
-/* Ajustes para el Carrusel de Recomendaciones */
 
-/* 1. Mueve las flechas hacia afuera en pantallas grandes para que no tapen el producto */
+/* ---------- Botones Principales ---------- */
+
+/* Botón Vaciar Carrito (Rojo Marca) */
+#btnVaciar { color: var(--danger); border-color: var(--danger); }
+#btnVaciar:hover { background-color: var(--danger); color: #fff; }
+
+/* Botón IR A PAGAR (Marrón Marca) */
+#btnPagar {
+  background-color: #A04B00 !important;
+  border-color: #A04B00 !important;
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+#btnPagar:hover {
+  background-color: #7a3900 !important;
+  border-color: #7a3900 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(160, 75, 0, 0.3);
+}
+
+/* Botones Outline (Aplicar / Seguir Comprando) - Marrón */
+.btn-outline-primary {
+  color: #A04B00 !important;
+  border-color: #A04B00 !important;
+}
+.btn-outline-primary:hover {
+  background-color: #A04B00 !important;
+  color: #fff !important;
+  border-color: #A04B00 !important;
+}
+
+#btnAplicarCupon {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Enlaces de Texto (Calcular envío, Ver más beneficios)*/
+.btn-link, 
+a[data-bs-toggle="collapse"] {
+  color: #0d6efd !important; /* Azul Bootstrap por defecto */
+  text-decoration: none;
+  font-weight: 600;
+}
+.btn-link:hover,
+a[data-bs-toggle="collapse"]:hover {
+  color: #0a58ca !important; /* Azul más oscuro al pasar el mouse */
+  text-decoration: underline;
+}
+
+
+/* ---------- CORRECCIÓN: ESTADO VACÍO ---------- */
+
+#estadoVacio h2 {
+  font-family: 'Fredoka', sans-serif !important;
+  color: #111;
+}
+
+/* El botón "Ir al catálogo" ahora es Marrón */
+#estadoVacio .btn-primary { 
+  background-color: #A04B00 !important;
+  border-color: #A04B00 !important;
+  color: #fff;
+  font-weight: 700;
+  padding: 12px 30px;
+  animation: none;
+  transition: all 0.3s ease;
+}
+#estadoVacio .btn-primary:hover {
+  background-color: #7a3900 !important;
+  border-color: #7a3900 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(160, 75, 0, 0.3);
+}
+#estadoVacio .btn-primary:active {
+  transform: none;
+}
+
+.empty-emoji {
+  font-size: 3rem;
+}
+
+
+/* ---------- Carrusel y Recomendaciones ---------- */
+
 @media (min-width: 992px) {
-    .reco-section .carousel-control-prev {
-        left: -50px; /* Saca la flecha a la izquierda */
-    }
-    .reco-section .carousel-control-next {
-        right: -50px; /* Saca la flecha a la derecha */
-    }
+    .reco-section .carousel-control-prev { left: -50px; }
+    .reco-section .carousel-control-next { right: -50px; }
 }
 
-/* 2. Estilo de las tarjetas de producto */
-.card-reco {
-    transition: transform 0.2s, box-shadow 0.2s;
-    border: 1px solid #eee;
+.card-reco { transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #eee; }
+.card-reco:hover { transform: translateY(-5px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+
+/* Estilo Tarjetas Carrusel (Igual Catálogo) */
+.card-carrusel {
+    border: none;
+    border-radius: 1.25rem;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+    overflow: hidden;
+}
+.card-carrusel:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+
+.card-carrusel img {
+    width: 100%; height: 200px; object-fit: contain;
+    background-color: #fff; padding: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
 }
 
-/* Efecto al pasar el mouse: se levanta un poco */
-.card-reco:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+.card-carrusel .titulo-producto {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 500; color: #8A7C60; font-size: 1.1rem;
 }
 
-/* 3. Ajuste de imágenes placeholder */
-.placeholder-img {
-    height: 200px;
-    background-color: #f8f9fa;
-    color: #adb5bd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
+.card-carrusel .precio-producto {
+    color: #F3A412; font-weight: 700; font-size: 1.2rem;
+    font-family: "Roboto", sans-serif;
 }
 
-/* ---------- Badges de pago ---------- */
-.pay-badge{
-  padding:.25rem .5rem; border:1px solid rgba(0,0,0,.2); border-radius:6px; font-size:.75rem; background:#fff;
+.btn-carrusel {
+    background: #FDEDD0; color: #F3A515; border: 1px solid #F3A515;
+    border-radius: 0.6rem; font-weight: 600; transition: all 0.2s ease;
+}
+.btn-carrusel:hover { background: #F3A412; color: #fff; }
+
+
+/* ---------- Utilidades y Feedback ---------- */
+
+/* Iconos de confianza (Camión/Escudo) - Verde Marca */
+.bi-truck, .bi-shield-check { color: var(--ok); font-size: 1.1em; }
+
+/* Badge contador - Rojo Marca */
+#miniCount { background-color: var(--danger) !important; }
+
+.pay-badge {
+  padding: .25rem .5rem; border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px; font-size: .75rem; background: #fff;
 }
 
-/* ---------- Botones ---------- */
-.btn-dark{
-  position: relative; overflow: hidden;
-}
-.btn-dark::after{
-  content:"";
-  position:absolute; inset:0;
-  background: radial-gradient(120px 120px at var(--x, 50%) var(--y, 50%), rgba(255,255,255,.18), transparent 60%);
-  opacity:0; transition: opacity .25s ease;
-}
-.btn-dark:active::after{ opacity:1; }
-
-/* ---------- Focus accesible ---------- */
-button:focus-visible,
-a:focus-visible,
-.qty-input:focus-visible,
-input:focus-visible{
-  outline: 3px solid rgba(122,74,41,.35);
+button:focus-visible, a:focus-visible, .qty-input:focus-visible, input:focus-visible {
+  outline: 3px solid rgba(149, 166, 23, 0.4); /* Verde foco */
   outline-offset: 2px;
 }
 
-/* ---------- Estado vacío ---------- */
-#estadoVacio .btn { 
-    animation: none; 
-    
-    /* suavidad al cambio de color */
-    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-}
+.d-none { display: none !important; }
+.opacity-75 { opacity: .75; }
+#hintMostrando { font-size: .95rem; }
+.form-text.error { color: var(--danger); }
+.form-text.ok { color: var(--ok); }
 
-  /* comportamiento al pasar el mouse */
-#estadoVacio .btn:hover {
-    background-color: #0b5ed7; /* Un azul un poco más intenso */
-    border-color: #0a58ca;
-    transform: translateY(-2px); /* Opcional: que suba un poquito (2 píxeles) para dar sensación de clic */
-}
-
-  /* al hacer clic */
-#estadoVacio .btn:active {
-    transform: none; /* Se queda quieto al presionar */
-    background-color: #0a58ca;
-}
-
-/* ---------- Utilidades ---------- */
-.d-none{ display: none !important; }
-.opacity-75{ opacity:.75; }
-
-/* Pequeños textos */
-#hintMostrando{ font-size:.95rem; }
-
-/* Micro-feedback para errores (cupon/CP) */
-.form-text.error{ color: var(--danger); }
-.form-text.ok{ color: var(--ok); }
-
-/* === Animación continua para la barra de progreso === */
+/* Barra de Progreso - Naranja Marca */
 .progress-bar {
   background-image: linear-gradient(
     90deg,
     var(--bs-primary) 0%,
-    #4fa3ff 25%,
+    #F3A412 25%, 
     var(--bs-primary) 50%,
-    #4fa3ff 75%,
+    #F3A412 75%, 
     var(--bs-primary) 100%
   );
   background-size: 200% 100%;
   animation: fillFlow 3s linear infinite;
 }
 
-/* Movimiento de izquierda a derecha tipo oleaje */
 @keyframes fillFlow {
   0% { background-position: 0% 0; }
   100% { background-position: -200% 0; }
-}
-
-/* ================================================= */
-/* ESTILOS DEL CARRUSEL (Igualando al Catálogo)      */
-/* ================================================= */
-
-/* 1. La Tarjeta (Contenedor) */
-.card-carrusel {
-    border: none;
-    border-radius: 1.25rem; /* Mismo radio que catálogo */
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.06); /* Sombra suave original */
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    height: 100%;
-    overflow: hidden; /* Para que la imagen respete el borde */
-}
-
-/* Efecto Hover (Levantar) */
-.card-carrusel:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(0,0,0,.08);
-}
-
-/* 2. La Imagen */
-.card-carrusel img {
-    width: 100%;
-    height: 200px; /* Altura fija para uniformidad */
-    object-fit: contain; /* Que no se corte, igual que catálogo */
-    background-color: #fff;
-    padding: 15px; /* Espacio interno para que respire */
-    border-bottom: 1px solid rgba(0,0,0,0.03); /* Separación sutil */
-}
-
-/* 3. Tipografía y Textos */
-.card-carrusel .titulo-producto {
-    font-family: "Fredoka", sans-serif; /* Tu fuente de marca */
-    font-weight: 500;
-    color: #8A7C60; /* Color café del catálogo (.catalogo-h4-color) */
-    font-size: 1.1rem;
-}
-
-.card-carrusel .precio-producto {
-    color: #F3A412; /* Color naranja/dorado (.catalogo-price-color) */
-    font-weight: 700;
-    font-size: 1.2rem;
-    font-family: "Roboto", sans-serif;
-}
-
-/* 4. El Botón (Estilo Secundario del Catálogo) */
-.btn-carrusel {
-    background: #FDEDD0; /* Fondo crema */
-    color: #F3A515;      /* Texto naranja */
-    border: 1px solid #F3A515;
-    border-radius: 0.6rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.btn-carrusel:hover {
-    background: #F3A412; /* Cambio a naranja sólido */
-    color: #fff;
 }

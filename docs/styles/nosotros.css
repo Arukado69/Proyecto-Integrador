@@ -2,7 +2,6 @@
 == INICIO: Contenido de style.css
 ===============================================
 */
-
 /* Estilos para el efecto Flip Card */
 .flip-card {
   background-color: transparent;
@@ -135,8 +134,6 @@
     color: #333;
     line-height: 1.7;
     font-size: 18px;
-    /* ❗️ NOTA: mision.css quería centrar todos los 'p'. 
-       Esta regla es más específica, así que el texto de "Compromiso" NO se centrará. */
     text-align: left; /* Aseguramos que no se centre */
 }
 
@@ -166,8 +163,6 @@
         padding: 2rem 1.5rem;
     }
 }
-/* Estilos para la sección de compromiso */
-
 /* ===============================================
 == FIN: Contenido de style.css
 ===============================================
@@ -178,8 +173,6 @@
 == INICIO: Contenido de nosotros.css
 ===============================================
 */
-
-/* ======== ESTILOS GENERALES ======== */
 * {
   margin: 0;
   padding: 0;
@@ -286,11 +279,6 @@ body {
 ===============================================
 */
 
-/* NOTA: Los @import de Google Fonts se eliminaron 
-  porque tu HTML ya los carga con <link>,
-  lo cual es más rápido y eficiente.
-*/
-
 /* Sección de historia con fondo blanco */
 .historia-section {
     background-color: #ffffff;
@@ -311,12 +299,6 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
-
-/* ❗️ MODIFICACIÓN CLAVE ❗️
-  Se agregaron .historia-section y .mision-section 
-  para que estos estilos no afecten a otras partes 
-  de la página (como el Hero o las Flip Cards).
-*/
 
 /* Estilo para el título principal (MODIFICADO) */
 .historia-section h2,
@@ -392,3 +374,11 @@ body {
 == FIN: Contenido de mision.css
 ===============================================
 */
+/* Forzar Roboto específicamente en los enlaces del menú */
+.navbar-center,
+.navbar-center a,
+.nav-link-custom,
+.navbar-brand {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 500; /* Ajusta el grosor si lo ves muy delgado */
+}

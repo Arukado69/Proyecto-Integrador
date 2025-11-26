@@ -45,17 +45,28 @@
         <li><a class="nav-link-custom" href="./nosotros.html">Nosotros</a></li>
         <li><a class="nav-link-custom" href="./blog.html">Blog</a></li>        
         <li><a class="nav-link-custom" href="./contacto.html">Contáctanos</a></li>
-    </ul>
+      </ul>
+      <div class="iconos-hamburguesa">
+        <a href="./iniciosesion.html">
+          <button class="user-btn">
+            <img src="../assets/imagenes/iconos/user-dark.png" alt="Usuario" width="28" height="28">
+          </button>
+        </a>
 
-    <!-- Botón hamburguesa para móvil -->
-    <div class="iconos-hamburguesa">
+        <a href="./carrito.html" aria-label="Carrito">
+          <button class="user-btn position-relative">
+            <img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" width="28" height="28">
+            
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" id="miniCount" style="background-color: var(--danger) !important;">
+              0
+            </span>
+          </button>
+        </a>
 
-    <button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon-custom"></span>
-        <span class="navbar-toggler-icon-custom"></span>
-        <span class="navbar-toggler-icon-custom"></span>
+        <button class="navbar-toggler-custom" type="button" aria-label="Abrir menú">
+          <span class="navbar-toggler-icon-custom"></span>
+          <span class="navbar-toggler-icon-custom"></span>
+          <span class="navbar-toggler-icon-custom"></span>
         </button>
 
     <!-- Botón de usuario -->
