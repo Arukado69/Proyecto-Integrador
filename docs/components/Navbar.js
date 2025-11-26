@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const badge = document.getElementById('miniCount');
         if (!badge) return; // Si no existe el elemento en el HTML, salimos
 
-        // Leemos TU llave específica del localStorage
+        // Leemos la llave específica del localStorage
         const carrito = JSON.parse(localStorage.getItem('carritoWoofBarf')) || [];
         
         // Sumamos las cantidades (item.cantidad)

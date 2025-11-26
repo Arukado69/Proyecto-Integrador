@@ -22,7 +22,7 @@ let filtered = [...listaDeProductos];
 
 let modalInstancia = null; 
 
-// 1. Función para mostrar el Modal (Igual que en carrito.js)
+// 1. Función para mostrar el Modal
 function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText, onConfirm }) {
     const modalEl = document.getElementById('modalWoof');
     if(!modalEl) return; 
@@ -87,7 +87,6 @@ window.agregarAlCarrito = function(idProducto) {
     } else {
         carrito.push({ ...productoInfo, cantidad: 1 });
         
-        // Ajuste de ruta para que se vea bien en el modal
         const rutaImg = productoInfo.imageURL.replace('..', ''); 
 
         mostrarModalBootstrap({
@@ -98,13 +97,17 @@ window.agregarAlCarrito = function(idProducto) {
             cancelText: 'Ir al carrito'       
         });
 
-        // Configurar botón "Ir al carrito"
         document.getElementById('btnCancelar').onclick = function() {
-            window.location.href = '/pages/carrito.html'; 
+            window.location.href = '/pages/carrito/carrito.html'; 
         };
     }
 
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+
+    // Actualizamos el badge del navbar inmediatamente después de guardar
+    if (typeof window.actualizarBadgeNavbar === 'function') {
+        window.actualizarBadgeNavbar();
+    }
 };
 
 
@@ -115,7 +118,6 @@ window.agregarAlCarrito = function(idProducto) {
 function createProductCard(item) {
   const { id, name, price, imageURL, description, flavor, size, category } = item;
 
-  // CAMBIO AQUÍ: Agregamos el onclick con el ID del producto
   return `
     <div class="col d-flex">
       <div class="card card-producto rounded-5 shadow-sm hover-zoom w-100">
@@ -158,15 +160,12 @@ function renderPage(page = 1) {
 
   const cardsHTML = filtered.slice(start, end).map(createProductCard).join('');
   
-  // Limpiamos y rellenamos
   productRow.innerHTML = cardsHTML;
 
-  // Indicador
   resultsInfo.textContent = total
     ? `Mostrando ${start + 1}–${end} de ${total} productos`
     : 'No hay resultados para los filtros aplicados.';
 
-  // Controles Paginación
   let html = `
     <nav aria-label="Paginación">
       <ul class="pagination justify-content-center">
@@ -187,7 +186,6 @@ function renderPage(page = 1) {
     </nav>`;
   paginationEl.innerHTML = html;
 
-  // Eventos Paginación
   paginationEl.querySelectorAll('a.page-link').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
@@ -237,5 +235,11 @@ applyBtn.addEventListener('click', applyFilters);
 filtersForm.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', applyFilters));
 
 // Init
-
 applyFilters();
+
+// --- AQUÍ ESTÁ LA MAGIA (2/2) ---
+// Sincronizar badge al cargar la página por primera vez
+// (Por si vienes del carrito con productos ya comprados)
+if (typeof window.actualizarBadgeNavbar === 'function') {
+    window.actualizarBadgeNavbar();
+}

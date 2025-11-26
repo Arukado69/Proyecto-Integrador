@@ -50,7 +50,16 @@
           <span class="navbar-toggler-icon-custom"></span>
         </button>
         <a href="./iniciosesion.html"><button class="user-btn" id="userBtn"><img src="../assets/imagenes/iconos/user-dark.png" alt="Usuario" id="userIcon" /></button></a>
-        <a href="./carrito.html"><button class="user-btn" id="comprasBtn"><img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" id="comprasIcon" /></button></a>
+        <a href="./carrito.html" aria-label="Carrito">
+          <button class="user-btn position-relative">
+            <img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" width="28" height="28">
+             <span class="position-absolute badge rounded-pill bg-danger d-none" 
+                    id="miniCount" 
+                    style="top: -5px; right: -5px; border: 2px solid #fff;">
+                  0
+             </span>
+          </button>
+        </a>
       </div>
     </div>
   </nav>

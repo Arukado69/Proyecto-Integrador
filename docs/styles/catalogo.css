@@ -1,5 +1,6 @@
 /* Fondo general */
 .catalogo-body-color {
+  font-family: 'Roboto', sans-serif; /* Texto general */
   background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
   background-repeat: no-repeat;       /* No repetir la imagen */
   background-size: cover;             /* Que cubra todo el fondo */
