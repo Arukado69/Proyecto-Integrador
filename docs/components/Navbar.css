@@ -1,4 +1,4 @@
-/* 🎨 VARIABLES DE COLOR */
+/* VARIABLES DE COLOR */
 :root {
   --amarillo-0: #fffef0;
   --amarillo-50: #fff8cc;
@@ -153,53 +153,66 @@
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 650px) {
-  .navbar-toggler-custom {
-    display: flex; /* mostramos la hamburguesa */
+  
+  /* La barra superior se mantiene naranja sólida */
+  .navbar-center {
+    background-color: var(--amarillo-400); 
+    box-shadow: 0 2px 12px rgba(224, 241, 71, 0.479);
   }
 
-  /* Ajuste contenedor iconos */
+  .navbar-toggler-custom {
+    display: flex; 
+  }
+
   .iconos-hamburguesa {
     justify-content: flex-end;
   }
 
-  /* MENÚ DESPLEGABLE */
+  /* ---  AQUÍ ESTÁ EL CAMBIO DEL MENÚ DESPLEGABLE  --- */
   .navbar-nav-custom {
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 50px;          /* debajo del botón hamburguesa */
-    right: 0;           /* pegado al lado derecho */
-    background-color: rgba(255, 255, 255, 0.164);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    border-radius: 10px;
+    top: 50px;          
+    right: 0;           
+    
+    /* CAMBIO: Color naranja (242, 164, 19) con 0.95 de opacidad (casi sólido, ligera transparencia) */
+    background-color: rgba(242, 164, 19, 0.95); 
+    
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border-radius: 0 0 10px 10px; /* Bordes redondeados solo abajo */
     padding: 10px;
-    width: 180px;
+    width: 200px; /* Un poco más ancho para que se vea mejor */
     z-index: 20;
   }
+  /* ----------------------------------------------------- */
 
   .navbar-nav-custom.show {
     display: flex;
   }
 
   .navbar-nav-custom li {
-    text-align: right;
+    text-align: center;
+    margin-bottom: 4px;
   }
 
   .navbar-nav-custom a {
     display: block;
-    padding: 8px 10px;
+    padding: 10px;
     text-decoration: none;
-    color: var(--neutral-800);
+    color: var(--neutral-800); 
     border-radius: 8px;
     transition: background 0.3s;
+    font-weight: 600;
   }
 
-  .navbar-nav-custom a:hover {
-    background-color: var(--amarillo-200);
-    color: var(--neutral-900);
+  /* Efecto al tocar una opción en el celular */
+  .navbar-nav-custom a:hover,
+  .navbar-nav-custom a:active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff; 
   }
 }
-
 /* Opcional: fondo semitransparente tipo glass */
 @media (max-width: 650px) {
   .navbar-nav-custom {
@@ -207,5 +220,4 @@
        backdrop-filter: blur(6px); */
   }
 }
-
 
