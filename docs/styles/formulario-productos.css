@@ -1,8 +1,74 @@
 /* styles/formulario-productos.css */
+body {
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #111111;
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  min-height: 100vh;
+} 
+/* Títulos y Encabezados (Fredoka) */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600; 
+  letter-spacing: 0.5px;
+  color: #282828; 
+}
 main .card {
   border: none;
+  background-color: rgba(255, 255, 255, 0.95); 
 }
+
+/* BOTÓN PRINCIPAL (Agregar)*/
+.btn-primary {
+  background-color: #A04B00;
+  border-color: #A04B00;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background-color: #7a3900;
+  border-color: #7a3900;
+}
+
+/* BOTÓN SECUNDARIO (Limpiar)*/
+.btn-outline-secondary {
+  color: #A04B00;
+  border-color: #A04B00;
+  font-weight: 600;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #A04B00;
+  color: #fff;
+  border-color: #A04B00;
+}
+
+/* BOTÓN DE ÉXITO*/
+.btn-success {
+  background-color: #95a617; 
+  border-color: #95a617;
+  font-weight: 600;
+}
+
+.btn-success:hover {
+  background-color: #889715;
+  border-color: #889715;
+}
+
+.form-control:focus, 
+.form-select:focus {
+  border-color: #95a617; /* Borde verde al seleccionar */
+  box-shadow: 0 0 0 0.25rem rgba(149, 166, 23, 0.25); /* Resplandor verde suave */
+}
+
+/* Vista previa JSON */
 #jsonPreview {
   max-height: 300px;
   overflow: auto;
+  border: 1px dashed #A04B00; /* Borde punteado marrón */
+  background-color: #fff8f0 !important; /* Fondo crema muy suave */
 }
