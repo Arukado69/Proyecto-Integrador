@@ -1,12 +1,13 @@
-
 :root{
   --brand-ink: #111;          /* texto principal */
   --brand-accent: #7a4a29;    /* acento Woof&Barf */
   --brand-accent-2: #c77a43;  /* acento claro */
   --brand-100: #f8efe9;       /* fondo cálido */
-  --ok: #2fbf71;
+  --ok: #95a617;
+  --ok-hover: #889715;
   --warn: #e0a800;
-  --danger: #e03131;
+  --danger: #bf0413;   
+  --danger-hover: #ae0411;
 
   --bs-primary: var(--brand-accent);
   --bs-primary-rgb: 122,74,41;
@@ -156,8 +157,56 @@ body {
 
 .item-actions{ grid-area: act; display:flex; gap:10px; align-items:center; }
 .item-actions .btn-remove{
-  border:none; background:transparent; color: var(--danger); font-weight:600;
+  border: none; 
+  background: transparent; 
+  color: var(--danger); 
+  font-weight: 600;
+  transition: color 0.2s ease;
 }
+.item-actions .btn-remove:hover {
+  color: var(--danger-hover); 
+}
+#btnVaciar {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+#btnVaciar:hover {
+  background-color: var(--danger);
+  color: #fff;
+}
+
+#btnPagar {
+  background-color: #A04B00 !important;
+  border-color: #A04B00 !important;
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+#btnPagar:hover {
+  background-color: #7a3900 !important; /* Un tono más oscuro al pasar el mouse */
+  border-color: #7a3900 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(160, 75, 0, 0.3); /* Sombra naranja suave */
+}
+
+/*Botones de Borde (Aplicar Cupón y Seguir Comprando)*/
+.btn-outline-primary {
+  color: #A04B00 !important;
+  border-color: #A04B00 !important;
+}
+.btn-outline-primary:hover {
+  background-color: #A04B00 !important;
+  color: #fff !important;
+  border-color: #A04B00 !important;
+}
+
+/* Ajuste extra: El botón "Aplicar" pegado al input */
+#btnAplicarCupon {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
 .item-actions .fav{
   border:none; background:transparent; color:#666; transition: transform .12s ease, color .2s ease;
 }
@@ -236,7 +285,7 @@ button:focus-visible,
 a:focus-visible,
 .qty-input:focus-visible,
 input:focus-visible{
-  outline: 3px solid rgba(122,74,41,.35);
+  outline: 3px solid rgba(37, 172, 48, 0.35);
   outline-offset: 2px;
 }
 
@@ -273,6 +322,7 @@ input:focus-visible{
 .form-text.ok{ color: var(--ok); }
 
 /* === Animación continua para la barra de progreso === */
+/*
 .progress-bar {
   background-image: linear-gradient(
     90deg,
@@ -285,6 +335,23 @@ input:focus-visible{
   background-size: 200% 100%;
   animation: fillFlow 3s linear infinite;
 }
+*/
+
+/* === DEY === */
+.progress-bar {
+  background-image: linear-gradient(
+    90deg,
+    var(--bs-primary) 0%,
+    #F3A412 25%,  /* 👈 CAMBIO: Naranja de la marca */
+    var(--bs-primary) 50%,
+    #F3A412 75%,  /* 👈 CAMBIO: Naranja de la marca */
+    var(--bs-primary) 100%
+  );
+  background-size: 200% 100%;
+  animation: fillFlow 3s linear infinite;
+}
+
+
 
 /* Movimiento de izquierda a derecha tipo oleaje */
 @keyframes fillFlow {
@@ -351,4 +418,14 @@ input:focus-visible{
 .btn-carrusel:hover {
     background: #F3A412; /* Cambio a naranja sólido */
     color: #fff;
+}
+/* Iconos de confianza en el header (camión y escudo) */
+.bi-truck, .bi-shield-check {
+  color: var(--ok); /* 👈 Tu nuevo verde #95a617 */
+  font-size: 1.1em;
+}
+
+/* Badge de contador en el icono del carrito (header) */
+#miniCount {
+  background-color: var(--danger) !important; /* El globito rojo con el número */
 }
