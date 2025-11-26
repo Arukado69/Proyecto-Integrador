@@ -1,0 +1,7 @@
+package org.proyecto_integrador.woofandbarf.exceptions;
+
+public class RecursoNoEncontradoException extends RuntimeException {
+    public RecursoNoEncontradoException(String mensaje) {
+        super(mensaje);
+    }
+}
