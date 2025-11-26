@@ -241,3 +241,32 @@
 .card img {
   flex-shrink: 0;
 }
+/* ==================================================================
+   PERSONALIZACIÓN DE LA PAGINACIÓN (Para no usar el formato de boostrap)
+   ================================================================== */
+
+/* Estilo de los botones normales */
+.pagination .page-link {
+  color: #A04B00; 
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+/* Estilo del botón ACTIVO (el número de página actual) */
+.pagination .page-item.active .page-link {
+  background-color: #A04B00 !important; /* Fondo naranja/marrón */
+  border-color: #A04B00 !important;      /* Borde del mismo color */
+  color: #fff !important;                /* Texto blanco */
+}
+
+/* Estilo al pasar el mouse (Hover) */
+.pagination .page-link:hover {
+  background-color: #ebc9b5; 
+  border-color: #ebc9b5;
+  color: #fff;
+}
+
+/*Quitar el resplandor azul al hacer clic (Focus) */
+.pagination .page-link:focus {
+  box-shadow: 0 0 0 0.25rem rgba(160, 75, 0, 0.25); 
+}
