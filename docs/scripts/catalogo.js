@@ -98,7 +98,7 @@ window.agregarAlCarrito = function(idProducto) {
         });
 
         document.getElementById('btnCancelar').onclick = function() {
-            window.location.href = '/pages/carrito/carrito.html'; 
+            window.location.href = '/pages/carrito.html'; 
         };
     }
 
