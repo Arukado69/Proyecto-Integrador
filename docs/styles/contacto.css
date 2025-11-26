@@ -1,14 +1,16 @@
-/* ===== Contacto: tokens y scope ===== */
 :root {
-  --contact-bg: #F4F6E8; /* crema del fondo */
-  --contact-green: #1B3B32; /* títulos/botón */
-  --contact-green-600: #294D40; /* hover */
-  --contact-accent: #E35F2F; /* links naranja */
+  /* --- COLORES DE MARCA --- */
+  --brand-ink: #111;          /* Texto principal (Casi Negro) */
+  --brand-accent: #A04B00;    /* Marrón principal */
+  --brand-accent-hover: #7a3900; /* Marrón oscuro hover */
+  --brand-orange: #F3A412;    /* Naranja acento */
+  --ok: #95a617;              /* Verde para focus */
+  
   --contact-card-radius: 14px;
   --contact-shadow: 0 6px 16px rgba(0,0,0,.08);
 }
 
-/* Fondo general */
+/* Fondo general (Limpio, solo imagen) */
 body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
@@ -18,35 +20,39 @@ body {
   background-size: cover;
   background-position: center center;
   background-attachment: fixed;
+  min-height: 100vh;
 }
 
-/* Página contacto */
-.contact-page{ 
-  background: var(--contact-bg); 
-  color: var(--contact-green); 
+/* Tipografía Fredoka para títulos */
+h1, h2, h3, h4, h5, h6,
+.contact-title,
+.contact-page {
   font-family: "Fredoka", sans-serif;
+  font-weight: 600;
 }
 
-/* Estilo específico para el título principal */
+/* Título Principal */
 .contact-title {
-  color: var(--contact-green) !important; 
-  font-family: "Fredoka", sans-serif;
+  color: var(--brand-ink) !important; 
   font-size: 2.5rem; 
-  font-weight: 600;   
   margin-bottom: 5px !important; 
 }
 
 .contact-subtitle {
   font-style: italic;
-  color: var(--contact-green-600) !important; 
+  color: #555 !important; 
   margin-bottom: 40px !important;
 }
 
+/* Subtítulos de las tarjetas (H2) */
+.contact-card h2 {
+    color: var(--brand-ink);
+}
+
 /* ==============================
-    CONTACTO - AJUSTES PARA BOOTSTRAP
+   LAYOUT Y TARJETAS
 ============================== */
 
-/* Contenedor principal */
 .contact-content {
   display: flex;
   justify-content: space-between;
@@ -57,13 +63,13 @@ body {
   max-width: 1200px; 
 }
 
-/* FORMULARIO */
-.contact-form {
+.contact-form,
+.contact-info {
   flex: 1 1 48%;
   min-width: 360px;
 }
 
-/* Tarjetas */
+/* Tarjetas Blancas */
 .contact-card {
   background-color: #fff;
   border-radius: var(--contact-card-radius); 
@@ -74,7 +80,16 @@ body {
 
 .contact-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); 
+}
+
+/* ==============================
+   FORMULARIO
+============================== */
+
+.form-label {
+    font-weight: 600;
+    color: var(--brand-ink);
 }
 
 .form-control {
@@ -82,54 +97,68 @@ body {
   border: 1px solid #dcdcdc;
   padding: 0.8rem 1rem; 
   font-size: 1rem; 
-  font-family: "Fredoka", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
+/* Focus en Inputs: Verde de marca */
 .form-control:focus {
-  border-color: var(--contact-green-600); /* Color de borde al enfocar */
-  box-shadow: 0 0 0 0.2rem rgba(27, 59, 50, 0.15); /* Sombra de foco usando el color verde oscuro */
+  border-color: var(--ok); 
+  box-shadow: 0 0 0 0.25rem rgba(149, 166, 23, 0.25);
 }
 
+/* Botón de Enviar (Marrón estilo marca) */
 .btn-forest {
-  background-color: var(--contact-green);
+  background-color: var(--brand-accent);
   color: #fff;
   border: none;
   border-radius: 8px;
   padding: 0.8rem 1rem;
   font-weight: 600;
-  transition: background-color 0.2s;
+  font-family: "Fredoka", sans-serif;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
 }
 
 .btn-forest:hover {
-  background-color: var(--contact-green-600); 
+  background-color: var(--brand-accent-hover); 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(160, 75, 0, 0.3);
+  color: #fff;
 }
 
-/* INFORMACIÓN Y REDES */
-.contact-info {
-  flex: 1 1 48%;
-  min-width: 360px;
-}
+/* ==============================
+   ICONOS Y REDES
+============================== */
 
 .contact-icon {
-  color: var(--contact-accent); 
+  color: var(--brand-accent); /* Iconos marrones */
   font-size: 1.4rem; 
 }
 
 .contact-accent {
-  color: var(--contact-accent); 
+  color: var(--brand-accent); 
+  text-decoration: none;
+  font-weight: 500;
+}
+.contact-accent:hover {
+    color: var(--brand-orange);
+    text-decoration: underline;
 }
 
+/* Redes Sociales */
 .social-link {
   font-size: 1.8rem;
-  color: var(--contact-green); 
-  transition: color 0.2s;
+  color: var(--brand-accent); /* Marrón */
+  transition: color 0.2s, transform 0.2s;
+  display: inline-block;
 }
 
 .social-link:hover {
-  color: var(--contact-accent); 
+  color: var(--brand-orange); /* Naranja al pasar mouse */
+  transform: scale(1.1);
 }
 
-/* RESPONSIVE */
+/* Responsive */
 @media (max-width: 992px) {
   .contact-content {
     flex-direction: column;
