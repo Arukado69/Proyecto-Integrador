@@ -19,22 +19,25 @@ function obtenerCarrito() {
 // Guardar el array actualizado
 function guardarCarrito(carrito) {
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+
+    // Actualizar badge al guardar (agregar/editar)
+    if (typeof window.actualizarBadgeNavbar === 'function') {
+        window.actualizarBadgeNavbar();
+    }
 }
 
 // ==========================================
-// B. UTILIDAD: MODAL BOOTSTRAP (Reemplazo de Alert/Confirm)
+// B. UTILIDAD: MODAL BOOTSTRAP
 // ==========================================
 let modalInstancia = null; 
 
 function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText, onConfirm }) {
     const modalEl = document.getElementById('modalWoof');
-    if(!modalEl) return; // Protección si no existe el HTML del modal
+    if(!modalEl) return; 
 
-    // 1. Llenar textos
     document.getElementById('modalTitulo').innerText = title || 'Aviso';
     document.getElementById('modalMensaje').innerText = text || '';
 
-    // 2. Imagen
     const imgEl = document.getElementById('modalImagen');
     if (imageUrl) {
         imgEl.src = imageUrl;
@@ -43,7 +46,6 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
         imgEl.classList.add('d-none');
     }
 
-    // 3. Configurar Botones
     const btnConfirmar = document.getElementById('btnConfirmar');
     const btnCancelar = document.getElementById('btnCancelar');
 
@@ -56,13 +58,11 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
         btnCancelar.classList.add('d-none');
     }
 
-    // 4. Asignar acción al botón Confirmar
     btnConfirmar.onclick = function() {
         if (onConfirm) onConfirm(); 
         modalInstancia.hide();
     };
 
-    // 5. Mostrar
     if (!modalInstancia) {
         modalInstancia = new bootstrap.Modal(modalEl);
     }
@@ -73,8 +73,6 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
 // C. CONTROLADOR (Lógica del Negocio)
 // ==========================================
 
-// --- ACCIONES DE PRODUCTOS ---
-
 window.agregarAlCarrito = function(idProducto) {
     let carrito = obtenerCarrito();
     const itemExistente = carrito.find(item => item.id === idProducto);
@@ -82,7 +80,6 @@ window.agregarAlCarrito = function(idProducto) {
     if (itemExistente) {
         itemExistente.cantidad++;
         
-        // Alerta Simple (Solo texto)
         mostrarModalBootstrap({
             title: '¡Cantidad Actualizada!',
             text: 'Agregamos una unidad más a tu carrito.',
@@ -94,18 +91,16 @@ window.agregarAlCarrito = function(idProducto) {
         if (productoInfo) {
             carrito.push({ ...productoInfo, cantidad: 1 });
             
-            // Alerta Completa (Con imagen y opción de ir a pagar)
-            const rutaImg = productoInfo.imageURL.replace('..', ''); // Ajuste ruta absoluta
+            const rutaImg = productoInfo.imageURL.replace('..', ''); 
 
             mostrarModalBootstrap({
                 title: '¡Producto Agregado!',
                 text: `¿Qué te gustaría hacer ahora?`,
                 imageUrl: rutaImg,
-                confirmText: 'Seguir comprando', // Botón oscuro (principal)
-                cancelText: 'Ir a pagar'         // Botón claro (secundario)
+                confirmText: 'Seguir comprando', 
+                cancelText: 'Ir a pagar'         
             });
 
-            // Configurar manualmente el botón "Cancelar/Ir a pagar"
             document.getElementById('btnCancelar').onclick = function() {
                 window.location.href = '/pages/carrito/datos.html';
             };
@@ -146,6 +141,7 @@ window.eliminarItem = function(id) {
     });
 };
 
+// --- AQUÍ ESTÁ LA FUNCIÓN CORREGIDA ---
 window.vaciarCarrito = function() {
     mostrarModalBootstrap({
         title: '¿Vaciar carrito?',
@@ -155,18 +151,22 @@ window.vaciarCarrito = function() {
         onConfirm: () => {
             localStorage.removeItem(CLAVE_CARRITO);
             renderizarCarritoUI();
+            
+            // Actualizar Badge manualmente al vaciar
+            if (typeof window.actualizarBadgeNavbar === 'function') {
+                window.actualizarBadgeNavbar();
+            }
         }
     });
 };
 
-// --- ACCIONES DEL SIDEBAR (CUPONES Y ENVÍO) ---
+// --- ACCIONES DEL SIDEBAR ---
 
 window.aplicarCupon = function() {
     const inputCupon = document.getElementById('cupon');
     const feedback = document.getElementById('cuponFeedback');
     const codigo = inputCupon.value.trim().toUpperCase();
 
-    // Simulación de cupones
     const cuponesValidos = {
         'WOOF10': 0.10, 
         'BARF20': 0.20, 
@@ -229,7 +229,7 @@ window.irAPagar = function() {
 };
 
 // ==========================================
-// D. VISTA (Renderizado del Carrito Principal)
+// D. VISTA
 // ==========================================
 
 function renderizarCarritoUI() {
@@ -257,7 +257,6 @@ function renderizarCarritoUI() {
     
     carrito.forEach(item => {
         const totalItem = item.price * item.cantidad;
-        // Ajuste de ruta absoluta para imagen del carrito
         const rutaImg = item.imageURL.replace('..', '');
 
         const htmlItem = `
@@ -347,7 +346,7 @@ function actualizarTotales(carrito) {
 }
 
 // ==========================================
-// E. LÓGICA DEL CARRUSEL (ESTILO CATÁLOGO)
+// E. LÓGICA DEL CARRUSEL
 // ==========================================
 
 const contenedorCarrusel = document.getElementById('recoSlides');
@@ -401,13 +400,17 @@ function renderizarCarrusel(productos) {
 }
 
 // ==========================================
-// F. INICIALIZACIÓN ÚNICA
+// F. INICIALIZACIÓN
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     renderizarCarritoUI();
     renderizarCarrusel(listaDeProductos.slice(0, 6));
 
-    // Listeners del DOM
+    // Actualizar badge al cargar
+    if (typeof window.actualizarBadgeNavbar === 'function') {
+        window.actualizarBadgeNavbar();
+    }
+
     const btnVaciar = document.getElementById('btnVaciar');
     if(btnVaciar) btnVaciar.addEventListener('click', window.vaciarCarrito);
 
@@ -421,7 +424,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnPagar) btnPagar.addEventListener('click', window.irAPagar);
 });
 
-// Listener Resize
 window.addEventListener('resize', () => {
     const anchoActual = window.innerWidth;
     const eraMovil = ultimoAncho < 992;

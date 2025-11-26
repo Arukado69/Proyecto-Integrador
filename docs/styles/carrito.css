@@ -15,6 +15,7 @@
 /* ---------- Reset suave + tipografía ---------- */
 *{ box-sizing:border-box; }
 body {
+  font-family: 'Fredoka', sans-serif;
   background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
   background-repeat: no-repeat;       /* No repetir la imagen */
   background-size: cover;             /* Que cubra todo el fondo */
@@ -163,21 +164,6 @@ body {
 }
 .item-actions .fav:hover{ transform: scale(1.1); color: var(--brand-accent-2); }
 .item-actions .fav.active{ color: var(--brand-accent); transform: scale(1.15); }
-
-/* ---------- Recomendaciones ---------- 
-.reco-card{ min-height:100%; overflow: hidden; }
-.reco-img{
-  height:140px; background:#f6f2ef; border-top-left-radius:12px; border-top-right-radius:12px;
-  position: relative;
-}
-.reco-img img{ opacity:0; transition: opacity .25s ease; }
-.reco-img img.loaded{ opacity:1; }
-.reco-img.skeleton{
-  background: #eee;
-  background-image: linear-gradient(90deg, #eee 0px, #f6f6f6 40px, #eee 80px);
-  background-size: 600px 100%;
-  animation: shimmer 1.2s infinite linear;
-}*/
 
 /* Ajustes para el Carrusel de Recomendaciones */
 
