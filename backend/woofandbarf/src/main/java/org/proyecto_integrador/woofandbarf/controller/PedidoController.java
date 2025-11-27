@@ -4,6 +4,7 @@ import org.proyecto_integrador.woofandbarf.exceptions.PedidoNotFoundException;
 import org.proyecto_integrador.woofandbarf.model.Pedido;
 import org.proyecto_integrador.woofandbarf.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,6 +55,16 @@ public class PedidoController {
         try {
             pedidoService.eliminarPedido(idPedido);
             return ResponseEntity.noContent().build();
+        }catch (PedidoNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    //metodo para actualizar pedido
+    @PutMapping("/modificar-pedido/{id}")
+    public ResponseEntity<Pedido> modificarPedido(@RequestBody Pedido pedido, @PathVariable Integer id){
+        try {
+            return ResponseEntity.ok(pedidoService.modificarPedido(pedido,id));
         }catch (PedidoNotFoundException e){
             return ResponseEntity.notFound().build();
         }

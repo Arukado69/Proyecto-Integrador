@@ -43,7 +43,7 @@ public class Carrito {
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
-    @OneToOne(mappedBy = "carrito", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "carrito")
     private Pedido pedido;
 
     // ====== Getters y Setters ======
