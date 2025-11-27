@@ -1,5 +1,6 @@
 package org.proyecto_integrador.woofandbarf.service;
 
+import org.proyecto_integrador.woofandbarf.enums.Rol;
 import org.proyecto_integrador.woofandbarf.interfaces.IUsuarioService;
 import org.proyecto_integrador.woofandbarf.model.Carrito;
 import org.proyecto_integrador.woofandbarf.model.Usuario;
@@ -25,6 +26,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario registrar(Usuario usuario) {
+        usuario.setRol(Rol.CLIENTE);
         usuario.setFechaCreacion(LocalDateTime.now());
 
         Usuario guardado = usuarioRepository.save(usuario);
@@ -54,4 +56,6 @@ public class UsuarioService implements IUsuarioService {
     public List<Usuario> listar() {
         return usuarioRepository.findAll();
     }
+
+
 }

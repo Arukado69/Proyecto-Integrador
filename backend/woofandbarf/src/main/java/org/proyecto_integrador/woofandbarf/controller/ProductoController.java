@@ -34,7 +34,7 @@ public class ProductoController {
         return productoService.obtenerPorId(idProducto);
     }
 
-    @PostMapping
+    @PostMapping("new-producto")
     public Producto crear(@RequestBody Producto producto) {
         return productoService.crear(producto);
     }
