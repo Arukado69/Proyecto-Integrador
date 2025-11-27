@@ -83,7 +83,6 @@ public class UsuarioService implements IUsuarioService {
                     usermap.setNombre(user.getNombre());
                     usermap.setApellidos(user.getApellidos());
                     usermap.setEmail(user.getEmail());
-                    usermap.setDireccion(user.getDireccion());
                     return usuarioRepository.save(usermap);
                 })
                 .orElseThrow(() -> new UserNotFoundException(id));
