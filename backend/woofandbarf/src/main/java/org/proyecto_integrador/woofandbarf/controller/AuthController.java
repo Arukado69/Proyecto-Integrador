@@ -5,6 +5,8 @@ import org.proyecto_integrador.woofandbarf.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Endpoints para registro y login.
  * Usados por las pantallas de inicio de sesión y registro.
@@ -19,6 +21,11 @@ public class AuthController {
 
     @Autowired
     private IUsuarioService usuarioService;
+
+    @GetMapping
+    public List<Usuario> obtenerUsuarios(){
+        return usuarioService.listar();
+    }
 
     /**
      * Registro de usuario.

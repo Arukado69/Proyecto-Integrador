@@ -1,5 +1,6 @@
 package org.proyecto_integrador.woofandbarf.service;
 
+import org.proyecto_integrador.woofandbarf.enums.Rol;
 import org.proyecto_integrador.woofandbarf.exceptions.ConflictoException;
 import org.proyecto_integrador.woofandbarf.exceptions.RecursoNoEncontradoException;
 import org.proyecto_integrador.woofandbarf.interfaces.IUsuarioService;
@@ -27,6 +28,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario registrar(Usuario usuario) {
+        usuario.setRol(Rol.CLIENTE);
 
         // Exception
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
@@ -62,4 +64,6 @@ public class UsuarioService implements IUsuarioService {
     public List<Usuario> listar() {
         return usuarioRepository.findAll();
     }
+
+
 }
