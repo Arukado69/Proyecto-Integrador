@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
         telefono: telefonoInput,  // Java espera 'telefono'
         password: passwordInput,
         fechaNacimiento: fechaInput,
-        direccion: "Sin dirección" // Valor por defecto para evitar null
+
       };
 
       // D) Conexión Fetch (Tu lógica)
