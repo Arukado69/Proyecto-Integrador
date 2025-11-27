@@ -89,5 +89,9 @@ public class UsuarioService implements IUsuarioService {
                 .orElseThrow(() -> new UserNotFoundException(id));
     }
 
+    //metodo findbyEmail()
+    public Usuario findByEmail(String email){
+        return usuarioRepository.findByEmail(email);
+    }
 
 }
