@@ -5,3 +5,6 @@ public class ConflictoException extends RuntimeException {
         super(message);
     }
 }
+
+// se usa cuando el usuario intenta hacer algo y entra en conflicto con un dato que ya existe, por ejemplo
+// un email ya registrado o algo parecido y representa el 409

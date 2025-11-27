@@ -1,5 +1,7 @@
 package org.proyecto_integrador.woofandbarf.service;
 
+import org.proyecto_integrador.woofandbarf.exceptions.ErrorInternoException;
+import org.proyecto_integrador.woofandbarf.exceptions.RecursoNoEncontradoException;
 import org.proyecto_integrador.woofandbarf.interfaces.ICarritoService;
 import org.proyecto_integrador.woofandbarf.model.Carrito;
 import org.proyecto_integrador.woofandbarf.model.CarritoDetalle;
@@ -38,7 +40,7 @@ public class CarritoService implements ICarritoService {
         return carritoRepository.findByUsuario_IdUsuario(idUsuario)
                 .orElseGet(() -> {
                     Usuario usuario = usuarioRepository.findById(idUsuario)
-                            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                            .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
 
                     Carrito carrito = new Carrito();
                     carrito.setUsuario(usuario);
@@ -52,7 +54,7 @@ public class CarritoService implements ICarritoService {
     public CarritoDetalle agregarProducto(Integer idUsuario, Integer idProducto, Integer cantidad) {
         Carrito carrito = obtenerCarritoPorUsuario(idUsuario);
         Producto producto = productoRepository.findById(idProducto)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Producto no encontrado"));
 
         // Buscar si ya existe un detalle con ese producto en el carrito
         CarritoDetalle detalleExistente = carrito.getDetalles().stream()
@@ -91,7 +93,7 @@ public class CarritoService implements ICarritoService {
     @Override
     public void eliminarDetalle(Integer idCarritoDetalle) {
         CarritoDetalle detalle = carritoDetalleRepository.findById(idCarritoDetalle)
-                .orElseThrow(() -> new RuntimeException("Detalle de carrito no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Detalle de carrito no encontrado"));
 
         Carrito carrito = detalle.getCarrito();
         carrito.getDetalles().remove(detalle);
@@ -104,11 +106,15 @@ public class CarritoService implements ICarritoService {
 
     @Override
     public void vaciarCarrito(Integer idUsuario) {
-        Carrito carrito = obtenerCarritoPorUsuario(idUsuario);
-        carrito.getDetalles().clear();
-        carrito.setTotal(BigDecimal.ZERO);
-        carrito.setFechaActualizacion(LocalDateTime.now());
-        carritoRepository.save(carrito);
+        try {
+            Carrito carrito = obtenerCarritoPorUsuario(idUsuario);
+            carrito.getDetalles().clear();
+            carrito.setTotal(BigDecimal.ZERO);
+            carrito.setFechaActualizacion(LocalDateTime.now());
+            carritoRepository.save(carrito);
+        } catch (RuntimeException e) {
+            throw new ErrorInternoException("Error al vaciar el carrito");
+        }
     }
 
     // ==== Helpers ====

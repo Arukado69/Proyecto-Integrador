@@ -1,5 +1,8 @@
 package org.proyecto_integrador.woofandbarf.service;
 
+import org.proyecto_integrador.woofandbarf.exceptions.ErrorInternoException;
+import org.proyecto_integrador.woofandbarf.exceptions.PeticionInvalidaException;
+import org.proyecto_integrador.woofandbarf.exceptions.RecursoNoEncontradoException;
 import org.proyecto_integrador.woofandbarf.interfaces.IProductoService;
 import org.proyecto_integrador.woofandbarf.model.Producto;
 import org.proyecto_integrador.woofandbarf.repository.ProductoRepository;
@@ -24,13 +27,25 @@ public class ProductoService implements IProductoService {
 
     @Override
     public Producto crear(Producto producto) {
-        return productoRepository.save(producto);
+        if (producto.getPrecio().doubleValue() < 0) {
+            throw new PeticionInvalidaException("El precio no puede ser negativo");
+        }
+
+        if (producto.getNombre() == null || producto.getNombre().isBlank()) {
+            throw new PeticionInvalidaException("El nombre del producto es obligatorio");
+        }
+
+        try {
+            return productoRepository.save(producto);
+        } catch (Exception ex) {
+            throw new ErrorInternoException("Error al crear el producto");
+        }
     }
 
     @Override
     public Producto obtenerPorId(Integer idProducto) {
         return productoRepository.findById(idProducto)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Producto no encontrado"));
     }
 
     @Override

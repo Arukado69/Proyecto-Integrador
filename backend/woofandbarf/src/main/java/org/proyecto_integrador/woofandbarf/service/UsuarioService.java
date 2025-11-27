@@ -1,6 +1,8 @@
 package org.proyecto_integrador.woofandbarf.service;
 
 import org.proyecto_integrador.woofandbarf.enums.Rol;
+import org.proyecto_integrador.woofandbarf.exceptions.ConflictoException;
+import org.proyecto_integrador.woofandbarf.exceptions.RecursoNoEncontradoException;
 import org.proyecto_integrador.woofandbarf.interfaces.IUsuarioService;
 import org.proyecto_integrador.woofandbarf.model.Carrito;
 import org.proyecto_integrador.woofandbarf.model.Usuario;
@@ -27,6 +29,12 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Usuario registrar(Usuario usuario) {
         usuario.setRol(Rol.CLIENTE);
+
+        // Exception
+        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+            throw new ConflictoException("El email ya está registrado");
+        }
+
         usuario.setFechaCreacion(LocalDateTime.now());
 
         Usuario guardado = usuarioRepository.save(usuario);
@@ -49,7 +57,7 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Usuario obtenerPorId(Integer idUsuario) {
         return usuarioRepository.findById(idUsuario)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new RecursoNoEncontradoException("Usuario no encontrado"));
     }
 
     @Override

@@ -5,3 +5,5 @@ public class RecursoNoEncontradoException extends RuntimeException {
         super(mensaje);
     }
 }
+
+// se usa cunado estamos buscando algo y no lo encontramos, representa el 404
