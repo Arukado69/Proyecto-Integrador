@@ -99,5 +99,17 @@ public class AuthController {
             return ResponseEntity.notFound().build();
         }
     }
+    //metodo para buscar por email
+
+    @GetMapping("/email")
+    public ResponseEntity<Usuario> findByEmail(@RequestParam String email){
+
+        Usuario usuarioEmail = usuarioServiceServ.findByEmail(email);
+        if (usuarioEmail == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarioEmail);
+
+    }
 }
 
