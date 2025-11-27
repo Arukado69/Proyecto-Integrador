@@ -6,9 +6,12 @@
 .flip-card {
   background-color: transparent;
   width: 100%;
-  height: 350px; /* ajustar la altura */
-  perspective: 1000px; /* Efecto 3D */
-  margin-bottom: 2rem; /* Espacio inferior */
+  height: 350px;
+  /* ajustar la altura */
+  perspective: 1000px;
+  /* Efecto 3D */
+  margin-bottom: 2rem;
+  /* Espacio inferior */
   font-family: 'Fredoka', sans-serif;
 }
 
@@ -20,7 +23,7 @@
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 /* Efecto al pasar el mouse por encima */
@@ -29,18 +32,21 @@
 }
 
 /* Posicionamiento de la cara frontal y trasera */
-.flip-card-front, .flip-card-back {
+.flip-card-front,
+.flip-card-back {
   position: absolute;
   width: 100%;
   height: 100%;
-  -webkit-backface-visibility: hidden; /* Para Safari */
+  -webkit-backface-visibility: hidden;
+  /* Para Safari */
   backface-visibility: hidden;
-  border-radius: 0.25rem; /* Bordes redondeados como las cards de Bootstrap */
+  border-radius: 0.25rem;
+  /* Bordes redondeados como las cards de Bootstrap */
 }
 
 /* Estilo de la cara frontal */
 .flip-card-front {
-  background-image:url('../assets/imagenes/perritos-varios/fondo\ flipcard.jpg');
+  background-image: url('../assets/imagenes/perritos-varios/fondo\ flipcard.jpg');
   color: black;
   display: flex;
   flex-direction: column;
@@ -50,7 +56,8 @@
 
 /* Estilo de la cara trasera */
 .flip-card-back {
-  background-color: #aab845; /* Azul primario de Bootstrap */
+  background-color: #aab845;
+  /* Azul primario de Bootstrap */
   /*color: white;*/
   transform: rotateY(180deg);
   display: flex;
@@ -62,31 +69,40 @@
 
 /* Pone el título (h4) en blanco */
 .flip-card-back h4 {
-  color: white; /* O #FFFFFF */
+  color: white;
+  /* O #FFFFFF */
 }
 
 /* Pone el párrafo (p) en negro */
 .flip-card-back p {
   font-family: 'Roboto', sans-serif;
-  color: black; /* O #000000 */
+  color: black;
+  /* O #000000 */
   /* También nos aseguramos de que los párrafos de estrellas se vean bien */
 }
 
 .star-rating {
-  margin-top: auto; /* Empuja las estrellas hacia abajo */
-  padding-top: 15px; /* Un poco de espacio para que no se pegue al texto */
+  margin-top: auto;
+  /* Empuja las estrellas hacia abajo */
+  padding-top: 15px;
+  /* Un poco de espacio para que no se pegue al texto */
   width: 100%;
-  text-align: center; /* Centra el contenido */
+  text-align: center;
+  /* Centra el contenido */
 }
 
 .star-rating p {
-  margin-bottom: 5px; /* Pequeño espacio entre el texto y las estrellas */
+  margin-bottom: 5px;
+  /* Pequeño espacio entre el texto y las estrellas */
 }
 
 .star-rating i {
-  color: #FFD700; /* Color dorado clásico para las estrellas */
-  font-size: 1.3rem; /* Ajusta el tamaño */
-  margin: 0 2px; /* Un pequeño espacio horizontal entre ellas */
+  color: #FFD700;
+  /* Color dorado clásico para las estrellas */
+  font-size: 1.3rem;
+  /* Ajusta el tamaño */
+  margin: 0 2px;
+  /* Un pequeño espacio horizontal entre ellas */
 }
 
 .team-img {
@@ -97,72 +113,76 @@
   border: 4px solid white;
   margin-bottom: 1rem;
 }
+
 /* Estilos para la sección de compromiso */
 /* Apariencia de la tarjeta de compromiso */
 .compromiso-card {
-    background-color: #fff;
-    border: none;
-    border-radius: 30px;
-    overflow: hidden;
-    max-width: 1700px;
-    margin: 60px auto;
+  background-color: #fff;
+  border: none;
+  border-radius: 30px;
+  overflow: hidden;
+  max-width: 1700px;
+  margin: 60px auto;
 }
 
 /* Estilos para la imagen dentro de la tarjeta */
 .compromiso-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* Estilos para el cuerpo de la tarjeta */
 .compromiso-body {
-    padding: 3rem;
+  padding: 3rem;
 }
 
 /* Estilos para el título */
 .compromiso-body h3 {
-    font-family: 'Fredoka', sans-serif;
-    font-weight: 700;
-    font-size: 1.8rem;
-    margin-bottom: 1rem;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
 }
 
 /* Estilos para el texto*/
 .compromiso-body p {
-    font-family: 'Roboto', sans-serif;
-    color: #333;
-    line-height: 1.7;
-    font-size: 18px;
-    text-align: left; /* Aseguramos que no se centre */
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  line-height: 1.7;
+  font-size: 18px;
+  text-align: left;
+  /* Aseguramos que no se centre */
 }
 
 /* Estilos para el botón */
 .btn-compromiso {
-    background-color: #f2a413;
-    color: #000;
-    font-weight: 600;
-    border-radius: 25px;
-    padding: 10px 24px;
-    border: none;
-    transition: all 0.3s ease;
+  background-color: #f2a413;
+  color: #000;
+  font-weight: 600;
+  border-radius: 25px;
+  padding: 10px 24px;
+  border: none;
+  transition: all 0.3s ease;
 }
 
 /* Efecto hover para el botón */
 .btn-compromiso:hover {
-    background-color: #f2a413;
-    color: #000;
+  background-color: #f2a413;
+  color: #000;
 }
 
-#margin-cardCompromiso{
+#margin-cardCompromiso {
   margin-left: 0px;
 }
+
 /* Estilos responsivos ajusta el diseno a celulares y tablets */
 @media (max-width: 768px) {
-    .compromiso-body {
-        padding: 2rem 1.5rem;
-    }
+  .compromiso-body {
+    padding: 2rem 1.5rem;
+  }
 }
+
 /* ===============================================
 == FIN: Contenido de style.css
 ===============================================
@@ -187,9 +207,11 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-  background-attachment: fixed; /* 👈 Hace que el fondo quede estático al hacer scroll */
+  background-attachment: fixed;
+  /* 👈 Hace que el fondo quede estático al hacer scroll */
   overflow-x: hidden;
-  min-height: 100vh; /* Para que cubra toda la pantalla */
+  min-height: 100vh;
+  /* Para que cubra toda la pantalla */
 }
 
 
@@ -200,7 +222,7 @@ body {
   background: url("../assets/imagenes/perritos-varios/nosotros-hero.jpg") no-repeat center center/cover;
   display: flex;
   align-items: center;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   padding: 0 10%;
 }
 
@@ -232,13 +254,21 @@ body {
   font-size: 1.3rem;
   font-weight: 400;
   color: #f9d592;
-  text-align: left; /* Aseguramos que no se centre */
+  text-align: left;
+  /* Aseguramos que no se centre */
 }
 
 /* ======== ANIMACIÓN ======== */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ======== RESPONSIVE ======== */
@@ -246,6 +276,7 @@ body {
   .hero-content h1 {
     font-size: 2.5rem;
   }
+
   .hero-content h2 {
     font-size: 1.2rem;
   }
@@ -253,18 +284,19 @@ body {
 
 @media (max-width: 768px) {
   .hero {
-    justify-content: center; 
+    justify-content: center;
     text-align: center;
     padding: 0 5%;
   }
-  
+
   .hero-content h1 {
     font-size: 2rem;
   }
 
   .hero-content h2 {
     font-size: 1rem;
-    text-align: center; /* En móvil sí lo centramos */
+    text-align: center;
+    /* En móvil sí lo centramos */
   }
 }
 
@@ -281,93 +313,93 @@ body {
 
 /* Sección de historia con fondo blanco */
 .historia-section {
-    background-color: #ffffff;
-    padding: 3rem 1rem;
+  background-color: #ffffff;
+  padding: 3rem 1rem;
 }
 
 .historia-container {
-    max-width: 1200px;
-    margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Sección de misión sin fondo (transparente) */
 .mision-section {
-    padding: 3rem 1rem;
+  padding: 3rem 1rem;
 }
 
 .mision-container {
-    max-width: 1200px;
-    margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* Estilo para el título principal (MODIFICADO) */
 .historia-section h2,
 .mision-section h2 {
-    font-family: 'Fredoka', sans-serif;
-    text-align: center;
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
-    margin: 0 0 1.5rem 0;
-    line-height: 1.2;
-    color: #000000;
+  font-family: 'Fredoka', sans-serif;
+  text-align: center;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.2;
+  color: #000000;
 }
 
 /* Estilo para el párrafo principal (MODIFICADO) */
 .historia-section p,
 .mision-section p {
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    font-size: clamp(1rem, 2.5vw, 1.25rem);
-    margin: 0 0 2rem 0;
-    line-height: 1.6;
-    color: #333333;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+  color: #333333;
 }
 
 /* Características de las tarjetas de /Nuestra misión y valores/ */
 .valores {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-    padding: 2rem 0;
-    font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 0;
+  font-family: 'Roboto', sans-serif;
 }
 
 .cardRichi {
-    background-color: #faf4e9;
-    border-radius: 50px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    text-align: center;
-    padding: 2rem 1.5rem;
-    max-width: 360px;
-    flex: 1;
-    min-width: 280px;
-    transition: transform 0.3s ease;
-    cursor: pointer;
+  background-color: #faf4e9;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 2rem 1.5rem;
+  max-width: 360px;
+  flex: 1;
+  min-width: 280px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 .cardRichi img {
-    display: block;
-    margin: 0 auto 1rem auto;
-    width: 50px;
-    height: 50px;
+  display: block;
+  margin: 0 auto 1rem auto;
+  width: 50px;
+  height: 50px;
 }
 
 .cardRichi h3 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 1.25rem;
-    margin: 0 0 0.8rem 0;
-    color: #000000;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.25rem;
+  margin: 0 0 0.8rem 0;
+  color: #000000;
 }
 
 .cardRichi p {
-    font-size: 1rem;
-    line-height: 1.5;
-    margin: 0;
-    text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0;
+  text-align: center;
 }
 
 .cardRichi:hover {
-    transform: scale(1.05);
+  transform: scale(1.05);
 }
 
 /* ===============================================
@@ -379,6 +411,11 @@ body {
 .navbar-center a,
 .nav-link-custom,
 .navbar-brand {
-    font-family: 'Roboto', sans-serif !important;
-    font-weight: 500; /* Ajusta el grosor si lo ves muy delgado */
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 500;
+  /* Ajusta el grosor si lo ves muy delgado */
+}
+
+.container.mt-5 h1.text-center {
+  color: #000000;
 }
