@@ -1,7 +1,9 @@
-// Navbar.js — Versión Integrada Woof & Barf
+// Versión Conectada al Backend (Spring Boot)
 document.addEventListener("DOMContentLoaded", () => {
     
-    // --- UTILIDADES DE IMÁGENES (Tu código original) ---
+    const API_URL = 'http://localhost:8080/api'; // Tu servidor Java
+
+    // --- 1. UTILIDADES DE IMÁGENES (Tu código original) ---
     const dirOf = (url) => new URL(url, location.href).href.replace(/[^/]+$/, '');
     const safeSwap = (img, filename) => {
         if (!img) return;
@@ -11,7 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
         img.src = base + filename;
     };
 
-    // --- LOGO ---
+    // --- 2. INTERACTIVIDAD VISUAL (Logos, Menús, Scroll) ---
+    
+    // LOGO
     const logo = document.getElementById("logo");
     if (logo) {
         logo.addEventListener("mouseenter", () => safeSwap(logo, "logo-hover.png"));
@@ -20,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         logo.addEventListener("mouseup",    () => safeSwap(logo, "logo-hover.png"));
     }
 
-    // --- BOTÓN DE USUARIO ---
+    // BOTÓN DE USUARIO
     const userBtn  = document.getElementById('userBtn');
     const userIcon = document.getElementById('userIcon');
     let usuarioActivo = false;
@@ -32,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- BOTÓN DE COMPRAS (Icono visual) ---
+    // BOTÓN DE COMPRAS (Solo efecto visual, el link lo maneja el <a>)
     const comprasBtn  = document.getElementById('comprasBtn');
     const comprasIcon = document.getElementById('comprasIcon');
     let compraActiva = false;
@@ -44,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- SCROLL COLOR ---
+    // SCROLL
     window.addEventListener("scroll", () => {
         const navbar = document.querySelector(".navbar-center");
         if (!navbar) return;
@@ -52,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else navbar.classList.remove("navbar-scrolled");
     });
 
-    // --- HAMBURGUESA (Móvil) ---
+    // HAMBURGUESA
     const toggler = document.querySelector('.navbar-toggler-custom');
     const navMenu = document.querySelector('.navbar-nav-custom');
     if (toggler && navMenu) {
@@ -71,43 +75,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================
-    //  LÓGICA DEL BADGE DEL CARRITO (miniCount)
+    //  3. LÓGICA DEL BADGE DEL CARRITO (CONECTADA AL SERVER)
     // ============================================================
     
-    // 1. Definimos la función Globalmente para que otros scripts la usen
-    window.actualizarBadgeNavbar = function() {
+    // Definimos la función Globalmente
+    window.actualizarBadgeNavbar = async function() {
         const badge = document.getElementById('miniCount');
-        if (!badge) return; // Si no existe el elemento en el HTML, salimos
+        if (!badge) return; 
 
-        // Leemos la llave específica del localStorage
-        const carrito = JSON.parse(localStorage.getItem('carritoWoofBarf')) || [];
-        
-        // Sumamos las cantidades (item.cantidad)
-        const totalArticulos = carrito.reduce((acc, item) => acc + (item.cantidad || 1), 0);
+        try {
+            // AQUI ESTÁ EL CAMBIO: Pedimos al servidor en lugar de leer localStorage
+            const response = await fetch(`${API_URL}/carrito`);
+            
+            if (response.ok) {
+                const carrito = await response.json();
+                
+                // Sumamos cantidades
+                const totalArticulos = carrito.reduce((acc, item) => acc + (item.cantidad || 1), 0);
 
-        // Actualizamos el texto
-        badge.innerText = totalArticulos;
+                // Pintamos el número
+                badge.innerText = totalArticulos;
 
-        // Lógica de visibilidad (Ocultar si es 0)
-        if (totalArticulos > 0) {
-            badge.classList.remove('d-none');
-            badge.classList.add('d-block'); // Asegura visualización en Bootstrap
-        } else {
-            badge.classList.add('d-none');  // Oculta visualmente
-            badge.classList.remove('d-block');
+                // Mostrar u ocultar
+                if (totalArticulos > 0) {
+                    badge.classList.remove('d-none');
+                    badge.classList.add('d-block');
+                } else {
+                    badge.classList.add('d-none');
+                    badge.classList.remove('d-block');
+                }
+            } 
+        } catch (error) {
+            console.error("Error actualizando badge desde servidor:", error);
+            // Opcional: Si falla el server, ocultar badge
+            badge.classList.add('d-none');
         }
     };
 
-    // 2. Ejecutar al cargar la página (Inicialización)
+    // Ejecutar al cargar la página para ver el estado actual
     window.actualizarBadgeNavbar();
-
-    // 3. Escuchar cambios en otras pestañas (Sincronización entre tabs)
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'carritoWoofBarf') {
-            window.actualizarBadgeNavbar();
-        }
-    });
-
-    // Soporte legacy por si en algún lado llamaste a 'syncCartBadge'
-    window.syncCartBadge = window.actualizarBadgeNavbar;
 });
