@@ -1,42 +1,96 @@
 // --- CONFIGURACIÓN BACKEND ---
 const API_URL = 'http://localhost:8080/api/v1'; 
 
-// Variable Global para guardar los datos
+// --- VARIABLES GLOBALES ---
 let carritoActual = { detalles: [], total: 0 }; 
-let inventarioCompleto = []; // Para el carrusel
+let inventarioCompleto = []; 
+
+// Variables para la lógica visual del Sidebar (Resumen)
+let descuentoAplicado = 0;   // 0.10 = 10%
+let costoEnvioManual = null; // null = usa tarifa automática
 
 // ==========================================
-// A. CARGA DE DATOS (GET del Servidor)
+// A. UTILIDAD: MODAL BOOTSTRAP
+// ==========================================
+let modalInstancia = null; 
+
+function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText, onConfirm }) {
+    const modalEl = document.getElementById('modalWoof');
+    if(!modalEl) return; 
+
+    // 1. Textos
+    document.getElementById('modalTitulo').innerText = title || 'Aviso';
+    document.getElementById('modalMensaje').innerText = text || '';
+
+    // 2. Imagen
+    const imgEl = document.getElementById('modalImagen');
+    if (imageUrl) {
+        // Limpieza de ruta por si acaso
+        let cleanUrl = imageUrl;
+        if(cleanUrl.startsWith('..')) cleanUrl = cleanUrl.replace('..', '');
+        
+        imgEl.src = cleanUrl;
+        imgEl.classList.remove('d-none');
+    } else {
+        imgEl.classList.add('d-none');
+    }
+
+    // 3. Botones
+    const btnConfirmar = document.getElementById('btnConfirmar');
+    const btnCancelar = document.getElementById('btnCancelar');
+
+    btnConfirmar.innerText = confirmText || 'Aceptar';
+    
+    if (cancelText) {
+        btnCancelar.innerText = cancelText;
+        btnCancelar.classList.remove('d-none');
+    } else {
+        btnCancelar.classList.add('d-none');
+    }
+
+    // 4. Resetear eventos previos y asignar nuevo
+    btnConfirmar.onclick = null; 
+    btnConfirmar.onclick = function() {
+        if (onConfirm) onConfirm(); 
+        modalInstancia.hide();
+    };
+
+    // 5. Mostrar
+    if (!modalInstancia) {
+        modalInstancia = new bootstrap.Modal(modalEl);
+    }
+    modalInstancia.show();
+}
+
+// ==========================================
+// B. CARGA DE DATOS (GET del Servidor)
 // ==========================================
 
 async function cargarCarritoDelServidor() {
     const contenedorItems = document.getElementById('listaItems');
     const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
 
-    // 1. Verificar si hay usuario logueado
     if (!usuarioLogueado) {
-        // Opción: Redirigir o mostrar carrito vacío
-        // window.location.href = "iniciosesion.html"; 
+        // Si no hay sesión, no cargamos nada o redirigimos
         return;
     }
 
     try {
-        // 2. Pedir carrito al Backend
         const response = await fetch(`${API_URL}/carrito/usuario/${usuarioLogueado.id}`);
         
         if (response.ok) {
             carritoActual = await response.json();
             
-            // Renderizar lista y totales
+            // Renderizamos lista y calculamos totales iniciales
             renderizarCarritoUI(carritoActual.detalles || []);
             actualizarTotales(carritoActual);
             
-            // Actualizar Badge del Navbar (si existe la función)
+            // Actualizar Badge del Navbar
             if(window.actualizarBadgeNavbar) window.actualizarBadgeNavbar();
 
         } else {
             console.error("Error al cargar carrito");
-            contenedorItems.innerHTML = '<p class="text-center">No se pudo cargar tu carrito.</p>';
+            contenedorItems.innerHTML = '<p class="text-center">Carrito vacío o error de carga.</p>';
         }
     } catch (e) {
         console.error("Error de conexión:", e);
@@ -44,7 +98,6 @@ async function cargarCarritoDelServidor() {
     }
 }
 
-// Cargar inventario para el carrusel (GET Productos)
 async function cargarInventarioCarrusel() {
     try {
         const response = await fetch(`${API_URL}/productos`);
@@ -58,7 +111,7 @@ async function cargarInventarioCarrusel() {
 }
 
 // ==========================================
-// B. RENDERIZADO (Visual)
+// C. RENDERIZADO (Visual)
 // ==========================================
 
 function renderizarCarritoUI(detalles) {
@@ -86,8 +139,13 @@ function renderizarCarritoUI(detalles) {
         const producto = detalle.producto; 
         const totalItem = detalle.subtotal; 
         
-        // Ajuste de imagen
-        let rutaImg = producto.imagenUrl || '../assets/imagenes/iconos/logo-default.png';
+        // Ajuste de ruta de imagen (Inteligente)
+        let rutaImg = producto.imagenUrl;
+        if(rutaImg && rutaImg.startsWith('..')) {
+            rutaImg = rutaImg.replace('..', '');
+        } else if (!rutaImg) {
+            rutaImg = '../assets/imagenes/iconos/logo-default.png';
+        }
 
         const htmlItem = `
             <div class="card shadow-sm border-light mb-2"> 
@@ -121,44 +179,136 @@ function renderizarCarritoUI(detalles) {
     });
 }
 
-function actualizarTotales(carrito) {
-    const subtotal = carrito.total || 0;
-    
-    // Regla de envío
-    let costoEnvio = 99.00;
-    if (subtotal >= 499) costoEnvio = 0;
+// FUNCIÓN MATEMÁTICA CORREGIDA (Usa variables globales del sidebar)
+function actualizarTotales(carritoData) {
+    // Referencias DOM
+    const elSub = document.getElementById('rSubtotal');
+    const elDes = document.getElementById('rDescuento');
+    const elEnv = document.getElementById('rEnvio');
+    const elIva = document.getElementById('rIva');
+    const elTot = document.getElementById('rTotal');
 
-    const totalFinal = subtotal + costoEnvio;
+    if (!elSub || !elTot) return;
 
-    if(document.getElementById('rSubtotal')) document.getElementById('rSubtotal').innerText = '$' + subtotal.toFixed(2);
-    
-    const labelEnvio = document.getElementById('rEnvio');
-    if(labelEnvio) {
-        if (costoEnvio === 0) {
-            labelEnvio.innerText = 'Gratis';
-            labelEnvio.classList.add('text-success', 'fw-bold');
+    // 1. Calcular Subtotal (Recalculado desde detalles para mayor precisión)
+    let subtotal = 0;
+    if (carritoData.detalles && carritoData.detalles.length > 0) {
+        subtotal = carritoData.detalles.reduce((acc, d) => {
+            return acc + (d.producto.precio * d.cantidad);
+        }, 0);
+    }
+
+    // 2. Aplicar Descuento (Cupón)
+    const montoDescuento = subtotal * descuentoAplicado;
+    const subtotalConDescuento = subtotal - montoDescuento;
+
+    // 3. Calcular Envío (Regla > 499 o Manual)
+    let costoEnvio = 0;
+    if (subtotalConDescuento >= 499) {
+        costoEnvio = 0; // Gratis
+    } else if (costoEnvioManual !== null) {
+        costoEnvio = costoEnvioManual; // Tarifa CP
+    } else {
+        costoEnvio = 150; // Default
+    }
+
+    // 4. Calcular IVA y Total
+    const iva = subtotalConDescuento * 0.16;
+    const granTotal = subtotalConDescuento + iva + costoEnvio;
+
+    // 5. Pintar HTML
+    const formato = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
+
+    elSub.innerText = formato.format(subtotal);
+
+    if (elDes) {
+        elDes.innerText = `-${formato.format(montoDescuento)}`;
+        if (montoDescuento > 0) {
+            elDes.classList.add('text-success', 'fw-bold');
+            elDes.classList.remove('text-muted');
         } else {
-            labelEnvio.innerText = '$' + costoEnvio.toFixed(2);
-            labelEnvio.classList.remove('text-success', 'fw-bold');
+            elDes.classList.remove('text-success', 'fw-bold');
+            elDes.classList.add('text-muted');
         }
     }
 
-    if(document.getElementById('rTotal')) document.getElementById('rTotal').innerText = '$' + totalFinal.toFixed(2);
+    if (elEnv) {
+        if (costoEnvio === 0) {
+            elEnv.innerHTML = '<span class="text-success fw-bold">Gratis</span>';
+        } else {
+            elEnv.innerText = formato.format(costoEnvio);
+        }
+    }
+
+    if (elIva) elIva.innerText = formato.format(iva);
+    elTot.innerText = formato.format(granTotal);
 }
 
 // ==========================================
-// C. CARRUSEL DE RECOMENDACIONES (Restaurado)
+// D. LÓGICA DEL SIDEBAR (CUPONES Y ENVÍO)
+// ==========================================
+
+window.aplicarCupon = function() {
+    const inputCupon = document.getElementById('cupon');
+    const feedback = document.getElementById('cuponFeedback');
+    
+    if(!inputCupon) return;
+
+    const codigo = inputCupon.value.trim().toUpperCase();
+
+    // Cupones simulados
+    const cuponesValidos = { 'WOOF10': 0.10, 'BARF20': 0.20, 'JO': 0.50 };
+
+    if (cuponesValidos[codigo]) {
+        descuentoAplicado = cuponesValidos[codigo];
+        feedback.innerHTML = `<span class="text-success small fw-bold"><i class="bi bi-check-circle"></i> Descuento aplicado!</span>`;
+        inputCupon.classList.add('is-valid');
+        inputCupon.classList.remove('is-invalid');
+        inputCupon.disabled = true;
+        document.getElementById('btnAplicarCupon').disabled = true;
+    } else {
+        descuentoAplicado = 0;
+        feedback.innerHTML = `<span class="text-danger small">Cupón no válido.</span>`;
+        inputCupon.classList.add('is-invalid');
+    }
+    // Recalcular con el nuevo estado
+    actualizarTotales(carritoActual);
+};
+
+window.calcularEnvioCP = function() {
+    const cpInput = document.getElementById('cp');
+    const resultado = document.getElementById('cpResultado');
+    if(!cpInput) return;
+
+    const cp = cpInput.value.trim();
+
+    if (cp.length === 5 && !isNaN(cp)) {
+        if (cp.startsWith('0') || cp.startsWith('1')) { 
+            costoEnvioManual = 100;
+            resultado.innerHTML = '<span class="text-success small fw-bold">Envío Local: $100</span>';
+        } else {
+            costoEnvioManual = 180;
+            resultado.innerHTML = '<span class="text-info small fw-bold">Envío Nacional: $180</span>';
+        }
+    } else {
+        resultado.innerHTML = '<span class="text-danger small">CP inválido</span>';
+        costoEnvioManual = null;
+    }
+    // Recalcular
+    actualizarTotales(carritoActual);
+};
+
+// ==========================================
+// E. CARRUSEL DE RECOMENDACIONES
 // ==========================================
 
 const contenedorCarrusel = document.getElementById('recoSlides');
 
 function renderizarCarrusel(productos) {
     if(!contenedorCarrusel) return; 
-    
-    // Si no hay productos del backend, no mostramos nada o usamos fallback
     if (!productos || productos.length === 0) return;
 
-    const listaCarrusel = productos.slice(0, 6); // Solo los primeros 6
+    const listaCarrusel = productos.slice(0, 6); 
     contenedorCarrusel.innerHTML = '';
     
     const esMovil = window.innerWidth < 992;
@@ -175,22 +325,20 @@ function renderizarCarrusel(productos) {
         `;
 
         grupo.forEach(prod => {
-            let rutaImg = prod.imagenUrl || '../assets/imagenes/iconos/logo-default.png';
+            let rutaImg = prod.imagenUrl;
+            if(rutaImg && rutaImg.startsWith('..')) rutaImg = rutaImg.replace('..', '');
+            else if(!rutaImg) rutaImg = '../assets/imagenes/iconos/logo-default.png';
 
-            // Usamos la clase 'card-carrusel' que definimos en CSS para que se vea igual al catálogo
             slideHTML += `
                 <div class="${claseColumna}">
                     <div class="card h-100 card-carrusel border-0 shadow-sm">
-                        
                         <div style="height: 200px; overflow: hidden;" class="rounded-top d-flex align-items-center justify-content-center">
                              <img src="${rutaImg}" alt="${prod.nombre}" class="img-fluid" style="max-height: 100%;"
                                   onerror="this.src='../assets/imagenes/iconos/logo-default.png'">
                         </div>
-                        
                         <div class="card-body text-center d-flex flex-column p-3">
                             <h6 class="card-title fw-bold text-dark text-truncate">${prod.nombre}</h6>
                             <p class="card-text text-primary fw-bold mb-3">$${prod.precio.toFixed(2)}</p>
-                            
                             <button class="btn btn-outline-warning w-100 mt-auto rounded-pill fw-bold" 
                                     onclick="window.agregarDesdeCarrusel(${prod.idProducto})">
                                 Agregar
@@ -205,10 +353,14 @@ function renderizarCarrusel(productos) {
     }
 }
 
-// Función auxiliar para agregar desde el carrusel (POST)
+// Agregar desde Carrusel (POST)
 window.agregarDesdeCarrusel = async function(idProducto) {
     const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
-    if(!usuarioLogueado) return alert("Inicia sesión primero");
+    
+    if(!usuarioLogueado) {
+        mostrarModalBootstrap({ title: 'Aviso', text: 'Inicia sesión para comprar.', confirmText: 'Ok' });
+        return;
+    }
 
     try {
         await fetch(`${API_URL}/carrito/agregar`, {
@@ -216,52 +368,72 @@ window.agregarDesdeCarrusel = async function(idProducto) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idUsuario: usuarioLogueado.id, idProducto: idProducto, cantidad: 1 })
         });
-        // Recargar carrito para ver el nuevo item
+        // Recargar para ver reflejado
         cargarCarritoDelServidor();
-        alert("Producto agregado");
+        
+        // Modal Éxito
+        const prod = inventarioCompleto.find(p => p.idProducto === idProducto);
+        let rutaImg = prod ? prod.imagenUrl : null;
+        if(rutaImg && rutaImg.startsWith('..')) rutaImg = rutaImg.replace('..', '');
+
+        mostrarModalBootstrap({
+            title: '¡Agregado!',
+            text: 'Producto añadido al carrito.',
+            imageUrl: rutaImg,
+            confirmText: 'Genial'
+        });
+
     } catch(e) { console.error(e); }
 };
 
-
 // ==========================================
-// D. ACCIONES (Eliminar / Vaciar / Pagar)
+// F. ACCIONES Y EL PUENTE DE PAGO
 // ==========================================
 
-window.eliminarItem = async function(idDetalle) {
-    if(!confirm("¿Seguro que deseas eliminar este producto?")) return;
-    try {
-        await fetch(`${API_URL}/carrito/detalle/${idDetalle}`, { method: 'DELETE' });
-        cargarCarritoDelServidor(); 
-    } catch (e) {
-        console.error(e);
-        alert("No se pudo eliminar.");
-    }
+window.eliminarItem = function(idDetalle) {
+    mostrarModalBootstrap({
+        title: '¿Eliminar?',
+        text: 'Se quitará este producto.',
+        confirmText: 'Sí, eliminar',
+        cancelText: 'Cancelar',
+        onConfirm: async () => {
+            try {
+                await fetch(`${API_URL}/carrito/detalle/${idDetalle}`, { method: 'DELETE' });
+                cargarCarritoDelServidor(); 
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    });
 };
 
-window.vaciarCarrito = async function() {
-    if(!confirm("¿Estás seguro de vaciar todo el carrito?")) return;
-    const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
-    
-    try {
-        await fetch(`${API_URL}/carrito/vaciar/${usuarioLogueado.id}`, { method: 'DELETE' });
-        cargarCarritoDelServidor(); 
-    } catch (e) {
-        console.error(e);
-        alert("Error al vaciar.");
-    }
+window.vaciarCarrito = function() {
+    mostrarModalBootstrap({
+        title: '¿Vaciar carrito?',
+        text: 'Se borrará todo.',
+        confirmText: 'Sí, vaciar',
+        cancelText: 'Cancelar',
+        onConfirm: async () => {
+            const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
+            try {
+                await fetch(`${API_URL}/carrito/vaciar/${usuarioLogueado.id}`, { method: 'DELETE' });
+                cargarCarritoDelServidor(); 
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    });
 };
 
-// --- FUNCIÓN IR A PAGAR CORREGIDA ---
+// --- EL PUENTE (IR A PAGAR) ---
 window.irAPagar = function() {
-    // 1. Validar que haya productos
     if (!carritoActual.detalles || carritoActual.detalles.length === 0) {
-        alert("Tu carrito está vacío.");
+        mostrarModalBootstrap({ title: 'Carrito Vacío', text: 'No hay productos.', confirmText: 'Ok' });
         return;
     }
 
-    // 2. CREAR EL "SNAPSHOT" (Puente para las páginas estáticas)
-    // Convertimos la estructura de Java a la estructura plana que esperan datos.html
-    const productosParaCheckout = carritoActual.detalles.map(d => ({
+    // 1. Crear Snapshot Plana para Datos.html
+    const snapshot = carritoActual.detalles.map(d => ({
         id: d.producto.idProducto,
         name: d.producto.nombre,
         price: d.producto.precio,
@@ -269,32 +441,38 @@ window.irAPagar = function() {
         imageURL: d.producto.imagenUrl || ''
     }));
 
-    // 3. Guardar en LocalStorage para que datos.html lo lea
-    localStorage.setItem('carritoWoofBarf', JSON.stringify(productosParaCheckout));
+    // 2. Guardar en LocalStorage
+    localStorage.setItem('carritoWoofBarf', JSON.stringify(snapshot));
     
     const totalTexto = document.getElementById('rTotal').innerText;
     localStorage.setItem('resumenPedido', JSON.stringify({ totalString: totalTexto }));
 
-    // 4. Redirección Real
+    // 3. Redirigir
     window.location.href = '/pages/carrito/datos.html'; 
 };
 
-
 // ==========================================
-// E. INICIALIZACIÓN
+// G. INICIALIZACIÓN
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
-    cargarCarritoDelServidor();   // Cargar items del carrito
-    cargarInventarioCarrusel();   // Cargar productos para el carrusel
+    cargarCarritoDelServidor(); 
+    cargarInventarioCarrusel(); 
     
+    // Listeners Botones Generales
     const btnVaciar = document.getElementById('btnVaciar');
     if(btnVaciar) btnVaciar.addEventListener('click', window.vaciarCarrito);
     
     const btnPagar = document.getElementById('btnPagar');
     if(btnPagar) btnPagar.addEventListener('click', window.irAPagar);
+
+    // Listeners Sidebar (Resumen)
+    const btnCupon = document.getElementById('btnAplicarCupon');
+    if(btnCupon) btnCupon.addEventListener('click', window.aplicarCupon);
+
+    const btnCP = document.getElementById('btnCalcularCP');
+    if(btnCP) btnCP.addEventListener('click', window.calcularEnvioCP);
 });
 
-// Listener Resize para el carrusel
 window.addEventListener('resize', () => {
     if(inventarioCompleto.length > 0) {
         renderizarCarrusel(inventarioCompleto);

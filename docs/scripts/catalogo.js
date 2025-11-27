@@ -40,7 +40,7 @@ async function cargarProductos() {
 }
 
 // ======================================================
-// 2. LÓGICA DE FILTROS (CORREGIDA)
+// 2. LÓGICA DE FILTROS
 // ======================================================
 
 function applyFilters() {
