@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.proyecto_integrador.woofandbarf.enums.Rol;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -40,6 +41,9 @@ public class Usuario {
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
+    @Column(name = "fecha_nacimiento")
+    private LocalDate fechaNacimiento;
+
     @Enumerated(EnumType.STRING)
     private Rol rol;
 
@@ -51,6 +55,15 @@ public class Usuario {
     private Carrito carrito;
 
     // ====== Getters y Setters ======
+
+
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
 
     public Rol getRol() {
         return rol;

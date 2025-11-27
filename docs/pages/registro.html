@@ -68,15 +68,14 @@
             <div id="alertContainer"></div>
 
             <form>
-
               <div class="form-row">
                 <div class="form-group">
                   <input type="text" id="nombre" required>
                   <label for="nombre">Nombre</label>
                 </div>
                 <div class="form-group">
-                  <input type="text" id="apellido" required>
-                  <label for="apellido">Apellido</label>
+                  <input type="text" id="apellidos" required>
+                  <label for="apellidos">Apellido</label>
                 </div>
                 <div class="form-group">
                   <input type="text" id="correo" required>
@@ -105,7 +104,6 @@
                     <li>1 mayúscula</li>
                     <li>1 minúscula</li>
                     <li>1 número</li>
-                    <li>1 carácter especial</li>
                   </ul>
                 </div>
 
@@ -113,20 +111,30 @@
                   <input type="password" id="confirmar" required/>
                   <label for="confirmar">Confirmar contraseña</label>
                   <button type="button" class="toggle-password" data-target="confirmar">Ver</button>
-                  <ul id="confirm-requirements" class="password-requirements d-none">
-                    <li>Debe coincidir con la contraseña</li>
-                  </ul>
                 </div>
               </div>
 
               <button type="button" class="btn-next" id="btnRegistro">Registrarse</button>
-
             </form>
 
             <p class="text-end mt-2">
               ¿Ya tienes cuenta? <a href="iniciosesion.html">Inicia sesión</a>
             </p>
 
+          </div>
+        </section>
+
+        <section id="exito">
+          <div class="tab-form text-center" style="text-align: center;">
+            <h2 class="mb-3">¡Bienvenido a la Manada!</h2>
+            
+            <p class="lead mb-4" style="font-size: 1.2rem;">Usuario registrado con éxito.</p>
+            
+            <p>Ya puedes iniciar sesión para comenzar a comprar.</p>
+
+            <a href="iniciosesion.html">
+              <button type="button" class="btn-next">Iniciar Sesión</button>
+            </a>
           </div>
         </section>
 
