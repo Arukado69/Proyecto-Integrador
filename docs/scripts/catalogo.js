@@ -1,10 +1,34 @@
 // 1. IMPORTS
-import { listaDeProductos } from '/scripts/productos.js'; 
+// import { listaDeProductos } from '/scripts/productos.js';  //ya no cargar base de datos local
 
-// ------- Config -------
+// ======================================================
+// 1. DATOS Y FUSIÓN (SIMULACIÓN DE BASE DE DATOS)
+// ======================================================
+
+// A. Lista Base VACÍA (Para iniciar sin productos)
+const datosBase = []; 
+
+// B. Cargar productos nuevos del Formulario (LocalStorage)
+function obtenerProductosNuevos() {
+    try {
+        const guardados = localStorage.getItem('baseDatosProductos'); // O 'baseDatosProductos' si usaste esa clave
+        return guardados ? JSON.parse(guardados) : [];
+    } catch (e) {
+        console.error("Error leyendo productos nuevos", e);
+        return [];
+    }
+}
+
+// C. Fusionar Listas (Base + Nuevos)
+const productosNuevos = obtenerProductosNuevos();
+const listaDeProductos = [...datosBase, ...productosNuevos]; 
+
+
+// ======================================================
+// 2. CONFIGURACIÓN Y DOM
+// ======================================================
 const ITEMS_PER_PAGE = 6;
 
-// ------- DOM -------
 const productRow   = document.getElementById('product-row');
 const paginationEl = document.getElementById('pagination-container');
 const resultsInfo  = document.getElementById('results-info');
@@ -12,17 +36,15 @@ const searchInput  = document.getElementById('searchInput');
 const applyBtn     = document.getElementById('applyFiltersBtn');
 const filtersForm  = document.getElementById('filtersForm');
 
-// ------- Estado -------
 let currentPage = 1;
 let filtered = [...listaDeProductos]; 
 
-// ======================================================
-// A. UTILIDADES: MODAL BOOTSTRAP Y CARRITO
-// ======================================================
 
+// ======================================================
+// 3. UTILIDADES: MODAL BOOTSTRAP Y CARRITO
+// ======================================================
 let modalInstancia = null; 
 
-// 1. Función para mostrar el Modal (Igual que en carrito.js)
 function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText, onConfirm }) {
     const modalEl = document.getElementById('modalWoof');
     if(!modalEl) return; 
@@ -61,7 +83,7 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
     modalInstancia.show();
 }
 
-// 2. Función Global para AGREGAR (Conectada al botón)
+// Función Global para AGREGAR
 window.agregarAlCarrito = function(idProducto) {
     const CLAVE_CARRITO = 'carritoWoofBarf';
     let carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
@@ -87,8 +109,11 @@ window.agregarAlCarrito = function(idProducto) {
     } else {
         carrito.push({ ...productoInfo, cantidad: 1 });
         
-        // Ajuste de ruta para que se vea bien en el modal
-        const rutaImg = productoInfo.imageURL.replace('..', ''); 
+        // Ajuste de ruta para imagen
+        let rutaImg = productoInfo.imageURL;
+        if(rutaImg.startsWith('..')) {
+            rutaImg = rutaImg.replace('..', '');
+        }
 
         mostrarModalBootstrap({
             title: '¡Al carrito!',
@@ -98,31 +123,35 @@ window.agregarAlCarrito = function(idProducto) {
             cancelText: 'Ir al carrito'       
         });
 
-        // Configurar botón "Ir al carrito"
         document.getElementById('btnCancelar').onclick = function() {
             window.location.href = '/pages/carrito.html'; 
         };
     }
 
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+
+    // Actualizar badge del Navbar
+    if (typeof window.actualizarBadgeNavbar === 'function') {
+        window.actualizarBadgeNavbar();
+    }
 };
 
 
 // ======================================================
-// B. RENDERIZADO DE TARJETAS
+// 4. RENDERIZADO DE TARJETAS
 // ======================================================
 
 function createProductCard(item) {
   const { id, name, price, imageURL, description, flavor, size, category } = item;
 
-  // CAMBIO AQUÍ: Agregamos el onclick con el ID del producto
   return `
     <div class="col d-flex">
       <div class="card card-producto rounded-5 shadow-sm hover-zoom w-100">
-        <img src="${imageURL}" class="catalogo-img-size rounded-top-5" alt="${name}">
+        <img src="${imageURL}" class="catalogo-img-size rounded-top-5" alt="${name}"
+             onerror="this.src='https://via.placeholder.com/300?text=Sin+Imagen'">
         <div class="card-body text-center">
           <h5 class="card-title catalogo-roboto-h4 mb-1">${name}</h5>
-          <p class="text-muted small mb-2">${description || ''}</p>
+          <p class="text-muted small mb-2 text-truncate">${description || ''}</p>
 
           ${(flavor || size || category) ? `
             <ul class="list-unstyled small text-muted mb-3">
@@ -145,10 +174,29 @@ function createProductCard(item) {
 }
 
 // ======================================================
-// C. PAGINACIÓN Y RENDER
+// 5. PAGINACIÓN Y RENDER
 // ======================================================
 
 function renderPage(page = 1) {
+  
+  // A. MANEJO DE ESTADO VACÍO (MEJORA VISUAL)
+  if (listaDeProductos.length === 0) {
+      productRow.innerHTML = `
+        <div class="col-12 text-center py-5">
+            <div class="mb-3" style="font-size: 3rem;">📦</div>
+            <h3 class="h5 text-muted">El inventario está vacío</h3>
+            <p class="small text-muted">Agrega productos desde el formulario para verlos aquí.</p>
+            <a href="/pages/formulario-productos.html" class="btn btn-primary rounded-pill px-4">
+                Ir al formulario
+            </a>
+        </div>
+      `;
+      resultsInfo.textContent = '';
+      paginationEl.innerHTML = '';
+      return; // Salimos de la función
+  }
+
+  // B. Renderizado Normal
   const total = filtered.length;
   const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
   currentPage = Math.min(Math.max(1, page), totalPages);
@@ -156,9 +204,8 @@ function renderPage(page = 1) {
   const start = (currentPage - 1) * ITEMS_PER_PAGE;
   const end = Math.min(start + ITEMS_PER_PAGE, total);
 
+  // Generamos HTML
   const cardsHTML = filtered.slice(start, end).map(createProductCard).join('');
-  
-  // Limpiamos y rellenamos
   productRow.innerHTML = cardsHTML;
 
   // Indicador
@@ -185,9 +232,9 @@ function renderPage(page = 1) {
         </li>
       </ul>
     </nav>`;
-  paginationEl.innerHTML = html;
+  paginationEl.innerHTML = total > 0 ? html : ''; // Ocultar paginación si filtro da 0
 
-  // Eventos Paginación
+  // Eventos
   paginationEl.querySelectorAll('a.page-link').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
@@ -201,7 +248,7 @@ function renderPage(page = 1) {
 }
 
 // ======================================================
-// D. FILTROS
+// 6. FILTROS E INICIALIZACIÓN
 // ======================================================
 
 function getRadioValue(name) {
@@ -210,6 +257,12 @@ function getRadioValue(name) {
 }
 
 function applyFilters() {
+  // Si está vacío el inventario base, no filtramos nada
+  if (listaDeProductos.length === 0) {
+      renderPage(1);
+      return;
+  }
+
   const term     = (searchInput.value || '').trim().toLowerCase();
   const flavor = getRadioValue('flavor'); 
   const size   = getRadioValue('size');   
@@ -231,11 +284,15 @@ function applyFilters() {
   renderPage(1);
 }
 
-// Listeners Filtros
+// Listeners
 searchInput.addEventListener('keyup', applyFilters);
 applyBtn.addEventListener('click', applyFilters);
 filtersForm.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', applyFilters));
 
-// Init
-
+// Arrancar
 applyFilters();
+
+// Actualizar badge al entrar (por si ya hay cosas en carrito)
+if (typeof window.actualizarBadgeNavbar === 'function') {
+    window.actualizarBadgeNavbar();
+}

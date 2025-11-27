@@ -50,7 +50,16 @@
           <span class="navbar-toggler-icon-custom"></span>
         </button>
         <a href="./iniciosesion.html"><button class="user-btn" id="userBtn"><img src="../assets/imagenes/iconos/user-dark.png" alt="Usuario" id="userIcon" /></button></a>
-        <a href="./carrito.html"><button class="user-btn" id="comprasBtn"><img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" id="comprasIcon" /></button></a>
+        <a href="./carrito.html" aria-label="Carrito">
+          <button class="user-btn position-relative">
+            <img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" width="28" height="28">
+             <span class="position-absolute badge rounded-pill bg-danger d-none" 
+                    id="miniCount" 
+                    style="top: -5px; right: -5px; border: 2px solid #fff;">
+                  0
+             </span>
+          </button>
+        </a>
       </div>
     </div>
   </nav>
@@ -164,8 +173,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   <script src="../components/footer.js"></script>
   <script src="../components/Navbar.js"></script>
-  <script type="module" src="../scripts/catalogo-local-merge.js"></script>
-  <script type="module" src="../scripts/formulario-productos.js"></script>
-  <script type="module" src="../scripts/catalogo.js"></script>
+  <script src="../scripts/catalogo.js"></script>
 </body>
 </html>

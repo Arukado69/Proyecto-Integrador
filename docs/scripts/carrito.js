@@ -1,40 +1,62 @@
-// 1. IMPORTS
-import { listaDeProductos } from '/scripts/productos.js'; 
-
 // ==========================================
 // A. CONFIGURACIÓN Y MODELO (Estado)
 // ==========================================
 const CLAVE_CARRITO = 'carritoWoofBarf';
+const CLAVE_BD = 'baseDatosProductos'; // La misma clave que usas en el catálogo/formulario
 
 // Variables de Estado Temporal
 let descuentoAplicado = 0;   
 let costoEnvioManual = null; 
 
-// Obtener carrito almacenado o devolver array vacío
+// 1. Obtener el carrito del usuario
 function obtenerCarrito() {
     const almacenado = localStorage.getItem(CLAVE_CARRITO);
     return almacenado ? JSON.parse(almacenado) : [];
 }
 
-// Guardar el array actualizado
+// 2. Obtener el "Inventario" completo (Para el carrusel y buscar detalles)
+function obtenerInventario() {
+    try {
+        const guardados = localStorage.getItem(CLAVE_BD);
+        let productos = guardados ? JSON.parse(guardados) : [];
+        
+        // FALLBACK: Si no hay productos creados en el formulario, 
+        // usamos unos de prueba para que el carrusel no se rompa.
+        if (productos.length === 0) {
+            return [
+                { id: 101, name: "Menú Pollo (Ejemplo)", price: 120, imageURL: "https://res.cloudinary.com/dse9oko9b/image/upload/v1764192726/pollo_500_jtdcly.jpg" },
+                { id: 102, name: "Menú Res (Ejemplo)", price: 130, imageURL: "https://res.cloudinary.com/dse9oko9b/image/upload/v1764192732/res_500_c7wxon.jpg" }
+            ];
+        }
+        return productos;
+    } catch (e) {
+        console.error("Error leyendo inventario", e);
+        return [];
+    }
+}
+
+// 3. Guardar cambios en el carrito
 function guardarCarrito(carrito) {
     localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
+
+    // Actualizar badge del Navbar
+    if (typeof window.actualizarBadgeNavbar === 'function') {
+        window.actualizarBadgeNavbar();
+    }
 }
 
 // ==========================================
-// B. UTILIDAD: MODAL BOOTSTRAP (Reemplazo de Alert/Confirm)
+// B. UTILIDAD: MODAL BOOTSTRAP
 // ==========================================
 let modalInstancia = null; 
 
 function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText, onConfirm }) {
     const modalEl = document.getElementById('modalWoof');
-    if(!modalEl) return; // Protección si no existe el HTML del modal
+    if(!modalEl) return; 
 
-    // 1. Llenar textos
     document.getElementById('modalTitulo').innerText = title || 'Aviso';
     document.getElementById('modalMensaje').innerText = text || '';
 
-    // 2. Imagen
     const imgEl = document.getElementById('modalImagen');
     if (imageUrl) {
         imgEl.src = imageUrl;
@@ -43,7 +65,6 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
         imgEl.classList.add('d-none');
     }
 
-    // 3. Configurar Botones
     const btnConfirmar = document.getElementById('btnConfirmar');
     const btnCancelar = document.getElementById('btnCancelar');
 
@@ -56,13 +77,14 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
         btnCancelar.classList.add('d-none');
     }
 
-    // 4. Asignar acción al botón Confirmar
+    // Limpiamos eventos anteriores para evitar duplicados
+    btnConfirmar.onclick = null; 
+
     btnConfirmar.onclick = function() {
         if (onConfirm) onConfirm(); 
         modalInstancia.hide();
     };
 
-    // 5. Mostrar
     if (!modalInstancia) {
         modalInstancia = new bootstrap.Modal(modalEl);
     }
@@ -77,12 +99,14 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
 
 window.agregarAlCarrito = function(idProducto) {
     let carrito = obtenerCarrito();
+    const inventario = obtenerInventario(); // Leemos la BD actual
+
+    // 1. Revisar si ya lo tengo en el carrito
     const itemExistente = carrito.find(item => item.id === idProducto);
 
     if (itemExistente) {
         itemExistente.cantidad++;
         
-        // Alerta Simple (Solo texto)
         mostrarModalBootstrap({
             title: '¡Cantidad Actualizada!',
             text: 'Agregamos una unidad más a tu carrito.',
@@ -90,25 +114,33 @@ window.agregarAlCarrito = function(idProducto) {
         });
 
     } else {
-        const productoInfo = listaDeProductos.find(p => p.id === idProducto);
+        // 2. Si es nuevo, buscamos sus datos en el inventario
+        const productoInfo = inventario.find(p => p.id === idProducto);
+        
         if (productoInfo) {
             carrito.push({ ...productoInfo, cantidad: 1 });
             
-            // Alerta Completa (Con imagen y opción de ir a pagar)
-            const rutaImg = productoInfo.imageURL.replace('..', ''); // Ajuste ruta absoluta
+            // Ajuste de ruta para imagen (Si es relativa, le quitamos los puntos)
+            let rutaImg = productoInfo.imageURL;
+            if (rutaImg && rutaImg.startsWith('..')) {
+                rutaImg = rutaImg.replace('..', '');
+            }
 
             mostrarModalBootstrap({
                 title: '¡Producto Agregado!',
                 text: `¿Qué te gustaría hacer ahora?`,
                 imageUrl: rutaImg,
-                confirmText: 'Seguir comprando', // Botón oscuro (principal)
-                cancelText: 'Ir a pagar'         // Botón claro (secundario)
+                confirmText: 'Seguir comprando', 
+                cancelText: 'Ir a pagar'         
             });
 
-            // Configurar manualmente el botón "Cancelar/Ir a pagar"
-            document.getElementById('btnCancelar').onclick = function() {
-                window.location.href = '/pages/carrito/datos.html';
-            };
+            // Listener manual para el botón secundario
+            const btnCancel = document.getElementById('btnCancelar');
+            if(btnCancel) {
+                btnCancel.onclick = function() {
+                    window.location.href = '/pages/carrito/datos.html';
+                };
+            }
 
         } else {
             console.error("Error: Producto no encontrado con ID", idProducto);
@@ -155,18 +187,22 @@ window.vaciarCarrito = function() {
         onConfirm: () => {
             localStorage.removeItem(CLAVE_CARRITO);
             renderizarCarritoUI();
+            
+            // Actualizar Badge
+            if (typeof window.actualizarBadgeNavbar === 'function') {
+                window.actualizarBadgeNavbar();
+            }
         }
     });
 };
 
-// --- ACCIONES DEL SIDEBAR (CUPONES Y ENVÍO) ---
+// --- ACCIONES DEL SIDEBAR ---
 
 window.aplicarCupon = function() {
     const inputCupon = document.getElementById('cupon');
     const feedback = document.getElementById('cuponFeedback');
     const codigo = inputCupon.value.trim().toUpperCase();
 
-    // Simulación de cupones
     const cuponesValidos = {
         'WOOF10': 0.10, 
         'BARF20': 0.20, 
@@ -210,6 +246,7 @@ window.calcularEnvioCP = function() {
 
 window.irAPagar = function() {
     const carrito = obtenerCarrito();
+    
     if (carrito.length === 0) {
         mostrarModalBootstrap({
             title: 'Carrito Vacío',
@@ -241,69 +278,85 @@ function renderizarCarritoUI() {
     const actionsBar = document.getElementById('actionsBar');
 
     if (carrito.length === 0) {
-        estadoVacio.classList.remove('d-none');
-        contenedorItems.innerHTML = '';
-        actionsBar.classList.add('d-none');
-        hintMostrando.innerText = 'Mostrando 0 artículos';
+        if(estadoVacio) estadoVacio.classList.remove('d-none');
+        if(contenedorItems) contenedorItems.innerHTML = '';
+        if(actionsBar) actionsBar.classList.add('d-none');
+        if(hintMostrando) hintMostrando.innerText = 'Mostrando 0 artículos';
         actualizarTotales(0);
         return;
     }
 
-    estadoVacio.classList.add('d-none');
-    actionsBar.classList.remove('d-none');
-    hintMostrando.innerText = `Mostrando ${carrito.length} artículos`;
+    if(estadoVacio) estadoVacio.classList.add('d-none');
+    if(actionsBar) actionsBar.classList.remove('d-none');
+    if(hintMostrando) hintMostrando.innerText = `Mostrando ${carrito.length} artículos`;
 
-    contenedorItems.innerHTML = '';
-    
-    carrito.forEach(item => {
-        const totalItem = item.price * item.cantidad;
-        // Ajuste de ruta absoluta para imagen del carrito
-        const rutaImg = item.imageURL.replace('..', '');
+    if(contenedorItems) {
+        contenedorItems.innerHTML = '';
+        
+        carrito.forEach(item => {
+            const totalItem = item.price * item.cantidad;
+            // Ajuste de ruta
+            let rutaImg = item.imageURL;
+            if(rutaImg && rutaImg.startsWith('..')) {
+                rutaImg = rutaImg.replace('..', '');
+            }
 
-        const htmlItem = `
-            <div class="card shadow-sm border-light mb-2"> 
-                <div class="card-body p-3">
-                    <div class="row align-items-center g-3">
-                        <div class="col-4 col-md-2 text-center">
-                            <img src="${rutaImg}" alt="${item.name}" class="img-fluid rounded" style="max-height: 80px;">
-                        </div>
-                        
-                        <div class="col-8 col-md-4">
-                            <h6 class="fw-bold text-dark mb-1 text-truncate">${item.name}</h6>
-                            <small class="text-muted">${item.category} | ${item.size || 'Unitalla'}</small>
-                        </div>
-
-                        <div class="col-6 col-md-3 d-flex justify-content-center">
-                            <div class="input-group input-group-sm" style="width: 100px;">
-                                <button class="btn btn-outline-secondary" onclick="window.cambiarCantidad(${item.id}, -1)">-</button>
-                                <span class="form-control text-center bg-white">${item.cantidad}</span>
-                                <button class="btn btn-outline-secondary" onclick="window.cambiarCantidad(${item.id}, 1)">+</button>
+            const htmlItem = `
+                <div class="card shadow-sm border-light mb-2"> 
+                    <div class="card-body p-3">
+                        <div class="row align-items-center g-3">
+                            <div class="col-4 col-md-2 text-center">
+                                <img src="${rutaImg}" alt="${item.name}" class="img-fluid rounded" 
+                                     style="max-height: 80px;"
+                                     onerror="this.src='https://via.placeholder.com/80?text=IMG'">
                             </div>
-                        </div>
+                            
+                            <div class="col-8 col-md-4">
+                                <h6 class="fw-bold text-dark mb-1 text-truncate">${item.name}</h6>
+                                <small class="text-muted">${item.category || 'Producto'} | ${item.size || 'Unitalla'}</small>
+                            </div>
 
-                        <div class="col-6 col-md-3 text-end">
-                            <div class="fw-bold text-primary mb-1">$${totalItem.toFixed(2)}</div>
-                            <button class="btn btn-link text-danger p-0 small text-decoration-none" onclick="window.eliminarItem(${item.id})">
-                                <i class="bi bi-trash3"></i> Eliminar
-                            </button>
+                            <div class="col-6 col-md-3 d-flex justify-content-center">
+                                <div class="input-group input-group-sm" style="width: 100px;">
+                                    <button class="btn btn-outline-secondary" onclick="window.cambiarCantidad(${item.id}, -1)">-</button>
+                                    <span class="form-control text-center bg-white">${item.cantidad}</span>
+                                    <button class="btn btn-outline-secondary" onclick="window.cambiarCantidad(${item.id}, 1)">+</button>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3 text-end">
+                                <div class="fw-bold text-primary mb-1">$${totalItem.toFixed(2)}</div>
+                                <button class="btn btn-link text-danger p-0 small text-decoration-none" onclick="window.eliminarItem(${item.id})">
+                                    <i class="bi bi-trash3"></i> Eliminar
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
-        contenedorItems.innerHTML += htmlItem;
-    });
+            `;
+            contenedorItems.innerHTML += htmlItem;
+        });
+    }
 
     actualizarTotales(carrito);
 }
 
 function actualizarTotales(carrito) {
+    // Elementos del DOM para los totales
+    const elSub = document.getElementById('rSubtotal');
+    const elEnv = document.getElementById('rEnvio');
+    const elIva = document.getElementById('rIva');
+    const elTot = document.getElementById('rTotal');
+    const elDes = document.getElementById('rDescuento');
+
+    if (!elSub || !elEnv || !elIva || !elTot) return; // Si no existen, salir
+
     if (carrito === 0 || carrito.length === 0) {
-        document.getElementById('rSubtotal').innerText = '$0.00';
-        document.getElementById('rEnvio').innerText = '$0.00';
-        document.getElementById('rIva').innerText = '$0.00';
-        document.getElementById('rTotal').innerText = '$0.00';
-        if(document.getElementById('rDescuento')) document.getElementById('rDescuento').innerText = '-$0.00';
+        elSub.innerText = '$0.00';
+        elEnv.innerText = '$0.00';
+        elIva.innerText = '$0.00';
+        elTot.innerText = '$0.00';
+        if(elDes) elDes.innerText = '-$0.00';
         return;
     }
 
@@ -326,43 +379,47 @@ function actualizarTotales(carrito) {
 
     const formato = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
 
-    document.getElementById('rSubtotal').innerText = formato.format(subtotal);
+    elSub.innerText = formato.format(subtotal);
     
-    const elDescuento = document.getElementById('rDescuento');
-    if (elDescuento) {
-        elDescuento.innerText = `-${formato.format(montoDescuento)}`;
-        elDescuento.classList.toggle('text-success', montoDescuento > 0);
+    if (elDes) {
+        elDes.innerText = `-${formato.format(montoDescuento)}`;
+        elDes.classList.toggle('text-success', montoDescuento > 0);
     }
 
-    document.getElementById('rIva').innerText = formato.format(iva);
+    elIva.innerText = formato.format(iva);
     
-    const elEnvio = document.getElementById('rEnvio');
     if (envioFinal === 0) {
-        elEnvio.innerHTML = '<span class="text-success fw-bold">Gratis</span>';
+        elEnv.innerHTML = '<span class="text-success fw-bold">Gratis</span>';
     } else {
-        elEnvio.innerText = formato.format(envioFinal);
+        elEnv.innerText = formato.format(envioFinal);
     }
 
-    document.getElementById('rTotal').innerText = formato.format(totalAPagar);
+    elTot.innerText = formato.format(totalAPagar);
 }
 
 // ==========================================
-// E. LÓGICA DEL CARRUSEL (ESTILO CATÁLOGO)
+// E. LÓGICA DEL CARRUSEL (Usando Inventario LocalStorage)
 // ==========================================
 
 const contenedorCarrusel = document.getElementById('recoSlides');
 let ultimoAncho = window.innerWidth; 
 
-function renderizarCarrusel(productos) {
+function renderizarCarrusel() {
     if(!contenedorCarrusel) return; 
+
+    // Leemos productos del LocalStorage (o Fallback)
+    const productos = obtenerInventario();
+    
+    // Si hay pocos, mostramos todos; si hay muchos, mostramos 6
+    const listaCarrusel = productos.slice(0, 6);
 
     contenedorCarrusel.innerHTML = '';
     const esMovil = window.innerWidth < 992;
     const itemsPorSlide = esMovil ? 1 : 3;
     const claseColumna = esMovil ? 'col-12' : 'col-4';
 
-    for (let i = 0; i < productos.length; i += itemsPorSlide) {
-        const grupo = productos.slice(i, i + itemsPorSlide);
+    for (let i = 0; i < listaCarrusel.length; i += itemsPorSlide) {
+        const grupo = listaCarrusel.slice(i, i + itemsPorSlide);
         const claseActiva = i === 0 ? 'active' : '';
 
         let slideHTML = `
@@ -371,7 +428,10 @@ function renderizarCarrusel(productos) {
         `;
 
         grupo.forEach(prod => {
-            const rutaImg = prod.imageURL.replace('..', ''); 
+            let rutaImg = prod.imageURL;
+            if(rutaImg && rutaImg.startsWith('..')) {
+                rutaImg = rutaImg.replace('..', '');
+            }
 
             slideHTML += `
                 <div class="${claseColumna}">
@@ -405,9 +465,13 @@ function renderizarCarrusel(productos) {
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     renderizarCarritoUI();
-    renderizarCarrusel(listaDeProductos.slice(0, 6));
+    renderizarCarrusel(); // Ya no necesita parámetros, lee del LS
 
-    // Listeners del DOM
+    // Actualizar badge al cargar
+    if (typeof window.actualizarBadgeNavbar === 'function') {
+        window.actualizarBadgeNavbar();
+    }
+
     const btnVaciar = document.getElementById('btnVaciar');
     if(btnVaciar) btnVaciar.addEventListener('click', window.vaciarCarrito);
 
@@ -421,13 +485,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnPagar) btnPagar.addEventListener('click', window.irAPagar);
 });
 
-// Listener Resize
 window.addEventListener('resize', () => {
     const anchoActual = window.innerWidth;
     const eraMovil = ultimoAncho < 992;
     const esMovilAhora = anchoActual < 992;
     if (eraMovil !== esMovilAhora) {
-        renderizarCarrusel(listaDeProductos.slice(0, 6));
+        renderizarCarrusel();
     }
     ultimoAncho = anchoActual;
 });

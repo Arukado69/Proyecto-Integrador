@@ -25,19 +25,48 @@ document.addEventListener('DOMContentLoaded', () => {
         carrito.forEach(item => {
             const totalItem = item.price * item.cantidad;
             subtotalCalculado += totalItem;
-            // Rutas absolutas para imágenes
-            const rutaImg = item.imageURL.replace('..', ''); 
+
+            // --- LÓGICA INTELIGENTE DE IMAGEN ---
+            let rutaFinal = item.imageURL;
+
+            // 1. Verificamos si NO es una URL de internet (http/https)
+            if (!rutaFinal.startsWith('http')) {
+                // Es una ruta local antigua (ej: ../assets/...)
+                // La limpiamos para que sea absoluta desde la raíz
+                rutaFinal = rutaFinal.replace('..', '');
+                
+                // Aseguramos que empiece con / si no lo tiene
+                if (!rutaFinal.startsWith('/')) {
+                    rutaFinal = '/' + rutaFinal;
+                }
+            }
+            // Si SÍ empieza con http, la dejamos intacta (es lo que ingresaste en el form)
 
             contenedorItems.innerHTML += `
-                <div class="d-flex align-items-center gap-2 mb-2">
-                    <div style="width: 40px; height: 40px;" class="bg-white rounded border p-1 flex-shrink-0">
-                        <img src="${rutaImg}" class="w-100 h-100 object-fit-cover rounded" onerror="this.style.display='none'">
+                <div class="d-flex align-items-center py-2 border-bottom border-light">
+                    
+                    <div style="width: 60px; height: 60px; flex-shrink: 0;" class="bg-white rounded border p-1">
+                        <img src="${rutaFinal}" 
+                             alt="${item.name}" 
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             class="rounded"
+                             onerror="this.src='https://via.placeholder.com/60?text=Sin+Foto'">
                     </div>
-                    <div class="flex-grow-1 lh-sm">
-                        <div class="small fw-semibold text-truncate" style="max-width: 140px;">${item.name}</div>
-                        <div class="text-muted" style="font-size: 0.7rem;">x${item.cantidad}</div>
+        
+                    <div class="flex-grow-1 ms-3">
+                        <h6 class="small fw-bold text-dark mb-1 text-truncate" style="max-width: 150px;">
+                            ${item.name}
+                        </h6>
+                        <div class="text-muted small">
+                            Cant: <span class="fw-semibold text-dark">${item.cantidad}</span>
+                        </div>
                     </div>
-                </div>`;
+
+                    <div class="small fw-bold text-end ms-2">
+                        $${totalItem.toFixed(2)}
+                    </div>
+                </div>
+            `;
         });
 
         // B. Totales (Leemos lo que calculó el carrito para ser exactos)

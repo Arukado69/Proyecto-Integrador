@@ -1,141 +1,113 @@
-// 1. IMPORTS (Solo una vez al inicio)
-import { listaDeProductos } from '/scripts/productos.js'; 
-// scripts/formulario-productos.js
 (function () {
-  const $ = (sel) => document.querySelector(sel);
+    const $ = (sel) => document.querySelector(sel);
 
-  const form = $('#formProducto');
-  const alerta = $('#alerta');
-  const jsonPreview = $('#jsonPreview');
+    // DOM Elements
+    const form = $('#formProducto');
+    const alerta = $('#alerta');
+    
+    // Inputs
+    const nombre = $('#nombre');
+    const precio = $('#precio');
+    const descripcion = $('#descripcion');
+    const tamano = $('#tamano');
+    const sabor = $('#sabor');
+    const categoria = $('#categoria');
+    const imagen = $('#imagen');
+    const stock = $('#stock');
+    const sku = $('#sku');
+    const btnLimpiar = $('#btnLimpiar');
 
-  const nombre = $('#nombre');
-  const precio = $('#precio');
-  const descripcion = $('#descripcion');
-  const tamano = $('#tamano');
-  const sabor = $('#sabor');
-  const categoria = $('#categoria');
-  const imagen = $('#imagen');
-  const stock = $('#stock');
-  const sku = $('#sku');
-  const descuento = $('#descuento');
-  const btnLimpiar = $('#btnLimpiar');
+    // --- 1. LÓGICA DE BASE DE DATOS LOCAL (Simulada) ---
+    
+    // Clave donde guardaremos TODO el inventario
+    const CLAVE_BD = 'baseDatosProductos'; 
 
-  // Sugiere nombre tipo "Menú de Pollo 500g" si está vacío
-  function autocompletarNombre() {
-    if (!nombre.value.trim() && sabor.value && tamano.value) {
-      nombre.value = `Menú de ${sabor.value} ${tamano.value}`;
-    }
-  }
-  sabor.addEventListener('change', autocompletarNombre);
-  tamano.addEventListener('change', autocompletarNombre);
-
-  function showAlert(tipo, mensaje) {
-    alerta.className = `alert alert-${tipo}`;
-    alerta.textContent = mensaje;
-    alerta.classList.remove('d-none');
-  }
-
-  function hideAlert() {
-    alerta.classList.add('d-none');
-  }
-
-  function leerLocalNuevos() {
-    try {
-      return JSON.parse(localStorage.getItem('productosNuevos') || '[]');
-    } catch { return []; }
-  }
-
-  function guardarLocalNuevos(arr) {
-    localStorage.setItem('productosNuevos', JSON.stringify(arr));
-  }
-
-  function getNextId() {
-    const base = Array.isArray(window.listaDeProductos) ? window.listaDeProductos : [];
-    const nuevos = leerLocalNuevos();
-    const ids = [...base, ...nuevos]
-      .map(p => Number(p.id))
-      .filter(n => Number.isFinite(n));
-    const max = ids.length ? Math.max(...ids) : 0;
-    return max + 1;
-  }
-
-  function validarURL(url) {
-    try { new URL(url, window.location.origin); return true; }
-    catch { return false; }
-  }
-
-  function buildProducto() {
-    return {
-      id: getNextId(),
-      name: nombre.value.trim(),
-      price: Number(precio.value),
-      description: descripcion.value.trim(),
-      imageURL: imagen.value.trim(),
-
-      // Campos adicionales (no usados por las cards, pero útiles)
-      size: tamano.value,
-      flavor: sabor.value,
-      category: categoria.value,
-      stock: Number(stock.value || 0),
-      sku: sku.value.trim() || `WBF-${Date.now().toString().slice(-5)}`,
-      discount: Number(descuento.value || 0),
-      createdAt: new Date().toISOString()
-    };
-  }
-
-  function validarFormulario() {
-    // Bootstrap validation UI
-    form.classList.add('was-validated');
-    let ok = true;
-
-    if (!nombre.value.trim()) ok = false;
-    if (!precio.value || Number(precio.value) <= 0) ok = false;
-    if (!descripcion.value.trim()) ok = false;
-    if (!tamano.value) ok = false;
-    if (!sabor.value) ok = false;
-    if (!categoria.value) ok = false;
-    if (!imagen.value.trim() || !validarURL(imagen.value.trim())) ok = false;
-
-    return ok;
-  }
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    hideAlert();
-
-    if (!validarFormulario()) {
-      showAlert('danger', 'Revisa los campos marcados. Faltan datos o hay valores inválidos.');
-      return;
+    function obtenerProductosBD() {
+        const guardados = localStorage.getItem(CLAVE_BD);
+        // Si ya hay datos, los devolvemos. Si no, devolvemos un array vacío.
+        // NOTA: Aquí podrías inicializarlo con tus datos de prueba si está vacío.
+        return guardados ? JSON.parse(guardados) : [];
     }
 
-    const nuevo = buildProducto();
+    function guardarProductoEnBD(producto) {
+        const productos = obtenerProductosBD();
+        productos.push(producto);
+        localStorage.setItem(CLAVE_BD, JSON.stringify(productos));
+    }
 
-    // Empuja al arreglo global (memoria de esta pestaña)
-   // dentro del submit, después de construir 'nuevo':
-if (typeof listaDeProductos !== 'undefined' && Array.isArray(listaDeProductos)) {
-  listaDeProductos.push(nuevo);
-} else {
-  console.warn('formulario: listaDeProductos no disponible en este contexto; producto guardado solo en localStorage.');
-}
+    function generarId() {
+        // Generamos un ID basado en la fecha actual (es único y fácil)
+        return Date.now(); 
+    }
 
+    // --- 2. UTILIDADES DEL FORMULARIO ---
 
-    // Persiste para que el catálogo lo lea y lo muestre
-    const guardados = leerLocalNuevos();
-    guardados.push(nuevo);
-    guardarLocalNuevos(guardados);
+    // Autocompletar nombre
+    function autocompletarNombre() {
+        if (!nombre.value.trim() && sabor.value && tamano.value) {
+            nombre.value = `Menú de ${sabor.value} ${tamano.value}`;
+        }
+    }
+    sabor.addEventListener('change', autocompletarNombre);
+    tamano.addEventListener('change', autocompletarNombre);
 
-    // Vista previa JSON
-    jsonPreview.textContent = JSON.stringify(nuevo, null, 2);
+    // Alertas Bootstrap
+    function showAlert(tipo, mensaje) {
+        alerta.className = `alert alert-${tipo} fade show`;
+        alerta.textContent = mensaje;
+        alerta.classList.remove('d-none');
+        
+        // Ocultar automáticamente después de 3 seg
+        setTimeout(() => {
+            alerta.classList.add('d-none');
+        }, 3000);
+    }
 
-    showAlert('success', 'Producto agregado correctamente. Puedes abrir la Tienda para verlo.');
-    form.reset();
-    form.classList.remove('was-validated');
-  });
+    function validarURL(url) {
+        // Validación simple de URL o ruta relativa
+        return url.includes('/') || url.startsWith('http');
+    }
 
-  btnLimpiar.addEventListener('click', () => {
-    form.reset();
-    form.classList.remove('was-validated');
-    jsonPreview.textContent = '—';
-    hideAlert();
-  });
+    // --- 3. PROCESAR EL ENVÍO ---
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        form.classList.add('was-validated'); // Activa estilos rojos de Bootstrap
+
+        // Validaciones básicas
+        if (!form.checkValidity()) {
+            showAlert('danger', 'Por favor completa todos los campos requeridos.');
+            return;
+        }
+
+        // Construir el objeto producto
+        const nuevoProducto = {
+            id: generarId(),
+            name: nombre.value.trim(),
+            price: Number(precio.value),
+            description: descripcion.value.trim(),
+            imageURL: imagen.value.trim(), // Guardamos la ruta tal cual
+            size: tamano.value,
+            flavor: sabor.value,
+            category: categoria.value,
+            stock: Number(stock.value || 0),
+            sku: sku.value.trim() || `WBF-${Math.floor(Math.random() * 10000)}`
+        };
+
+        // Guardar en LocalStorage
+        guardarProductoEnBD(nuevoProducto);
+
+        // Feedback
+        showAlert('success', '¡Producto guardado exitosamente! Revisa el catálogo.');
+        form.reset();
+        form.classList.remove('was-validated');
+    });
+
+    // Limpiar formulario
+    btnLimpiar.addEventListener('click', () => {
+        form.reset();
+        form.classList.remove('was-validated');
+        alerta.classList.add('d-none');
+    });
+
 })();
