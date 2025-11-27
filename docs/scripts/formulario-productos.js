@@ -1,6 +1,9 @@
 (function () {
     const $ = (sel) => document.querySelector(sel);
 
+    // --- CONFIGURACIÓN BACKEND ---
+    const API_URL = 'http://localhost:8080/api'; // Ajustar el puerto si es necesario
+
     // DOM Elements
     const form = $('#formProducto');
     const alerta = $('#alerta');
@@ -17,32 +20,34 @@
     const sku = $('#sku');
     const btnLimpiar = $('#btnLimpiar');
 
-    // --- 1. LÓGICA DE BASE DE DATOS LOCAL (Simulada) ---
+    // --- 1. LÓGICA DE BACKEND (POST) ---
     
-    // Clave donde guardaremos TODO el inventario
-    const CLAVE_BD = 'baseDatosProductos'; 
+    async function guardarProductoEnBackend(producto) {
+        try {
+            const response = await fetch(`${API_URL}/productos`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(producto)
+            });
 
-    function obtenerProductosBD() {
-        const guardados = localStorage.getItem(CLAVE_BD);
-        // Si ya hay datos, los devolvemos. Si no, devolvemos un array vacío.
-        // NOTA: Aquí podrías inicializarlo con tus datos de prueba si está vacío.
-        return guardados ? JSON.parse(guardados) : [];
+            if (response.ok) {
+                showAlert('success', '¡Producto guardado en la Base de Datos!');
+                form.reset();
+                form.classList.remove('was-validated');
+            } else {
+                showAlert('danger', 'Error del servidor al guardar el producto.');
+                console.error('Error server:', await response.text());
+            }
+        } catch (error) {
+            console.error("Error de conexión:", error);
+            showAlert('danger', 'No se pudo conectar con el servidor (Spring Boot).');
+        }
     }
 
-    function guardarProductoEnBD(producto) {
-        const productos = obtenerProductosBD();
-        productos.push(producto);
-        localStorage.setItem(CLAVE_BD, JSON.stringify(productos));
-    }
+    // --- 2. UTILIDADES ---
 
-    function generarId() {
-        // Generamos un ID basado en la fecha actual (es único y fácil)
-        return Date.now(); 
-    }
-
-    // --- 2. UTILIDADES DEL FORMULARIO ---
-
-    // Autocompletar nombre
     function autocompletarNombre() {
         if (!nombre.value.trim() && sabor.value && tamano.value) {
             nombre.value = `Menú de ${sabor.value} ${tamano.value}`;
@@ -51,20 +56,14 @@
     sabor.addEventListener('change', autocompletarNombre);
     tamano.addEventListener('change', autocompletarNombre);
 
-    // Alertas Bootstrap
     function showAlert(tipo, mensaje) {
         alerta.className = `alert alert-${tipo} fade show`;
         alerta.textContent = mensaje;
         alerta.classList.remove('d-none');
-        
-        // Ocultar automáticamente después de 3 seg
-        setTimeout(() => {
-            alerta.classList.add('d-none');
-        }, 3000);
+        setTimeout(() => { alerta.classList.add('d-none'); }, 3000);
     }
 
     function validarURL(url) {
-        // Validación simple de URL o ruta relativa
         return url.includes('/') || url.startsWith('http');
     }
 
@@ -72,38 +71,31 @@
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        form.classList.add('was-validated'); // Activa estilos rojos de Bootstrap
+        form.classList.add('was-validated');
 
-        // Validaciones básicas
         if (!form.checkValidity()) {
-            showAlert('danger', 'Por favor completa todos los campos requeridos.');
+            showAlert('danger', 'Por favor completa los campos requeridos.');
             return;
         }
 
-        // Construir el objeto producto
+        // Construir objeto (DTO para Java)
         const nuevoProducto = {
-            id: generarId(),
+            // Nota: ID lo suele generar la base de datos (AutoIncrement), no lo enviamos aquí
             name: nombre.value.trim(),
             price: Number(precio.value),
             description: descripcion.value.trim(),
-            imageURL: imagen.value.trim(), // Guardamos la ruta tal cual
+            imageURL: imagen.value.trim(),
             size: tamano.value,
             flavor: sabor.value,
             category: categoria.value,
             stock: Number(stock.value || 0),
-            sku: sku.value.trim() || `WBF-${Math.floor(Math.random() * 10000)}`
+            sku: sku.value.trim() || `WBF-${Date.now().toString().slice(-5)}`
         };
 
-        // Guardar en LocalStorage
-        guardarProductoEnBD(nuevoProducto);
-
-        // Feedback
-        showAlert('success', '¡Producto guardado exitosamente! Revisa el catálogo.');
-        form.reset();
-        form.classList.remove('was-validated');
+        // Enviar a Java
+        guardarProductoEnBackend(nuevoProducto);
     });
 
-    // Limpiar formulario
     btnLimpiar.addEventListener('click', () => {
         form.reset();
         form.classList.remove('was-validated');
