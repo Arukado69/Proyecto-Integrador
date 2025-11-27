@@ -35,9 +35,6 @@ public class Usuario {
     @Column(length = 20)
     private String telefono;
 
-    @Column(length = 255)
-    private String direccion;
-
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
@@ -53,6 +50,7 @@ public class Usuario {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonBackReference
     private Carrito carrito;
+
 
     // ====== Getters y Setters ======
 
@@ -119,14 +117,6 @@ public class Usuario {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
     }
 
     public LocalDateTime getFechaCreacion() {
