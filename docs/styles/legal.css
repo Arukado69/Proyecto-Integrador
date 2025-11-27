@@ -1,114 +1,143 @@
-/* --- Variables de Color (Ajústalas a tu paleta) --- */
+/* =======================================================
+   ESTILOS LEGALES - WOOF & BARF (FINAL)
+   ======================================================= */
+
 :root {
-    --color-primario: #BF0413; /* Rojo Barf (Principal)  */
-    --color-acento: #F27405;   /* Naranja Cálido (Acento)  */
-    --color-texto: #333;
-    --color-fondo: #f9f9f9;
-    --color-borde: #ddd;
+  /* --- COLORES DE MARCA --- */
+  --brand-ink: #111;          /* Texto principal (Casi Negro) */
+  --brand-accent: #A04B00;    /* Marrón principal */
+  --brand-orange: #F3A412;    /* Naranja acento */
+  --brand-bg-light: #fff;     /* Fondo tarjeta */
+  --border-color: #eee;
+  
+  --card-radius: 14px;
+  --card-shadow: 0 6px 16px rgba(0,0,0,.08);
 }
 
-/* --- Estilos Generales --- */
+/* 1. FONDO GENERAL (Limpio, solo imagen) */
 body {
-    font-family: 'Roboto', Arial, sans-serif; /* Usando Roboto como en tu guía [cite: 227] */
-    background-color: var(--color-fondo);
-    color: var(--color-texto);
-    line-height: 1.6;
-    padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: var(--brand-ink);
+  
+  /* Asegúrate de que esta ruta sea correcta para tu carpeta */
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg'); 
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  margin: 0;
 }
 
+/* 2. CONTENEDOR PRINCIPAL */
 .legal-container {
-    max-width: 900px;
-    margin: 30px auto;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    border: 1px solid var(--color-borde);
-    overflow: hidden; /* Para contener los bordes */
+  max-width: 900px;
+  margin: 40px auto;
+  background: var(--brand-bg-light);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  border: none;
+  overflow: hidden; 
+  padding-bottom: 2rem;
 }
 
+/* Título Principal */
 .legal-container h2 {
-    font-family: 'Fredoka', Arial, sans-serif; /* Usando Fredoka como en tu guía [cite: 227] */
-    font-size: 28px;
-    color: var(--color-primario);
-    padding: 25px 30px 0 30px;
-    margin: 0;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: var(--brand-ink); 
+  padding: 40px 40px 10px 40px;
+  margin: 0;
+  text-align: center;
 }
 
-.legal-container p {
-    padding: 0 30px;
+.legal-container > p {
+  padding: 0 40px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 30px;
 }
 
-/* --- Estilos de Pestañas (Tabs) --- */
+/* 3. PESTAÑAS (TABS) */
 .tabs-nav {
-    display: flex;
-    border-bottom: 2px solid var(--color-borde);
-    margin: 20px 30px 0 30px;
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid var(--border-color);
+  margin: 0 40px;
+  flex-wrap: wrap;
 }
 
 .tab-link {
-    font-family: 'Fredoka', Arial, sans-serif;
-    padding: 12px 20px;
-    text-decoration: none;
-    color: var(--color-texto);
-    font-weight: 600;
-    font-size: 16px;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px; /* Alinea el borde con el borde del contenedor */
-    transition: color 0.3s, border-bottom 0.3s;
+  font-family: 'Fredoka', sans-serif;
+  padding: 15px 25px;
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  font-size: 1.1rem;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .tab-link:hover {
-    color: var(--color-acento);
+  color: var(--brand-orange);
 }
 
 .tab-link.active {
-    color: var(--color-primario);
-    border-bottom: 3px solid var(--color-primario);
+  color: var(--brand-accent); 
+  border-bottom: 3px solid var(--brand-accent);
+  font-weight: 600;
 }
 
-/* --- Estilos de Contenido --- */
+/* 4. CONTENIDO */
 .tabs-content {
-    padding: 20px 30px 30px 30px;
+  padding: 40px;
 }
 
 .tab-pane {
-    display: none; /* Oculto por defecto */
+  display: none;
+  animation: fadeIn 0.4s ease-out;
 }
 
 .tab-pane.active {
-    display: block; /* Visible si está activo */
-    animation: fadeIn 0.5s ease-in-out;
+  display: block;
 }
 
 .tab-pane h3 {
-    font-family: 'Fredoka', Arial, sans-serif;
-    font-size: 22px;
-    color: #000;
-    margin-top: 0;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.8rem;
+  color: var(--brand-accent); 
+  margin-top: 0;
+  margin-bottom: 1.5rem;
 }
 
 .tab-pane h4 {
-    font-family: 'Fredoka', Arial, sans-serif;
-    font-size: 18px;
-    color: var(--color-texto);
-    margin-top: 25px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.2rem;
+  color: var(--brand-ink);
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 5px;
 }
 
-.tab-pane ul {
-    margin-left: 20px;
-    list-style-type: disc;
+.tab-pane p, .tab-pane ul {
+  color: #444;
 }
 
-/* Animación simple de aparición */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .legal-container { margin: 20px; }
+  .tabs-nav { flex-direction: column; border-bottom: none; }
+  .tab-link { text-align: center; border-bottom: 1px solid var(--border-color); }
+  .tab-link.active { border-bottom: 1px solid var(--brand-accent); border-left: 4px solid var(--brand-accent); }
 }
