@@ -76,15 +76,20 @@
 }
 
 .faq-title {
-    font-size: 2rem;
-    text-align: center;
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    text-align: left;
     margin-bottom: 0.5rem;
 }
 
 .faq-intro {
-    text-align: center;
+    text-align: left;
     color: #555;
     margin-bottom: 2rem;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
 }
 
 .faq-list .faq-item {
@@ -102,6 +107,8 @@
     cursor: pointer;
     color: #333;
     position: relative;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
 }
 
 .faq-question::after {
@@ -120,6 +127,9 @@
     overflow: hidden;
     transition: max-height 0.3s ease;
     color: #555;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+    line-height: 1.7;
 }
 
 .faq-item.active .faq-answer {
@@ -143,17 +153,4 @@
     transform: scale(1.05);
 }
 
-/* Navbar */
-.navbar-center {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-    background-color: transparent;
-    transition: background-color 0.3s ease;
-}
 
-.navbar-center.scrolled {
-    background-color: #ffffff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
