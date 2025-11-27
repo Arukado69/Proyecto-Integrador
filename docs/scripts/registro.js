@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const inputNombre = document.getElementById("nombre");
   const inputApellido = document.getElementById("apellido");
   const inputCorreo = document.getElementById("correo") || document.getElementById("email");
+  const inputDireccion = document.getElementById("direccion");
   const inputNumero = document.getElementById("numero");
   const inputFecha = document.getElementById("fecha");
   const inputPassword = document.getElementById("password");
@@ -175,6 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const n = (inputNombre?.value || "").trim();
       const a = (inputApellido?.value || "").trim();
       const c = (inputCorreo?.value || "").trim();
+      const d = (inputDireccion?.value || "").trim();
       const tel = (inputNumero?.value || "").trim();
       const f = (inputFecha?.value || "").trim();
       const p1 = (inputPassword?.value || "").trim();
@@ -185,6 +187,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!nameRx.test(a)) errores.push("Apellido inválido.");
       if (!c) errores.push("Correo obligatorio.");
       if (!telefonoValido(tel)) errores.push("Número inválido.");
+      if (!d) errores.push("La dirección es obligatoria.");
       if (!f) errores.push("La fecha es obligatoria.");
       if (!passStrongRx.test(p1)) errores.push("La contraseña no cumple los requisitos.");
       if (p1 !== p2) errores.push("Las contraseñas no coinciden.");
