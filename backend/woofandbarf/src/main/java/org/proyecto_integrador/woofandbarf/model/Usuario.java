@@ -2,6 +2,8 @@ package org.proyecto_integrador.woofandbarf.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.proyecto_integrador.woofandbarf.enums.Rol;
+
 import java.time.LocalDateTime;
 
 /**
@@ -38,6 +40,9 @@ public class Usuario {
     @Column(name = "fecha_creacion")
     private LocalDateTime fechaCreacion;
 
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
+
     /**
      * Relación 1 a 1: un usuario tiene un carrito.
      */
@@ -46,6 +51,14 @@ public class Usuario {
     private Carrito carrito;
 
     // ====== Getters y Setters ======
+
+    public Rol getRol() {
+        return rol;
+    }
+
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
 
     public Integer getIdUsuario() {
         return idUsuario;

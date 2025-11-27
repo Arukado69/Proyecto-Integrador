@@ -1,7 +1,9 @@
 package org.proyecto_integrador.woofandbarf.service;
 
+import org.proyecto_integrador.woofandbarf.enums.Rol;
 import org.proyecto_integrador.woofandbarf.exceptions.ConflictoException;
 import org.proyecto_integrador.woofandbarf.exceptions.RecursoNoEncontradoException;
+import org.proyecto_integrador.woofandbarf.exceptions.UserNotFoundException;
 import org.proyecto_integrador.woofandbarf.interfaces.IUsuarioService;
 import org.proyecto_integrador.woofandbarf.model.Carrito;
 import org.proyecto_integrador.woofandbarf.model.Usuario;
@@ -27,6 +29,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario registrar(Usuario usuario) {
+        usuario.setRol(Rol.CLIENTE);
 
         // Exception
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
@@ -62,4 +65,29 @@ public class UsuarioService implements IUsuarioService {
     public List<Usuario> listar() {
         return usuarioRepository.findAll();
     }
+
+    //eliminar usuario
+    public void eliminarUsuario(Integer id){
+        if (usuarioRepository.existsById(id)){
+            usuarioRepository.deleteById(id);
+        }
+        else {
+            throw new UserNotFoundException(id);
+        }
+    }
+
+    //modificar usuario
+    public Usuario modificarUsuario(Usuario user, Integer id){
+        return usuarioRepository.findById(id)
+                .map(usermap -> {
+                    usermap.setNombre(user.getNombre());
+                    usermap.setApellidos(user.getApellidos());
+                    usermap.setEmail(user.getEmail());
+                    usermap.setDireccion(user.getDireccion());
+                    return usuarioRepository.save(usermap);
+                })
+                .orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+
 }

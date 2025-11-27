@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Carrito de compras asociado a un usuario.
@@ -42,7 +43,19 @@ public class Carrito {
     @Column(name = "fecha_actualizacion")
     private LocalDateTime fechaActualizacion;
 
+    @OneToOne(mappedBy = "carrito")
+    private Pedido pedido;
+
     // ====== Getters y Setters ======
+
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
 
     public Integer getIdCarrito() {
         return idCarrito;
@@ -90,5 +103,31 @@ public class Carrito {
 
     public void setFechaActualizacion(LocalDateTime fechaActualizacion) {
         this.fechaActualizacion = fechaActualizacion;
+    }
+
+    //toString()
+
+    @Override
+    public String toString() {
+        return "Carrito{" +
+                "idCarrito=" + idCarrito +
+                ", usuario=" + usuario +
+                ", detalles=" + detalles +
+                ", total=" + total +
+                ", fechaCreacion=" + fechaCreacion +
+                ", fechaActualizacion=" + fechaActualizacion +
+                ", pedido=" + pedido +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Carrito carrito)) return false;
+        return Objects.equals(idCarrito, carrito.idCarrito) && Objects.equals(usuario, carrito.usuario) && Objects.equals(detalles, carrito.detalles) && Objects.equals(total, carrito.total) && Objects.equals(fechaCreacion, carrito.fechaCreacion) && Objects.equals(fechaActualizacion, carrito.fechaActualizacion) && Objects.equals(pedido, carrito.pedido);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idCarrito, usuario, detalles, total, fechaCreacion, fechaActualizacion, pedido);
     }
 }

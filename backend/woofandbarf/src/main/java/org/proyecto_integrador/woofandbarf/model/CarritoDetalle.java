@@ -3,6 +3,7 @@ package org.proyecto_integrador.woofandbarf.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 /**
  * Detalle (línea) de un carrito: producto + cantidad.
@@ -31,6 +32,7 @@ public class CarritoDetalle {
 
     @Column(precision = 10, scale = 2)
     private BigDecimal subtotal;
+
 
     // ====== Getters y Setters ======
 
@@ -80,5 +82,31 @@ public class CarritoDetalle {
 
     public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
+    }
+
+    //toString()
+
+    @Override
+    public String toString() {
+        return "CarritoDetalle{" +
+                "idCarritoDetalle=" + idCarritoDetalle +
+                // ", carrito=" + carrito +  <-- BORRA O COMENTA ESTA LÍNEA
+                ", producto=" + producto +
+                ", cantidad=" + cantidad +
+                ", precioUnitario=" + precioUnitario +
+                ", subtotal=" + subtotal +
+                '}';
+    }
+    //equals y hasshcode
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof CarritoDetalle that)) return false;
+        return Objects.equals(idCarritoDetalle, that.idCarritoDetalle) && Objects.equals(carrito, that.carrito) && Objects.equals(producto, that.producto) && Objects.equals(cantidad, that.cantidad) && Objects.equals(precioUnitario, that.precioUnitario) && Objects.equals(subtotal, that.subtotal);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idCarritoDetalle, carrito, producto, cantidad, precioUnitario, subtotal);
     }
 }
