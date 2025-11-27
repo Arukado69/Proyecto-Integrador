@@ -1,105 +1,91 @@
-(function () {
-    const $ = (sel) => document.querySelector(sel);
+document.addEventListener("DOMContentLoaded", () => {
 
-    // --- CONFIGURACIÓN BACKEND ---
-    const API_URL = 'http://localhost:8080/api'; // Ajustar el puerto si es necesario
+    const btnAgregar = document.getElementById("btnAgregar");
+    const btnLimpiar = document.getElementById("btnLimpiar");
+    const form = document.getElementById("formProducto");
+    const alerta = document.getElementById("alerta");
 
-    // DOM Elements
-    const form = $('#formProducto');
-    const alerta = $('#alerta');
-    
-    // Inputs
-    const nombre = $('#nombre');
-    const precio = $('#precio');
-    const descripcion = $('#descripcion');
-    const tamano = $('#tamano');
-    const sabor = $('#sabor');
-    const categoria = $('#categoria');
-    const imagen = $('#imagen');
-    const stock = $('#stock');
-    const sku = $('#sku');
-    const btnLimpiar = $('#btnLimpiar');
-
-    // --- 1. LÓGICA DE BACKEND (POST) ---
-    
-    async function guardarProductoEnBackend(producto) {
-        try {
-            const response = await fetch(`${API_URL}/productos`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(producto)
-            });
-
-            if (response.ok) {
-                showAlert('success', '¡Producto guardado en la Base de Datos!');
-                form.reset();
-                form.classList.remove('was-validated');
-            } else {
-                showAlert('danger', 'Error del servidor al guardar el producto.');
-                console.error('Error server:', await response.text());
-            }
-        } catch (error) {
-            console.error("Error de conexión:", error);
-            showAlert('danger', 'No se pudo conectar con el servidor (Spring Boot).');
-        }
-    }
-
-    // --- 2. UTILIDADES ---
-
-    function autocompletarNombre() {
-        if (!nombre.value.trim() && sabor.value && tamano.value) {
-            nombre.value = `Menú de ${sabor.value} ${tamano.value}`;
-        }
-    }
-    sabor.addEventListener('change', autocompletarNombre);
-    tamano.addEventListener('change', autocompletarNombre);
-
-    function showAlert(tipo, mensaje) {
+    // --- FUNCIÓN PARA MOSTRAR ALERTAS (Reutilizada del diseño original) ---
+    function mostrarAlerta(tipo, mensaje) {
+        // tipo puede ser 'success' (verde) o 'danger' (rojo)
         alerta.className = `alert alert-${tipo} fade show`;
         alerta.textContent = mensaje;
         alerta.classList.remove('d-none');
+        
+        // Ocultar la alerta después de 3 segundos
         setTimeout(() => { alerta.classList.add('d-none'); }, 3000);
     }
 
-    function validarURL(url) {
-        return url.includes('/') || url.startsWith('http');
+    // --- LÓGICA PRINCIPAL ---
+    if (btnAgregar) {
+        btnAgregar.addEventListener("click", (e) => {
+            e.preventDefault(); // Evita recarga de página
+
+            // 1. OBTENER VALORES
+            const nombreInput = document.getElementById("nombre").value.trim();
+            const precioInput = document.getElementById("precio").value.trim();
+            const descripcionInput = document.getElementById("descripcion").value.trim();
+            const tamanoInput = document.getElementById("tamano").value;
+            const saborInput = document.getElementById("sabor").value;
+            const categoriaInput = document.getElementById("categoria").value;
+            const imageInput = document.getElementById("imagen").value.trim();
+            const stockInput = document.getElementById("stock").value;
+
+            // 2. VALIDACIÓN
+            if (!nombreInput || !precioInput || !descripcionInput || !tamanoInput || !saborInput || !categoriaInput || !imageInput) {
+                mostrarAlerta("danger", "Por favor, completa todos los campos obligatorios.");
+                return;
+            }
+
+            // 3. CREAR OBJETO JSON (Coincide con Producto.java)
+            const producto = {
+                nombre: nombreInput,
+                precio: parseFloat(precioInput),
+                descripcion: descripcionInput,
+                tamano: tamanoInput,
+                sabor: saborInput,
+                categoria: categoriaInput,
+                imagenUrl: imageInput,
+                stock: parseInt(stockInput) || 0,
+                activo: true
+            };
+
+            // 4. CONEXIÓN AL BACKEND
+            // Corregí tu error de URL: faltaban las diagonales // después de http:
+            const url = "http://localhost:8080/api/v1/productos/new-producto";
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify(producto)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error en la respuesta del servidor");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Producto creado:", data);
+                
+                // ÉXITO VISUAL
+                mostrarAlerta("success", "¡Producto agregado al catálogo correctamente!");
+                form.reset(); // Limpia los campos
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                mostrarAlerta("danger", "Hubo un error al conectar con el servidor.");
+            });
+        });
     }
 
-    // --- 3. PROCESAR EL ENVÍO ---
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        form.classList.add('was-validated');
-
-        if (!form.checkValidity()) {
-            showAlert('danger', 'Por favor completa los campos requeridos.');
-            return;
-        }
-
-        // Construir objeto (DTO para Java)
-        const nuevoProducto = {
-            // Nota: ID lo suele generar la base de datos (AutoIncrement), no lo enviamos aquí
-            name: nombre.value.trim(),
-            price: Number(precio.value),
-            description: descripcion.value.trim(),
-            imageURL: imagen.value.trim(),
-            size: tamano.value,
-            flavor: sabor.value,
-            category: categoria.value,
-            stock: Number(stock.value || 0),
-            sku: sku.value.trim() || `WBF-${Date.now().toString().slice(-5)}`
-        };
-
-        // Enviar a Java
-        guardarProductoEnBackend(nuevoProducto);
-    });
-
-    btnLimpiar.addEventListener('click', () => {
-        form.reset();
-        form.classList.remove('was-validated');
-        alerta.classList.add('d-none');
-    });
-
-})();
+    // --- BOTÓN LIMPIAR (Funcionalidad extra útil) ---
+    if (btnLimpiar) {
+        btnLimpiar.addEventListener("click", () => {
+            form.reset();
+            alerta.classList.add('d-none');
+        });
+    }
+});
