@@ -1,0 +1,13 @@
+h3{
+    color: #f2a413;
+}
+
+.btnColor { 
+    background-color: #f2a413;
+    color: white;
+    border: none;
+}
+
+.btnColor:hover {
+    background-color: #d18e0f;
+}
