@@ -1,9 +1,10 @@
-// Versión Conectada al Backend (Spring Boot)
+// Versión Conectada al Backend (Spring Boot) - CORREGIDA
 document.addEventListener("DOMContentLoaded", () => {
     
-    const API_URL = 'http://localhost:8080/api'; // Tu servidor Java
+    // CORRECCIÓN 1: La ruta base correcta incluye /v1
+    const API_URL = 'http://localhost:8080/api/v1'; 
 
-    // --- 1. UTILIDADES DE IMÁGENES (Tu código original) ---
+    // --- 1. UTILIDADES DE IMÁGENES ---
     const dirOf = (url) => new URL(url, location.href).href.replace(/[^/]+$/, '');
     const safeSwap = (img, filename) => {
         if (!img) return;
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         img.src = base + filename;
     };
 
-    // --- 2. INTERACTIVIDAD VISUAL (Logos, Menús, Scroll) ---
+    // --- 2. INTERACTIVIDAD VISUAL ---
     
     // LOGO
     const logo = document.getElementById("logo");
@@ -36,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // BOTÓN DE COMPRAS (Solo efecto visual, el link lo maneja el <a>)
+    // BOTÓN DE COMPRAS
     const comprasBtn  = document.getElementById('comprasBtn');
     const comprasIcon = document.getElementById('comprasIcon');
     let compraActiva = false;
@@ -75,28 +76,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================
-    //  3. LÓGICA DEL BADGE DEL CARRITO (CONECTADA AL SERVER)
+    //  3. LÓGICA DEL BADGE DEL CARRITO (CORREGIDA)
     // ============================================================
     
-    // Definimos la función Globalmente
     window.actualizarBadgeNavbar = async function() {
         const badge = document.getElementById('miniCount');
         if (!badge) return; 
 
+        // CORRECCIÓN 2: Obtener usuario del localStorage
+        const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+        // Si no hay usuario, ocultamos el badge y salimos
+        if (!usuarioLogueado) {
+            badge.classList.add('d-none');
+            return;
+        }
+
         try {
-            // AQUI ESTÁ EL CAMBIO: Pedimos al servidor en lugar de leer localStorage
-            const response = await fetch(`${API_URL}/carrito`);
+            // CORRECCIÓN 3: Usar la URL correcta con el ID del usuario
+            // GET /api/v1/carrito/usuario/{id}
+            const response = await fetch(`${API_URL}/carrito/usuario/${usuarioLogueado.id}`);
             
             if (response.ok) {
                 const carrito = await response.json();
                 
-                // Sumamos cantidades
-                const totalArticulos = carrito.reduce((acc, item) => acc + (item.cantidad || 1), 0);
+                // CORRECCIÓN 4: Acceder a 'carrito.detalles' para sumar
+                // (El backend devuelve un objeto Carrito, no un array directo)
+                const detalles = carrito.detalles || [];
+                const totalArticulos = detalles.reduce((acc, item) => acc + (item.cantidad || 0), 0);
 
                 // Pintamos el número
                 badge.innerText = totalArticulos;
 
-                // Mostrar u ocultar
+                // Mostrar u ocultar según cantidad
                 if (totalArticulos > 0) {
                     badge.classList.remove('d-none');
                     badge.classList.add('d-block');
@@ -106,12 +118,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } 
         } catch (error) {
-            console.error("Error actualizando badge desde servidor:", error);
-            // Opcional: Si falla el server, ocultar badge
+            // console.error("Error silencioso badge:", error);
             badge.classList.add('d-none');
         }
     };
 
-    // Ejecutar al cargar la página para ver el estado actual
+    // Ejecutar al cargar la página
     window.actualizarBadgeNavbar();
 });
