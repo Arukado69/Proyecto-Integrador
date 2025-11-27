@@ -1,34 +1,14 @@
-// 1. IMPORTS
-// import { listaDeProductos } from '/scripts/productos.js';  //ya no cargar base de datos local
+// --- CONFIGURACIÓN BACKEND ---
+// --- CONFIGURACIÓN BACKEND ---
+const API_URL = 'http://localhost:8080/api/v1';
 
-// ======================================================
-// 1. DATOS Y FUSIÓN (SIMULACIÓN DE BASE DE DATOS)
-// ======================================================
-
-// A. Lista Base VACÍA (Para iniciar sin productos)
-const datosBase = []; 
-
-// B. Cargar productos nuevos del Formulario (LocalStorage)
-function obtenerProductosNuevos() {
-    try {
-        const guardados = localStorage.getItem('baseDatosProductos'); // O 'baseDatosProductos' si usaste esa clave
-        return guardados ? JSON.parse(guardados) : [];
-    } catch (e) {
-        console.error("Error leyendo productos nuevos", e);
-        return [];
-    }
-}
-
-// C. Fusionar Listas (Base + Nuevos)
-const productosNuevos = obtenerProductosNuevos();
-const listaDeProductos = [...datosBase, ...productosNuevos]; 
-
-
-// ======================================================
-// 2. CONFIGURACIÓN Y DOM
-// ======================================================
+// ------- Variables Globales -------
+let listaDeProductos = [];
+let filtered = [];
+let currentPage = 1;
 const ITEMS_PER_PAGE = 6;
 
+// ------- Elementos del DOM -------
 const productRow   = document.getElementById('product-row');
 const paginationEl = document.getElementById('pagination-container');
 const resultsInfo  = document.getElementById('results-info');
@@ -36,263 +16,252 @@ const searchInput  = document.getElementById('searchInput');
 const applyBtn     = document.getElementById('applyFiltersBtn');
 const filtersForm  = document.getElementById('filtersForm');
 
-let currentPage = 1;
-let filtered = [...listaDeProductos]; 
-
-
 // ======================================================
-// 3. UTILIDADES: MODAL BOOTSTRAP Y CARRITO
+// 1. CARGA DE DATOS (GET)
 // ======================================================
-let modalInstancia = null; 
 
-function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText, onConfirm }) {
-    const modalEl = document.getElementById('modalWoof');
-    if(!modalEl) return; 
-
-    document.getElementById('modalTitulo').innerText = title || 'Aviso';
-    document.getElementById('modalMensaje').innerText = text || '';
-
-    const imgEl = document.getElementById('modalImagen');
-    if (imageUrl) {
-        imgEl.src = imageUrl;
-        imgEl.classList.remove('d-none');
-    } else {
-        imgEl.classList.add('d-none');
+async function cargarProductos() {
+    try {
+        const response = await fetch(`${API_URL}/productos`); 
+        if(response.ok) {
+            listaDeProductos = await response.json();
+            console.log("Inventario cargado:", listaDeProductos); 
+            
+            // Inicializamos mostrando todo
+            filtered = [...listaDeProductos];
+            applyFilters(); 
+        } else {
+            productRow.innerHTML = '<div class="col-12 text-center"><p>No se pudo cargar el inventario.</p></div>';
+        }
+    } catch (e) {
+        console.error("Error:", e);
+        productRow.innerHTML = '<div class="col-12 text-center text-danger"><p>Error de conexión con el servidor.</p></div>';
     }
-
-    const btnConfirmar = document.getElementById('btnConfirmar');
-    const btnCancelar = document.getElementById('btnCancelar');
-
-    btnConfirmar.innerText = confirmText || 'Aceptar';
-    
-    if (cancelText) {
-        btnCancelar.innerText = cancelText;
-        btnCancelar.classList.remove('d-none');
-    } else {
-        btnCancelar.classList.add('d-none');
-    }
-
-    btnConfirmar.onclick = function() {
-        if (onConfirm) onConfirm(); 
-        modalInstancia.hide();
-    };
-
-    if (!modalInstancia) {
-        modalInstancia = new bootstrap.Modal(modalEl);
-    }
-    modalInstancia.show();
 }
 
-// Función Global para AGREGAR
-window.agregarAlCarrito = function(idProducto) {
-    const CLAVE_CARRITO = 'carritoWoofBarf';
-    let carrito = JSON.parse(localStorage.getItem(CLAVE_CARRITO)) || [];
-    
-    const productoInfo = listaDeProductos.find(p => p.id === idProducto);
+// ======================================================
+// 2. LÓGICA DE FILTROS (MEJORADA Y ROBUSTA)
+// ======================================================
 
-    if (!productoInfo) {
-        console.error("Producto no encontrado ID:", idProducto);
-        return;
-    }
+function applyFilters() {
+  // 1. Obtenemos valores de los inputs (y los pasamos a minúsculas para evitar errores)
+  const term = (searchInput.value || '').trim().toLowerCase();
+  
+  const rawFlavor = document.querySelector('input[name="flavor"]:checked')?.value || "";
+  const rawCategory = document.querySelector('input[name="category"]:checked')?.value || "";
+  const rawSize = document.querySelector('input[name="size"]:checked')?.value || "";
 
-    const itemExistente = carrito.find(item => item.id === idProducto);
+  // Convertimos los filtros seleccionados a minúsculas
+  const selectedFlavor = rawFlavor.toLowerCase();
+  const selectedCategory = rawCategory.toLowerCase();
+  const selectedSize = rawSize.toLowerCase();
 
-    if (itemExistente) {
-        itemExistente.cantidad++;
-        
-        mostrarModalBootstrap({
-            title: '¡Sumado!',
-            text: `Agregamos otra unidad de ${productoInfo.name} a tu carrito.`,
-            confirmText: 'Seguir viendo'
-        });
+  console.log("Filtros activos:", { term, selectedFlavor, selectedCategory, selectedSize });
 
-    } else {
-        carrito.push({ ...productoInfo, cantidad: 1 });
-        
-        // Ajuste de ruta para imagen
-        let rutaImg = productoInfo.imageURL;
-        if(rutaImg.startsWith('..')) {
-            rutaImg = rutaImg.replace('..', '');
-        }
+  // 2. Filtramos la lista
+  filtered = listaDeProductos.filter(p => {
+      // Datos del producto (protegidos contra nulos y pasados a minúsculas)
+      const pNombre = (p.nombre || '').toLowerCase();
+      const pSabor  = (p.sabor || '').toLowerCase();
+      const pCat    = (p.categoria || '').toLowerCase();
+      const pTamano = (p.tamano || '').toLowerCase();
 
-        mostrarModalBootstrap({
-            title: '¡Al carrito!',
-            text: `${productoInfo.name} se agregó exitosamente. ¿Qué deseas hacer?`,
-            imageUrl: rutaImg,
-            confirmText: 'Seguir comprando',  
-            cancelText: 'Ir al carrito'       
-        });
+      // A) Filtro Nombre (Búsqueda parcial)
+      const matchName = !term || pNombre.includes(term);
+      
+      // B) Filtro Sabor (Búsqueda parcial por si dice "Pollo y Arroz")
+      const matchFlavor = !selectedFlavor || pSabor.includes(selectedFlavor);
+      
+      // C) Filtro Categoría (Búsqueda exacta o parcial flexible)
+      const matchCategory = !selectedCategory || pCat === selectedCategory || pCat.includes(selectedCategory);
+      
+      // D) Filtro Tamaño (Exacto o parcial)
+      const matchSize = !selectedSize || pTamano === selectedSize || pTamano.includes(selectedSize);
 
-        document.getElementById('btnCancelar').onclick = function() {
-            window.location.href = '/pages/carrito.html'; 
-        };
-    }
+      return matchName && matchFlavor && matchCategory && matchSize;
+  });
 
-    localStorage.setItem(CLAVE_CARRITO, JSON.stringify(carrito));
-
-    // Actualizar badge del Navbar
-    if (typeof window.actualizarBadgeNavbar === 'function') {
-        window.actualizarBadgeNavbar();
-    }
-};
-
+  // 3. Renderizar desde la página 1
+  renderPage(1);
+}
 
 // ======================================================
-// 4. RENDERIZADO DE TARJETAS
+// 3. RENDERIZADO (Cards)
 // ======================================================
 
 function createProductCard(item) {
-  const { id, name, price, imageURL, description, flavor, size, category } = item;
+  // Desestructuramos propiedades del Backend (Español)
+  const { idProducto, nombre, precio, imagenUrl, descripcion, sabor, tamano, categoria } = item;
+  
+  // Fallback de imagen
+  const imgFinal = imagenUrl || '../assets/imagenes/iconos/logo-default.png';
 
   return `
     <div class="col d-flex">
       <div class="card card-producto rounded-5 shadow-sm hover-zoom w-100">
-        <img src="${imageURL}" class="catalogo-img-size rounded-top-5" alt="${name}"
-             onerror="this.src='https://via.placeholder.com/300?text=Sin+Imagen'">
-        <div class="card-body text-center">
-          <h5 class="card-title catalogo-roboto-h4 mb-1">${name}</h5>
-          <p class="text-muted small mb-2 text-truncate">${description || ''}</p>
-
-          ${(flavor || size || category) ? `
-            <ul class="list-unstyled small text-muted mb-3">
-              ${flavor ? `<li><b>Sabor:</b> ${flavor}</li>` : ''}
-              ${size ? `<li><b>Tamaño:</b> ${size}</li>` : ''}
-              ${category ? `<li><b>Categoría:</b> ${category}</li>` : ''}
-            </ul>` : ''}
-
-          <h4 class="catalogo-price-color catalogo-roboto-h4 mb-3">$${price}</h4>
+        <img src="${imgFinal}" class="catalogo-img-size rounded-top-5" alt="${nombre}" 
+             onerror="this.src='../assets/imagenes/iconos/logo-default.png'">
+        
+        <div class="card-body text-center d-flex flex-column">
+          <h5 class="card-title catalogo-roboto-h4 mb-1 text-truncate" title="${nombre}">${nombre}</h5>
+          <p class="text-muted small mb-2 text-truncate">${descripcion || ''}</p>
+          
+          <ul class="list-unstyled small text-muted mb-3">
+             ${sabor ? `<li><b>Sabor:</b> ${sabor}</li>` : ''}
+             ${tamano ? `<li><b>Tamaño:</b> ${tamano}</li>` : ''}
+             ${categoria ? `<li><b>Categoría:</b> ${categoria}</li>` : ''}
+          </ul>
+          
+          <h4 class="catalogo-price-color catalogo-roboto-h4 mb-3">$${precio.toFixed(2)}</h4>
           
           <button class="btn rounded-4 catalogo-secundary-button-color catalogo-roboto-primary-label w-100 mt-auto" 
-                  onclick="window.agregarAlCarrito(${id})">
+                  onclick="window.agregarAlCarrito(${idProducto})">
               Añadir al carrito
           </button>
-
         </div>
       </div>
-    </div>
-  `;
+    </div>`;
 }
-
-// ======================================================
-// 5. PAGINACIÓN Y RENDER
-// ======================================================
 
 function renderPage(page = 1) {
-  
-  // A. MANEJO DE ESTADO VACÍO (MEJORA VISUAL)
-  if (listaDeProductos.length === 0) {
+  // Validar si hay resultados
+  if (filtered.length === 0) {
       productRow.innerHTML = `
         <div class="col-12 text-center py-5">
-            <div class="mb-3" style="font-size: 3rem;">📦</div>
-            <h3 class="h5 text-muted">El inventario está vacío</h3>
-            <p class="small text-muted">Agrega productos desde el formulario para verlos aquí.</p>
-            <a href="/pages/formulario-productos.html" class="btn btn-primary rounded-pill px-4">
-                Ir al formulario
-            </a>
-        </div>
-      `;
+            <p class="fs-4 text-muted">🐶</p>
+            <p class="text-muted">No encontramos productos con esos filtros.</p>
+            <button class="btn btn-outline-warning btn-sm" onclick="limpiarFiltros()">Ver todo</button>
+        </div>`;
       resultsInfo.textContent = '';
       paginationEl.innerHTML = '';
-      return; // Salimos de la función
-  }
-
-  // B. Renderizado Normal
-  const total = filtered.length;
-  const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
-  currentPage = Math.min(Math.max(1, page), totalPages);
-
-  const start = (currentPage - 1) * ITEMS_PER_PAGE;
-  const end = Math.min(start + ITEMS_PER_PAGE, total);
-
-  // Generamos HTML
-  const cardsHTML = filtered.slice(start, end).map(createProductCard).join('');
-  productRow.innerHTML = cardsHTML;
-
-  // Indicador
-  resultsInfo.textContent = total
-    ? `Mostrando ${start + 1}–${end} de ${total} productos`
-    : 'No hay resultados para los filtros aplicados.';
-
-  // Controles Paginación
-  let html = `
-    <nav aria-label="Paginación">
-      <ul class="pagination justify-content-center">
-        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-          <a class="page-link" href="#" data-page="${currentPage - 1}">Anterior</a>
-        </li>`;
-  for (let p = 1; p <= totalPages; p++) {
-    html += `
-      <li class="page-item ${currentPage === p ? 'active' : ''}">
-        <a class="page-link" href="#" data-page="${p}">${p}</a>
-      </li>`;
-  }
-  html += `
-        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
-          <a class="page-link" href="#" data-page="${currentPage + 1}">Siguiente</a>
-        </li>
-      </ul>
-    </nav>`;
-  paginationEl.innerHTML = total > 0 ? html : ''; // Ocultar paginación si filtro da 0
-
-  // Eventos
-  paginationEl.querySelectorAll('a.page-link').forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      const page = Number(a.dataset.page);
-      if (!Number.isNaN(page)) {
-        renderPage(page);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    });
-  });
-}
-
-// ======================================================
-// 6. FILTROS E INICIALIZACIÓN
-// ======================================================
-
-function getRadioValue(name) {
-  const el = filtersForm.querySelector(`input[name="${name}"]:checked`);
-  return el ? el.value : '';
-}
-
-function applyFilters() {
-  // Si está vacío el inventario base, no filtramos nada
-  if (listaDeProductos.length === 0) {
-      renderPage(1);
       return;
   }
 
-  const term     = (searchInput.value || '').trim().toLowerCase();
-  const flavor = getRadioValue('flavor'); 
-  const size   = getRadioValue('size');   
-  const category  = getRadioValue('category'); 
+  // Lógica Paginación
+  const total = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
+  currentPage = Math.min(Math.max(1, page), totalPages);
+  
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const end = Math.min(start + ITEMS_PER_PAGE, total);
+  
+  // Inyectar HTML
+  productRow.innerHTML = filtered.slice(start, end).map(createProductCard).join('');
+  resultsInfo.textContent = `Mostrando ${start + 1}–${end} de ${total} productos`;
 
-  filtered = listaDeProductos.filter(p => {
-    const okTerm = !term ||
-      (p.name && p.name.toLowerCase().includes(term)) ||
-      (p.description && p.description.toLowerCase().includes(term));
-
-    const okFlavor = !flavor || (p.flavor && p.flavor.toLowerCase() === flavor.toLowerCase());
-    const okSize = !size || (p.size && p.size.toLowerCase() === size.toLowerCase());
-    const okCategory = !category ||
-      (p.category && p.category.toLowerCase() === category.toLowerCase());
-
-    return okTerm && okFlavor && okSize && okCategory;
-  });
-
-  renderPage(1);
+  // Botones Paginación
+  if(total > ITEMS_PER_PAGE){
+      paginationEl.innerHTML = `
+        <nav>
+          <ul class="pagination justify-content-center">
+            <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+               <button class="page-link" onclick="renderPage(${currentPage - 1})">Anterior</button>
+            </li>
+            <li class="page-item disabled d-none d-md-block"><span class="page-link border-0">Página ${currentPage} de ${totalPages}</span></li>
+            <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+               <button class="page-link" onclick="renderPage(${currentPage + 1})">Siguiente</button>
+            </li>
+          </ul>
+        </nav>`;
+  } else {
+      paginationEl.innerHTML = '';
+  }
 }
 
-// Listeners
-searchInput.addEventListener('keyup', applyFilters);
-applyBtn.addEventListener('click', applyFilters);
-filtersForm.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', applyFilters));
-
-// Arrancar
-applyFilters();
-
-// Actualizar badge al entrar (por si ya hay cosas en carrito)
-if (typeof window.actualizarBadgeNavbar === 'function') {
-    window.actualizarBadgeNavbar();
+// Hacer global para botones HTML
+window.renderPage = renderPage;
+window.limpiarFiltros = function() {
+    if(filtersForm) filtersForm.reset();
+    if(searchInput) searchInput.value = '';
+    applyFilters();
 }
+
+// ======================================================
+// 4. AGREGAR AL CARRITO
+// ======================================================
+
+window.agregarAlCarrito = async function(idProducto) {
+    const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    
+    if (!usuarioLogueado) {
+        // Opción: Mandar alerta o redirigir
+        if(confirm("Necesitas iniciar sesión para comprar. ¿Ir al login?")) {
+            window.location.href = "iniciosesion.html";
+        }
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/carrito/agregar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                idUsuario: usuarioLogueado.id, 
+                idProducto: idProducto, 
+                cantidad: 1 
+            })
+        });
+
+        if(res.ok) {
+            // Mostrar Modal Bonito (Bootstrap) si existe en el HTML
+            mostrarModalBootstrap({
+                title: "¡Producto agregado!",
+                text: "Se añadió correctamente a tu carrito.",
+                confirmText: "Seguir comprando",
+                cancelText: "Ir al carrito"
+            });
+            
+            // Actualizar el badge del navbar si existe la función
+            if(window.actualizarBadgeNavbar) window.actualizarBadgeNavbar();
+            
+        } else {
+            alert("Error al agregar producto.");
+        }
+    } catch(e) { 
+        console.error(e); 
+        alert("Error de conexión.");
+    }
+};
+
+// Helper para el Modal (Reutiliza tu modal del HTML)
+function mostrarModalBootstrap({ title, text, confirmText, cancelText }) {
+    const modalEl = document.getElementById('modalWoof');
+    if(!modalEl) { alert(text); return; } // Fallback si no hay modal
+
+    document.getElementById('modalTitulo').innerText = title;
+    document.getElementById('modalMensaje').innerText = text;
+    
+    const btnConfirm = document.getElementById('btnConfirmar');
+    const btnCancel = document.getElementById('btnCancelar');
+    
+    if(btnConfirm) {
+        btnConfirm.innerText = confirmText;
+        btnConfirm.onclick = () => bootstrap.Modal.getInstance(modalEl).hide();
+    }
+    if(btnCancel) {
+        btnCancel.innerText = cancelText;
+        btnCancel.onclick = () => window.location.href = 'carrito.html';
+    }
+
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+}
+
+
+// ======================================================
+// 5. INICIALIZACIÓN
+// ======================================================
+document.addEventListener('DOMContentLoaded', () => {
+    cargarProductos(); 
+    
+    // Eventos de Filtros
+    if(searchInput) searchInput.addEventListener('keyup', applyFilters);
+    if(applyBtn) applyBtn.addEventListener('click', applyFilters);
+    
+    // Detectar cambio en los radio buttons automáticamente
+    if(filtersForm) {
+        filtersForm.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', applyFilters);
+        });
+    }
+});

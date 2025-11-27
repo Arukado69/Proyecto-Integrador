@@ -1,113 +1,91 @@
-(function () {
-    const $ = (sel) => document.querySelector(sel);
+document.addEventListener("DOMContentLoaded", () => {
 
-    // DOM Elements
-    const form = $('#formProducto');
-    const alerta = $('#alerta');
-    
-    // Inputs
-    const nombre = $('#nombre');
-    const precio = $('#precio');
-    const descripcion = $('#descripcion');
-    const tamano = $('#tamano');
-    const sabor = $('#sabor');
-    const categoria = $('#categoria');
-    const imagen = $('#imagen');
-    const stock = $('#stock');
-    const sku = $('#sku');
-    const btnLimpiar = $('#btnLimpiar');
+    const btnAgregar = document.getElementById("btnAgregar");
+    const btnLimpiar = document.getElementById("btnLimpiar");
+    const form = document.getElementById("formProducto");
+    const alerta = document.getElementById("alerta");
 
-    // --- 1. LÓGICA DE BASE DE DATOS LOCAL (Simulada) ---
-    
-    // Clave donde guardaremos TODO el inventario
-    const CLAVE_BD = 'baseDatosProductos'; 
-
-    function obtenerProductosBD() {
-        const guardados = localStorage.getItem(CLAVE_BD);
-        // Si ya hay datos, los devolvemos. Si no, devolvemos un array vacío.
-        // NOTA: Aquí podrías inicializarlo con tus datos de prueba si está vacío.
-        return guardados ? JSON.parse(guardados) : [];
-    }
-
-    function guardarProductoEnBD(producto) {
-        const productos = obtenerProductosBD();
-        productos.push(producto);
-        localStorage.setItem(CLAVE_BD, JSON.stringify(productos));
-    }
-
-    function generarId() {
-        // Generamos un ID basado en la fecha actual (es único y fácil)
-        return Date.now(); 
-    }
-
-    // --- 2. UTILIDADES DEL FORMULARIO ---
-
-    // Autocompletar nombre
-    function autocompletarNombre() {
-        if (!nombre.value.trim() && sabor.value && tamano.value) {
-            nombre.value = `Menú de ${sabor.value} ${tamano.value}`;
-        }
-    }
-    sabor.addEventListener('change', autocompletarNombre);
-    tamano.addEventListener('change', autocompletarNombre);
-
-    // Alertas Bootstrap
-    function showAlert(tipo, mensaje) {
+    // --- FUNCIÓN PARA MOSTRAR ALERTAS (Reutilizada del diseño original) ---
+    function mostrarAlerta(tipo, mensaje) {
+        // tipo puede ser 'success' (verde) o 'danger' (rojo)
         alerta.className = `alert alert-${tipo} fade show`;
         alerta.textContent = mensaje;
         alerta.classList.remove('d-none');
         
-        // Ocultar automáticamente después de 3 seg
-        setTimeout(() => {
+        // Ocultar la alerta después de 3 segundos
+        setTimeout(() => { alerta.classList.add('d-none'); }, 3000);
+    }
+
+    // --- LÓGICA PRINCIPAL ---
+    if (btnAgregar) {
+        btnAgregar.addEventListener("click", (e) => {
+            e.preventDefault(); // Evita recarga de página
+
+            // 1. OBTENER VALORES
+            const nombreInput = document.getElementById("nombre").value.trim();
+            const precioInput = document.getElementById("precio").value.trim();
+            const descripcionInput = document.getElementById("descripcion").value.trim();
+            const tamanoInput = document.getElementById("tamano").value;
+            const saborInput = document.getElementById("sabor").value;
+            const categoriaInput = document.getElementById("categoria").value;
+            const imageInput = document.getElementById("imagen").value.trim();
+            const stockInput = document.getElementById("stock").value;
+
+            // 2. VALIDACIÓN
+            if (!nombreInput || !precioInput || !descripcionInput || !tamanoInput || !saborInput || !categoriaInput || !imageInput) {
+                mostrarAlerta("danger", "Por favor, completa todos los campos obligatorios.");
+                return;
+            }
+
+            // 3. CREAR OBJETO JSON (Coincide con Producto.java)
+            const producto = {
+                nombre: nombreInput,
+                precio: parseFloat(precioInput),
+                descripcion: descripcionInput,
+                tamano: tamanoInput,
+                sabor: saborInput,
+                categoria: categoriaInput,
+                imagenUrl: imageInput,
+                stock: parseInt(stockInput) || 0,
+                activo: true
+            };
+
+            // 4. CONEXIÓN AL BACKEND
+            // Corregí tu error de URL: faltaban las diagonales // después de http:
+            const url = "http://localhost:8080/api/v1/productos/new-producto";
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": 'application/json'
+                },
+                body: JSON.stringify(producto)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Error en la respuesta del servidor");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("Producto creado:", data);
+                
+                // ÉXITO VISUAL
+                mostrarAlerta("success", "¡Producto agregado al catálogo correctamente!");
+                form.reset(); // Limpia los campos
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                mostrarAlerta("danger", "Hubo un error al conectar con el servidor.");
+            });
+        });
+    }
+
+    // --- BOTÓN LIMPIAR (Funcionalidad extra útil) ---
+    if (btnLimpiar) {
+        btnLimpiar.addEventListener("click", () => {
+            form.reset();
             alerta.classList.add('d-none');
-        }, 3000);
+        });
     }
-
-    function validarURL(url) {
-        // Validación simple de URL o ruta relativa
-        return url.includes('/') || url.startsWith('http');
-    }
-
-    // --- 3. PROCESAR EL ENVÍO ---
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        form.classList.add('was-validated'); // Activa estilos rojos de Bootstrap
-
-        // Validaciones básicas
-        if (!form.checkValidity()) {
-            showAlert('danger', 'Por favor completa todos los campos requeridos.');
-            return;
-        }
-
-        // Construir el objeto producto
-        const nuevoProducto = {
-            id: generarId(),
-            name: nombre.value.trim(),
-            price: Number(precio.value),
-            description: descripcion.value.trim(),
-            imageURL: imagen.value.trim(), // Guardamos la ruta tal cual
-            size: tamano.value,
-            flavor: sabor.value,
-            category: categoria.value,
-            stock: Number(stock.value || 0),
-            sku: sku.value.trim() || `WBF-${Math.floor(Math.random() * 10000)}`
-        };
-
-        // Guardar en LocalStorage
-        guardarProductoEnBD(nuevoProducto);
-
-        // Feedback
-        showAlert('success', '¡Producto guardado exitosamente! Revisa el catálogo.');
-        form.reset();
-        form.classList.remove('was-validated');
-    });
-
-    // Limpiar formulario
-    btnLimpiar.addEventListener('click', () => {
-        form.reset();
-        form.classList.remove('was-validated');
-        alerta.classList.add('d-none');
-    });
-
-})();
+});

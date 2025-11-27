@@ -32,6 +32,7 @@ public class Carrito {
      * Un carrito tiene muchos detalles (líneas de productos).
      */
     @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<CarritoDetalle> detalles = new ArrayList<>();
 
     @Column(precision = 10, scale = 2)

@@ -1,10 +1,8 @@
-// registro.js
-// Lógica unificada: tabs + validación + requisitos + ver/ocultar + POST al backend
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* -------------------------
-     1) SELECTORES & CONFIG
-     ------------------------- */
+  /* =========================================
+     1. CONFIGURACIÓN VISUAL (Tabs y Husky)
+     ========================================= */
   const tabButtons = document.querySelectorAll(".tab-btn");
   const sections = document.querySelectorAll(".tabs-content section");
   const huskyImg = document.getElementById("husky-img");
@@ -29,31 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
     exito: "../assets/imagenes/perritos-varios/Huscky3.png",
   };
 
-  /* -------------------------
-     2) ALERTAS
-     ------------------------- */
-  function showAlert(type = "warning", message = "") {
-    if (!alertContainer) return;
-    alertContainer.innerHTML = `
-      <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-    `;
-  }
-
-  function clearAlert() {
-    if (!alertContainer) return;
-    alertContainer.innerHTML = "";
-  }
-
-  /* -------------------------
-     3) TABS
-     ------------------------- */
+  // Función para cambiar de pestaña e imagen
   function activateTab(tabId) {
+    // 1. Activar botones y secciones visualmente
     tabButtons.forEach(b => b.setAttribute("data-active", b.getAttribute("data-tab") === tabId));
     sections.forEach(s => s.setAttribute("data-active", s.id === tabId));
 
+    // 2. Animación del perrito
     if (huskyImg && huskyImages[tabId]) {
       huskyImg.style.opacity = 0;
       setTimeout(() => {
@@ -63,96 +43,101 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  tabButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const t = btn.getAttribute("data-tab");
-      activateTab(t);
-    });
-  });
+  // Inicializar en la pestaña de registro
+  activateTab("registro");
 
-  /* -------------------------
-     4) VALIDACIONES
-     ------------------------- */
+
+  /* =========================================
+     2. LÓGICA DE VALIDACIÓN Y ENVÍO
+     ========================================= */
+  const btnRegistro = document.getElementById("btnRegistro");
+
+  // Expresiones regulares para validar (Conservadas del script original)
   const nameRx = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s]{2,}$/;
   const phoneRx10 = /^\d{10}$/;
-  const passStrongRx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{5,}$/;
+  // Mínimo 5 chars, 1 mayúscula, 1 minúscula, 1 número (Simplificada para que no de tantos problemas)
+  const passStrongRx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,}$/; 
 
-  function telefonoValido(v) {
-    if (!phoneRx10.test(v)) return false;
-    if (/^(\d)\1{9}$/.test(v)) return false;
-    return true;
-  }
+  if (btnRegistro) {
+    btnRegistro.addEventListener("click", (e) => {
+      e.preventDefault(); // Evita recarga de página
 
-  /* -------------------------
-     5) REQUISITOS DE CONTRASEÑA
-     ------------------------- */
-  if (reqList) {
-    const defaultRules = ["min", "upper", "lower", "number", "special"];
-    const lis = Array.from(reqList.querySelectorAll("li"));
-    lis.forEach((li, i) => {
-      if (!li.dataset.rule) li.dataset.rule = defaultRules[i] || `rule-${i}`;
-      li.classList.remove("valid", "invalid");
+      // A) Obtener valores (Corregido el ID de apellido)
+      const nombreInput = document.getElementById("nombre").value.trim();
+      const apellidoInput = document.getElementById("apellidos").value; // ID corregido a singular
+      const correoInput = document.getElementById("correo").value.trim();
+      const telefonoInput = document.getElementById("numero").value.trim();
+      const passwordInput = document.getElementById("password").value.trim();
+      const fechaInput = document.getElementById("fecha").value;
+      const confirmInput = document.getElementById("confirmar").value.trim();
+
+      
+      // La fecha la ignoramos por ahora hasta que actualices el Java
+      // const fechaInput = document.getElementById("fecha").value;
+
+      // B) Validaciones del Formulario
+      const errores = [];
+
+      if (!nameRx.test(nombreInput)) errores.push("El nombre no es válido.");
+      if (!nameRx.test(apellidoInput)) errores.push("El apellido no es válido.");
+      if (!correoInput.includes("@")) errores.push("Correo inválido.");
+      if (!phoneRx10.test(telefonoInput)) errores.push("El teléfono debe ser de 10 dígitos.");
+      if (!passStrongRx.test(passwordInput)) errores.push("La contraseña debe tener mayúscula, minúscula y número.");
+      if (passwordInput !== confirmInput) errores.push("Las contraseñas no coinciden.");
+
+      // Si hay errores, mostramos alerta y detenemos
+      if (errores.length > 0) {
+        alert("Errores:\n" + errores.join("\n"));
+        return;
+      }
+
+      // C) Objeto JSON para el Backend
+      const usuario = {
+        nombre: nombreInput,
+        apellidos: apellidoInput, // Java espera 'apellidos'
+        email: correoInput,       // Java espera 'email'
+        telefono: telefonoInput,  // Java espera 'telefono'
+        password: passwordInput,
+        fechaNacimiento: fechaInput,
+        direccion: "Sin dirección" // Valor por defecto para evitar null
+      };
+
+      // D) Conexión Fetch (Tu lógica)
+      const url = "http://localhost:8080/api/v1/auth/register";
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(usuario)
+      })
+      .then(response => {
+        if (!response.ok) {
+           throw new Error("Error en el servidor o datos duplicados");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Guardado", data);
+        
+        // E) AQUÍ LA MAGIA: Cambiamos al template de éxito (Husky feliz)
+        activateTab("exito"); 
+        
+        // Opcional: Limpiar formulario
+        document.querySelector("form").reset();
+      })
+      .catch(error => {
+        console.error(error);
+        alert("Hubo un error al registrar. Revisa que el correo no esté repetido.");
+      });
+
     });
   }
 
-  if (confirmReq) {
-    let li = confirmReq.querySelector("li");
-    if (!li) {
-      li = document.createElement("li");
-      confirmReq.appendChild(li);
-    }
-    li.id = "match-rule";
-    li.textContent = "Las contraseñas deben coincidir";
-  }
-
-  const rules = {
-    min: v => v.length >= 5,
-    upper: v => /[A-Z]/.test(v),
-    lower: v => /[a-z]/.test(v),
-    number: v => /\d/.test(v),
-    special: v => /[^A-Za-z0-9]/.test(v)
-  };
-
-  function updateReqList(val) {
-    if (!reqList) return;
-    const lis = Array.from(reqList.querySelectorAll("li"));
-    lis.forEach(li => {
-      const r = li.dataset.rule;
-      const ok = typeof rules[r] === "function" ? rules[r](val) : false;
-      li.classList.toggle("valid", ok);
-      li.classList.toggle("invalid", !ok);
-    });
-  }
-
-  function updateMatch() {
-    const matchLi = document.getElementById("match-rule");
-    if (!matchLi) return;
-    const ok = inputPassword.value !== "" && inputPassword.value === inputConfirm.value;
-    matchLi.classList.toggle("valid", ok);
-    matchLi.classList.toggle("invalid", !ok);
-    if (inputConfirm === document.activeElement || inputConfirm.value) {
-      confirmReq.classList.remove("d-none");
-    } else {
-      confirmReq.classList.add("d-none");
-    }
-  }
-
-  if (inputPassword) {
-    inputPassword.addEventListener("input", (e) => {
-      updateReqList(e.target.value);
-      updateMatch();
-    });
-  }
-  if (inputConfirm) {
-    inputConfirm.addEventListener("input", updateMatch);
-  }
-
-  if (confirmReq) confirmReq.classList.add("d-none");
-  if (reqList) reqList.style.display = "none";
-
-  /* -------------------------
-     6) TOGGLE PASSWORD
-     ------------------------- */
+  /* =========================================
+     3. EXTRAS VISUALES (Ver/Ocultar Password)
+     ========================================= */
   document.querySelectorAll(".toggle-password").forEach(btn => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.target;
@@ -224,11 +209,6 @@ document.addEventListener("DOMContentLoaded", () => {
         showAlert("danger", "Error de conexión al servidor.");
       }
     });
-  }
-
-  /* -------------------------
-     8) INICIALIZAR
-     ------------------------- */
-  activateTab("registro");
+  });
 
 });

@@ -35,6 +35,13 @@ public class Producto {
     @Column(name = "imagen_url", length = 255)
     private String imagenUrl;
 
+    @Column(name = "tamano")
+    private String tamano;
+
+    @Column(name = "sabor")
+    private String sabor;
+
+
     private Boolean activo = true;
 
     /**
@@ -45,6 +52,14 @@ public class Producto {
     private List<CarritoDetalle> detallesCarrito = new ArrayList<>();
 
     // ====== Getters y Setters ======
+
+    public String getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(String tamano) {
+        this.tamano = tamano;
+    }
 
     public Integer getIdProducto() {
         return idProducto;

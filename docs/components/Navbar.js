@@ -1,7 +1,10 @@
-// Navbar.js — Versión Integrada Woof & Barf
+// Versión Conectada al Backend (Spring Boot) - CORREGIDA
 document.addEventListener("DOMContentLoaded", () => {
     
-    // --- UTILIDADES DE IMÁGENES (Tu código original) ---
+    // CORRECCIÓN 1: La ruta base correcta incluye /v1
+    const API_URL = 'http://localhost:8080/api/v1'; 
+
+    // --- 1. UTILIDADES DE IMÁGENES ---
     const dirOf = (url) => new URL(url, location.href).href.replace(/[^/]+$/, '');
     const safeSwap = (img, filename) => {
         if (!img) return;
@@ -11,7 +14,9 @@ document.addEventListener("DOMContentLoaded", () => {
         img.src = base + filename;
     };
 
-    // --- LOGO ---
+    // --- 2. INTERACTIVIDAD VISUAL ---
+    
+    // LOGO
     const logo = document.getElementById("logo");
     if (logo) {
         logo.addEventListener("mouseenter", () => safeSwap(logo, "logo-hover.png"));
@@ -20,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         logo.addEventListener("mouseup",    () => safeSwap(logo, "logo-hover.png"));
     }
 
-    // --- BOTÓN DE USUARIO ---
+    // BOTÓN DE USUARIO
     const userBtn  = document.getElementById('userBtn');
     const userIcon = document.getElementById('userIcon');
     let usuarioActivo = false;
@@ -32,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- BOTÓN DE COMPRAS (Icono visual) ---
+    // BOTÓN DE COMPRAS
     const comprasBtn  = document.getElementById('comprasBtn');
     const comprasIcon = document.getElementById('comprasIcon');
     let compraActiva = false;
@@ -44,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- SCROLL COLOR ---
+    // SCROLL
     window.addEventListener("scroll", () => {
         const navbar = document.querySelector(".navbar-center");
         if (!navbar) return;
@@ -52,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else navbar.classList.remove("navbar-scrolled");
     });
 
-    // --- HAMBURGUESA (Móvil) ---
+    // HAMBURGUESA
     const toggler = document.querySelector('.navbar-toggler-custom');
     const navMenu = document.querySelector('.navbar-nav-custom');
     if (toggler && navMenu) {
@@ -71,43 +76,53 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================
-    //  LÓGICA DEL BADGE DEL CARRITO (miniCount)
+    //  3. LÓGICA DEL BADGE DEL CARRITO (CORREGIDA)
     // ============================================================
     
-    // 1. Definimos la función Globalmente para que otros scripts la usen
-    window.actualizarBadgeNavbar = function() {
+    window.actualizarBadgeNavbar = async function() {
         const badge = document.getElementById('miniCount');
-        if (!badge) return; // Si no existe el elemento en el HTML, salimos
+        if (!badge) return; 
 
-        // Leemos la llave específica del localStorage
-        const carrito = JSON.parse(localStorage.getItem('carritoWoofBarf')) || [];
-        
-        // Sumamos las cantidades (item.cantidad)
-        const totalArticulos = carrito.reduce((acc, item) => acc + (item.cantidad || 1), 0);
+        // CORRECCIÓN 2: Obtener usuario del localStorage
+        const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
 
-        // Actualizamos el texto
-        badge.innerText = totalArticulos;
+        // Si no hay usuario, ocultamos el badge y salimos
+        if (!usuarioLogueado) {
+            badge.classList.add('d-none');
+            return;
+        }
 
-        // Lógica de visibilidad (Ocultar si es 0)
-        if (totalArticulos > 0) {
-            badge.classList.remove('d-none');
-            badge.classList.add('d-block'); // Asegura visualización en Bootstrap
-        } else {
-            badge.classList.add('d-none');  // Oculta visualmente
-            badge.classList.remove('d-block');
+        try {
+            // CORRECCIÓN 3: Usar la URL correcta con el ID del usuario
+            // GET /api/v1/carrito/usuario/{id}
+            const response = await fetch(`${API_URL}/carrito/usuario/${usuarioLogueado.id}`);
+            
+            if (response.ok) {
+                const carrito = await response.json();
+                
+                // CORRECCIÓN 4: Acceder a 'carrito.detalles' para sumar
+                // (El backend devuelve un objeto Carrito, no un array directo)
+                const detalles = carrito.detalles || [];
+                const totalArticulos = detalles.reduce((acc, item) => acc + (item.cantidad || 0), 0);
+
+                // Pintamos el número
+                badge.innerText = totalArticulos;
+
+                // Mostrar u ocultar según cantidad
+                if (totalArticulos > 0) {
+                    badge.classList.remove('d-none');
+                    badge.classList.add('d-block');
+                } else {
+                    badge.classList.add('d-none');
+                    badge.classList.remove('d-block');
+                }
+            } 
+        } catch (error) {
+            // console.error("Error silencioso badge:", error);
+            badge.classList.add('d-none');
         }
     };
 
-    // 2. Ejecutar al cargar la página (Inicialización)
+    // Ejecutar al cargar la página
     window.actualizarBadgeNavbar();
-
-    // 3. Escuchar cambios en otras pestañas (Sincronización entre tabs)
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'carritoWoofBarf') {
-            window.actualizarBadgeNavbar();
-        }
-    });
-
-    // Soporte legacy por si en algún lado llamaste a 'syncCartBadge'
-    window.syncCartBadge = window.actualizarBadgeNavbar;
 });

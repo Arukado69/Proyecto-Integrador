@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/detalle")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CarritoDetalleController {
     private CarritoDetalleService carritoDetalleService;
 

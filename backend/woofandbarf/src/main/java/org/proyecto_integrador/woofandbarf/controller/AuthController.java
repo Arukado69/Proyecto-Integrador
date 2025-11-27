@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
 
     @Autowired
@@ -98,6 +98,18 @@ public class AuthController {
         }catch (UserNotFoundException e){
             return ResponseEntity.notFound().build();
         }
+    }
+    //metodo para buscar por email
+
+    @GetMapping("/email")
+    public ResponseEntity<Usuario> findByEmail(@RequestParam String email){
+
+        Usuario usuarioEmail = usuarioServiceServ.findByEmail(email);
+        if (usuarioEmail == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarioEmail);
+
     }
 }
 
