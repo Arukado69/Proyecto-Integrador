@@ -1,8 +1,8 @@
 // --- CONFIGURACIÓN BACKEND ---
-const API_URL = 'http://localhost:8080/api'; //ajustar dirección 
+const API_URL = 'http://localhost:8080/api/v1'; // Ajustado a tu ruta real v1
 
 // ------- Variables Globales -------
-let listaDeProductos = []; // Se llena desde el servidor
+let listaDeProductos = [];
 let filtered = [];
 let currentPage = 1;
 const ITEMS_PER_PAGE = 6;
@@ -21,7 +21,7 @@ const filtersForm  = document.getElementById('filtersForm');
 
 async function cargarProductos() {
     try {
-        const response = await fetch(`${API_URL}/productos`); // GET
+        const response = await fetch(`${API_URL}/productos`); // GET a Spring Boot
         if(response.ok) {
             listaDeProductos = await response.json();
             
@@ -84,70 +84,81 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
 
 // FUNCIÓN AGREGAR AL CARRITO (POST al Servidor)
 window.agregarAlCarrito = async function(idProducto) {
+    // 1. Necesitamos el ID del Usuario (sacado del Login)
+    const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
+
+    if (!usuarioLogueado) {
+        alert("Debes iniciar sesión para comprar.");
+        window.location.href = "iniciosesion.html";
+        return;
+    }
+
     try {
-        // Enviar orden al servidor
+        // 2. Enviar al Backend (CarritoController)
         const response = await fetch(`${API_URL}/carrito/agregar`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ productoId: idProducto, cantidad: 1 })
+            body: JSON.stringify({ 
+                idUsuario: usuarioLogueado.id, // ID del usuario real
+                idProducto: idProducto,        // ID del producto clickeado
+                cantidad: 1 
+            })
         });
 
         if (response.ok) {
-            // Buscar datos visuales solo para la alerta
-            const productoInfo = listaDeProductos.find(p => p.id === idProducto);
+            // Buscar datos visuales para el modal
+            // Nota: Aquí usamos 'idProducto' porque así viene de Java
+            const productoInfo = listaDeProductos.find(p => p.idProducto === idProducto);
             
-            // Ajuste visual de imagen
-            let rutaImg = productoInfo ? productoInfo.imageURL : '';
-            if(rutaImg.startsWith('..')) rutaImg = rutaImg.replace('..', '');
-
             mostrarModalBootstrap({
                 title: '¡Al carrito!',
-                text: `${productoInfo ? productoInfo.name : 'Producto'} guardado en tu carrito.`,
-                imageUrl: rutaImg,
+                text: `${productoInfo ? productoInfo.nombre : 'Producto'} guardado en tu carrito.`,
+                imageUrl: productoInfo ? productoInfo.imagenUrl : '',
                 confirmText: 'Seguir comprando',  
                 cancelText: 'Ir al carrito'       
             });
 
             document.getElementById('btnCancelar').onclick = function() {
-                window.location.href = '/pages/carrito/carrito.html'; 
+                window.location.href = 'carrito.html'; 
             };
 
-            // Actualizar el numerito del navbar (Petición al server)
-            if (typeof window.actualizarBadgeNavbar === 'function') {
-                window.actualizarBadgeNavbar();
-            }
         } else {
-            alert("Error al agregar al carrito en el servidor.");
+            console.error("Error server:", await response.text());
+            alert("Error al agregar al carrito.");
         }
     } catch (e) {
         console.error("Error:", e);
-        alert("Error de conexión.");
+        alert("Error de conexión con el servidor.");
     }
 };
 
 // ======================================================
-// 3. RENDERIZADO Y FILTROS (Visual - Igual que antes)
+// 3. RENDERIZADO Y FILTROS (Visual)
 // ======================================================
 
 function createProductCard(item) {
-  const { id, name, price, imageURL, description, flavor, size, category } = item;
+  // CORRECCIÓN: Usamos las propiedades en Español del Backend Java
+  const { idProducto, nombre, precio, imagenUrl, descripcion, sabor, tamano, categoria } = item;
+  
   return `
     <div class="col d-flex">
       <div class="card card-producto rounded-5 shadow-sm hover-zoom w-100">
-        <img src="${imageURL}" class="catalogo-img-size rounded-top-5" alt="${name}"
-             onerror="this.src='https://via.placeholder.com/300?text=Sin+Imagen'">
+        <img src="${imagenUrl}" class="catalogo-img-size rounded-top-5" alt="${nombre}"
+             onerror="this.src='../assets/imagenes/iconos/logo-default.png'">
         <div class="card-body text-center">
-          <h5 class="card-title catalogo-roboto-h4 mb-1">${name}</h5>
-          <p class="text-muted small mb-2 text-truncate">${description || ''}</p>
-          ${(flavor || size || category) ? `
-            <ul class="list-unstyled small text-muted mb-3">
-              ${flavor ? `<li><b>Sabor:</b> ${flavor}</li>` : ''}
-              ${size ? `<li><b>Tamaño:</b> ${size}</li>` : ''}
-              ${category ? `<li><b>Categoría:</b> ${category}</li>` : ''}
-            </ul>` : ''}
-          <h4 class="catalogo-price-color catalogo-roboto-h4 mb-3">$${price}</h4>
+          <h5 class="card-title catalogo-roboto-h4 mb-1">${nombre}</h5>
+          <p class="text-muted small mb-2 text-truncate" title="${descripcion}">${descripcion || ''}</p>
+          
+          <ul class="list-unstyled small text-muted mb-3">
+             ${sabor ? `<li><b>Sabor:</b> ${sabor}</li>` : ''}
+             ${tamano ? `<li><b>Tamaño:</b> ${tamano}</li>` : ''}
+             ${categoria ? `<li><b>Categoría:</b> ${categoria}</li>` : ''}
+          </ul>
+          
+          <h4 class="catalogo-price-color catalogo-roboto-h4 mb-3">$${precio}</h4>
+          
           <button class="btn rounded-4 catalogo-secundary-button-color catalogo-roboto-primary-label w-100 mt-auto" 
-                  onclick="window.agregarAlCarrito(${id})">
+                  onclick="window.agregarAlCarrito(${idProducto})">
               Añadir al carrito
           </button>
         </div>
@@ -157,7 +168,7 @@ function createProductCard(item) {
 
 function renderPage(page = 1) {
   if (listaDeProductos.length === 0) {
-      productRow.innerHTML = `<div class="col-12 text-center py-5"><p>Cargando productos o inventario vacío...</p></div>`;
+      productRow.innerHTML = `<div class="col-12 text-center py-5"><p>No hay productos disponibles por el momento.</p></div>`;
       resultsInfo.textContent = '';
       paginationEl.innerHTML = '';
       return;
@@ -172,21 +183,45 @@ function renderPage(page = 1) {
   resultsInfo.textContent = total ? `Mostrando ${start + 1}–${end} de ${total} productos` : 'Sin resultados.';
 
   // Paginación Simple
-  let html = `<nav><ul class="pagination justify-content-center">`;
-  // (Lógica de paginación resumida para ahorrar espacio, es la misma de antes)
-  // ... botones Anterior / Siguiente ...
-  html += `</ul></nav>`;
-  paginationEl.innerHTML = total > 0 ? html : '';
+  if(total > ITEMS_PER_PAGE){
+      let html = `<nav><ul class="pagination justify-content-center">`;
+      // Botón Anterior
+      html += `<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                 <button class="page-link" onclick="renderPage(${currentPage - 1})">Anterior</button>
+               </li>`;
+      // Botón Siguiente
+      html += `<li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                 <button class="page-link" onclick="renderPage(${currentPage + 1})">Siguiente</button>
+               </li>`;
+      html += `</ul></nav>`;
+      paginationEl.innerHTML = html;
+  } else {
+      paginationEl.innerHTML = '';
+  }
 }
 
 function applyFilters() {
   const term = (searchInput.value || '').trim().toLowerCase();
-  // ... lógica de filtros (radio buttons) igual que antes ...
   
-  // Como ejemplo simple:
+  // Obtener valores de radio buttons seleccionados
+  const selectedFlavor = document.querySelector('input[name="flavor"]:checked')?.value || "";
+  const selectedCategory = document.querySelector('input[name="category"]:checked')?.value || "";
+  const selectedSize = document.querySelector('input[name="size"]:checked')?.value || "";
+
   filtered = listaDeProductos.filter(p => {
-      const matchName = !term || p.name.toLowerCase().includes(term);
-      return matchName; // + agregar lógica de radio buttons aquí
+      // Filtro por Nombre
+      const matchName = !term || p.nombre.toLowerCase().includes(term);
+      
+      // Filtro por Sabor (Si p.sabor es null, usamos string vacío para no romper)
+      const matchFlavor = !selectedFlavor || (p.sabor && p.sabor.includes(selectedFlavor));
+      
+      // Filtro por Categoría
+      const matchCategory = !selectedCategory || (p.categoria && p.categoria === selectedCategory);
+      
+      // Filtro por Tamaño
+      const matchSize = !selectedSize || (p.tamano && p.tamano === selectedSize);
+
+      return matchName && matchFlavor && matchCategory && matchSize;
   });
   renderPage(1);
 }
@@ -195,14 +230,10 @@ function applyFilters() {
 // 4. INICIALIZACIÓN
 // ======================================================
 document.addEventListener('DOMContentLoaded', () => {
-    cargarProductos(); // 1. Pedir datos al servidor
+    cargarProductos(); 
     
     // Listeners
     searchInput.addEventListener('keyup', applyFilters);
     applyBtn.addEventListener('click', applyFilters);
     filtersForm.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', applyFilters));
-
-    if (typeof window.actualizarBadgeNavbar === 'function') {
-        window.actualizarBadgeNavbar();
-    }
 });
