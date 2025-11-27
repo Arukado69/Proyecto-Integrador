@@ -113,7 +113,7 @@
   font-family: "Roboto", sans-serif;
   font-weight: 500;
   color: #4b2e05;
-  text-decoration: none;
+  text-decoration: none !important;
   transition: color 0.2s ease, text-decoration 0.2s ease;
 }
 
