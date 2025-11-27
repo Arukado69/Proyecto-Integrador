@@ -33,15 +33,32 @@ document.addEventListener('DOMContentLoaded', () => {
         carrito.forEach(item => {
             const totalItem = item.price * item.cantidad;
             subtotalCalculado += totalItem;
+
+            // --- LÓGICA INTELIGENTE DE IMAGEN ---
+            let rutaFinal = item.imageURL;
+
+            // 1. Verificamos si NO es una URL de internet (http/https)
+            if (!rutaFinal.startsWith('http')) {
+                // Es una ruta local antigua (ej: ../assets/...)
+                // La limpiamos para que sea absoluta desde la raíz
+                rutaFinal = rutaFinal.replace('..', '');
+                
+                // Aseguramos que empiece con / si no lo tiene
+                if (!rutaFinal.startsWith('/')) {
+                    rutaFinal = '/' + rutaFinal;
+                }
+            }
+            // Si SÍ empieza con http, la dejamos intacta (es lo que ingresaste en el form)
+
             contenedorItems.innerHTML += `
                 <div class="d-flex align-items-center py-2 border-bottom border-light">
                     
                     <div style="width: 60px; height: 60px; flex-shrink: 0;" class="bg-white rounded border p-1">
-                        <img src="../${item.imageURL}" 
-                            alt="producto" 
-                            style="width: 100%; height: 100%; object-fit: cover;"
-                            onerror="this.src='https://via.placeholder.com/60?text=Error'">
-                 
+                        <img src="${rutaFinal}" 
+                             alt="${item.name}" 
+                             style="width: 100%; height: 100%; object-fit: cover;"
+                             class="rounded"
+                             onerror="this.src='https://via.placeholder.com/60?text=Sin+Foto'">
                     </div>
         
                     <div class="flex-grow-1 ms-3">
@@ -59,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         });
-
+        
         const elTotal = document.getElementById('resumenTotal');
         const elSub = document.getElementById('resumenSubtotal');
         const elEnv = document.getElementById('resumenEnvio');
@@ -162,3 +179,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
