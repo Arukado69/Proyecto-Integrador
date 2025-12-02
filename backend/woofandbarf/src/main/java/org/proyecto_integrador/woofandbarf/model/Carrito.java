@@ -47,6 +47,20 @@ public class Carrito {
     @OneToOne(mappedBy = "carrito")
     private Pedido pedido;
 
+    //
+
+    public Carrito(Integer idCarrito, Usuario usuario, List<CarritoDetalle> detalles, BigDecimal total, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion, Pedido pedido) {
+        this.idCarrito = idCarrito;
+        this.usuario = usuario;
+        this.detalles = detalles;
+        this.total = total;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
+        this.pedido = pedido;
+    }
+
+    public  Carrito() { }
+
     // ====== Getters y Setters ======
 
 

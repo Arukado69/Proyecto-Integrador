@@ -1,0 +1,289 @@
+/* Fondo general */
+.catalogo-body-color {
+  font-family: 'Roboto', sans-serif; /* Texto general */
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
+  background-repeat: no-repeat;       /* No repetir la imagen */
+  background-size: cover;             /* Que cubra todo el fondo */
+  background-position: center center; /* Centrada */
+  background-attachment: fixed;       /* 👈 Imagen estática al hacer scroll */
+  min-height: 100vh;                  /* Para que ocupe toda la ventana */
+}
+
+
+/* Sidebar */
+.catalogo-bg-sidebar {
+  background-color: #fff;
+  border-radius: 1.25rem;
+}
+
+/* Tipografías */
+.catalogo-fredoka-h1 { font-family: "Fredoka", sans-serif; font-weight: 600; font-size: 48px; }
+.catalogo-fredoka-h4 { font-family: "Fredoka", sans-serif; font-weight: 500; }
+.catalogo-roboto-h4  { font-family: "Roboto",  sans-serif; font-weight: 700; }
+.catalogo-roboto-primary-label  { font-family: "Roboto", sans-serif; font-weight: 700; }
+.catalogo-roboto-secundary-label{ font-family: "Roboto", sans-serif; font-weight: 400; }
+
+/* Colores marca */
+.catalogo-primary-button-color  { background: #F3A412; }
+.catalogo-secundary-button-color{ background: #FDEDD0; color: #F3A515; border: 1px solid #F3A515; }
+.catalogo-price-color           { color: #F3A412; }
+.catalogo-h4-color              { color: #8A7C60; }
+
+/* Imagen completa y limpia */
+.catalogo-img-size{
+  width: 100%;
+  height: 250px;
+  object-fit: contain;   /* 👈 ahora no se corta la foto */
+  background: #fff;
+  padding: 10px;
+}
+
+/* Cards con hover sutil */
+.hover-zoom {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.hover-zoom:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+}
+
+/* Radios con color de marca */
+.form-check-input:checked {
+  background-color: #F3A412;
+  border-color: #F3A412;
+}
+.form-check-input:focus {
+  box-shadow: 0 0 0 .2rem rgba(243,164,18,.25);
+}
+
+/* Espaciado */
+.catalogo-main-padding { padding-left: 1rem; padding-right: 1rem; }
+.catalogo-header-size  { min-height: 140px; }
+
+/* Paginación más compacta */
+.pagination .page-link { border-radius: .6rem; }
+
+/* --- Mantener el ancho del catálogo al filtrar --- */
+/* === CORRECCIÓN FINAL DEL CATÁLOGO === */
+
+/* Contenedor principal: Sidebar + Productos */
+.catalogo-main-padding .container-fluid > .row {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+}
+
+/* Sidebar */
+.catalogo-main-padding aside {
+  flex: 0 0 260px;
+  max-width: 260px;
+}
+
+/* Sección de productos: fuerza a ocupar el espacio restante */
+.catalogo-main-padding section.col-12.col-lg-9.col-xl-10 {
+  flex: 1;
+  width: auto !important;   /* 🔥 fuerza el ancho dinámico */
+  max-width: none !important;
+}
+
+/* Grid de productos */
+/* ==== GRID DE PRODUCTOS (3 columnas en desktop) ==== */
+#product-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas fijas */
+  gap: 2rem;
+  width: 100%;
+  align-items: start;
+}
+
+/* Ajuste automático en pantallas medianas */
+@media (max-width: 992px) {
+  #product-row {
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas */
+  }
+}
+
+/* Pantallas pequeñas (móvil) */
+@media (max-width: 600px) {
+  #product-row {
+    grid-template-columns: 1fr; /* 1 columna */
+  }
+}
+
+
+/* Ajusta las tarjetas dentro */
+#product-row > * {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Evita que colapse cuando hay pocos productos */
+#product-row:empty::before {
+  content: "No hay productos disponibles 😢";
+  display: block;
+  text-align: center;
+  color: #888;
+  padding: 3rem 0;
+}
+
+/* Responsivo */
+@media (max-width: 992px) {
+  .catalogo-main-padding .container-fluid > .row {
+    flex-wrap: wrap;
+  }
+
+  .catalogo-main-padding aside,
+  .catalogo-main-padding section.col-12.col-lg-9.col-xl-10 {
+    flex: 1 1 100%;
+    max-width: 100% !important;
+  }
+}
+
+/* === TARJETAS DE PRODUCTOS === */
+.card-producto {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 430px; /* Ajusta según tu diseño */
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-producto:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,.08);
+}
+
+/* === IMÁGENES DENTRO DE LAS TARJETAS === */
+.card-producto img {
+  width: 100%;
+  height: 220px; /* 👈 Ajusta este valor según el diseño */
+  object-fit: contain; /* Contiene sin recortar */
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 1rem 1rem 0 0;
+}
+
+/* === CONTENIDO DEL TEXTO === */
+.card-producto .card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Forzar que todas las cards mantengan el mismo alto visual */
+.card.rounded-5.shadow-sm.hover-zoom {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Uniforme entre renders */
+#product-row .col {
+  display: flex;
+  align-items: stretch;
+}
+
+/* Tarjetas con altura constante */
+.card.rounded-5.shadow-sm.hover-zoom {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Mantener contenido equilibrado */
+.card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Evitar que una columna sea más alta que otra */
+#product-row .col {
+  display: flex;
+  align-items: stretch;
+}
+
+
+/* Fuerza proporción constante para todas las imágenes del catálogo */
+.catalogo-img-size {
+  width: 100%;
+  aspect-ratio: 4 / 3; /* 👈 más ancha que alta */
+  object-fit: cover;
+  border-radius: 1rem 1rem 0 0;
+  display: block;
+  background-color: #f8f8f8;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+/* Evita que las tarjetas se contraigan antes de cargar la imagen */
+.card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.card img {
+  flex-shrink: 0;
+}
+/* ==================================================================
+   PERSONALIZACIÓN DE LA PAGINACIÓN (Para no usar el formato de boostrap)
+   ================================================================== */
+
+/* Estilo de los botones normales */
+.pagination .page-link {
+  color: #A04B00; 
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+/* Estilo del botón ACTIVO (el número de página actual) */
+.pagination .page-item.active .page-link {
+  background-color: #A04B00 !important; /* Fondo naranja/marrón */
+  border-color: #A04B00 !important;      /* Borde del mismo color */
+  color: #fff !important;                /* Texto blanco */
+}
+
+/* Estilo al pasar el mouse (Hover) */
+.pagination .page-link:hover {
+  background-color: #ebc9b5; 
+  border-color: #ebc9b5;
+  color: #fff;
+}
+
+/*Quitar el resplandor azul al hacer clic (Focus) */
+.pagination .page-link:focus {
+  box-shadow: 0 0 0 0.25rem rgba(160, 75, 0, 0.25); 
+}
+
+#applyFiltersBtn {
+  background-color: #A04B00 !important; /* Tu color Marrón de marca */
+  border-color: #A04B00 !important;
+  color: #fff !important;               /* Texto Blanco */
+  font-family: 'Fredoka', sans-serif;   /* Tipografía de la marca */
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;            /* Suavizado de la animación */
+}
+#applyFiltersBtn:hover {
+  background-color: #7a3900 !important; /* Marrón más oscuro (NO blanco) */
+  border-color: #7a3900 !important;
+  color: #fff !important;               /* El texto se mantiene blanco */
+  transform: translateY(-2px);          /* Pequeña elevación */
+  box-shadow: 0 4px 12px rgba(160, 75, 0, 0.3); /* Sombra suave */
+}

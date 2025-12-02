@@ -32,7 +32,19 @@ public class CarritoDetalle {
 
     @Column(precision = 10, scale = 2)
     private BigDecimal subtotal;
+        //
 
+    public CarritoDetalle(Integer idCarritoDetalle, Carrito carrito, Producto producto, Integer cantidad, BigDecimal precioUnitario, BigDecimal subtotal) {
+        this.idCarritoDetalle = idCarritoDetalle;
+        this.carrito = carrito;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.precioUnitario = precioUnitario;
+        this.subtotal = subtotal;
+    }
+
+
+     public CarritoDetalle () {}
 
     // ====== Getters y Setters ======
 

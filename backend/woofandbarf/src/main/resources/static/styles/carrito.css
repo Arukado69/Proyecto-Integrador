@@ -1,0 +1,365 @@
+/* =======================================================
+   ESTILOS CARRITO - WOOF & BARF (FINAL V3)
+   ======================================================= */
+
+:root {
+  /* --- COLORES DE MARCA --- */
+  --brand-ink: #111;          /* Texto principal */
+  --brand-accent: #7a4a29;    /* Acento (Marrón base) */
+  --brand-accent-2: #c77a43;  /* Acento claro */
+  --brand-100: #f8efe9;       /* Fondo cálido */
+  
+  /* Estados */
+  --ok: #95a617;              /* Verde Oliva (Éxito) */
+  --ok-hover: #889715;
+  --warn: #e0a800;
+  --danger: #bf0413;          /* Rojo Intenso (Eliminar) */
+  --danger-hover: #ae0411;
+
+  /* Bootstrap Override */
+  --bs-primary: var(--brand-accent);
+  --bs-primary-rgb: 122,74,41;
+}
+
+/* ---------- Reset suave + tipografía ---------- */
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto', sans-serif; /* Texto general */
+  color: #111;
+  background-image: url('../assets/imagenes/perritos-varios/fondo-web.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Títulos en Fredoka (Identidad de Marca) */
+h1, h2, h3, h4, h5, h6,
+.titulo-pagina,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #111; 
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { height: 10px; width: 10px; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--brand-accent-2), var(--brand-accent));
+  border-radius: 999px;
+}
+::-webkit-scrollbar-track { background: rgba(255,255,255,.04); }
+
+/* =================== Layout base =================== */
+
+.contenedor-carrito { counter-reset: cartItems; }
+.carrito-productos .producto-item { counter-increment: cartItems; }
+
+/* Barra retorno */
+.nav-retorno {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(180deg, rgba(31,31,31,.95), rgba(31,31,31,.5));
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  animation: dropFade .5s ease both;
+}
+
+/* Botón regresar (Marrón marca) */
+.btn-regresar {
+  display: inline-flex; align-items: center; gap: .5rem;
+  text-decoration: none; 
+  color: #A04B00; 
+  font-weight: 600;
+  padding: .5rem .75rem; border: 1px solid rgba(0,0,0,0.1);
+  border-radius: .75rem; transition: .25s ease;
+  background: #fff;
+}
+.btn-regresar:hover {
+  color: #fff; 
+  background: #A04B00;
+  border-color: #A04B00;
+  transform: translateY(-1px);
+}
+
+/* ---------- Animaciones base ---------- */
+@keyframes rise { from { transform: translateY(6px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+@keyframes bounce { 0% { transform: scale(1); } 40% { transform: scale(1.13); } 100% { transform: scale(1); } }
+@keyframes shine { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+
+.fade-in { animation: fadein .28s ease both; }
+
+/* ---------- Cards y elevación ---------- */
+.card {
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 14px;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  will-change: transform;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.08);
+  border-color: rgba(0,0,0,.10);
+}
+
+.card-empty {
+  background: linear-gradient(180deg, #fff, var(--brand-100));
+}
+
+/* Borde superior animado (Resumen) */
+.resumen-card {
+  top: 90px; 
+  position: sticky;
+}
+.resumen-card .card-body {
+  position: relative;
+  isolation: isolate;
+}
+.resumen-card .card-body::before {
+  content: "";
+  position: absolute; inset: -1px -1px auto -1px; height: 4px; 
+  border-top-left-radius: 14px; border-top-right-radius: 14px;
+  background: linear-gradient(90deg, var(--brand-accent), var(--brand-accent-2), var(--brand-accent));
+  background-size: 200% 100%;
+  animation: shine 3.5s linear infinite;
+  z-index: -1;
+}
+
+/* ---------- Lista de items ---------- */
+.item {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  grid-template-areas: "img info qty" "img info act";
+  gap: 12px 16px;
+  padding: 14px;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 12px;
+  background: #fff;
+  animation: rise .25s ease both;
+}
+.item + .item { margin-top: 10px; }
+
+.item-img {
+  grid-area: img;
+  width: 96px; height: 96px;
+  border-radius: 12px; object-fit: cover; background: #f5f5f5;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+.item-info { grid-area: info; }
+.item-title { font-weight: 700; margin: 0 0 2px; letter-spacing: .2px; }
+.item-meta { color: #666; font-size: .9rem; }
+.item-price { color: #111; font-weight: 600; }
+
+.item-qty { grid-area: qty; display: flex; align-items: center; gap: 8px; }
+
+.qty-btn {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: #fff; font-size: 18px; line-height: 1;
+  transition: transform .06s ease, background .2s ease;
+}
+.qty-btn:hover { background: #f7f7f7; box-shadow: 0 4px 10px rgba(0,0,0,.05); }
+.qty-btn:active { transform: scale(.97); }
+.qty-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.qty-input {
+  width: 48px; text-align: center; border: 1px solid rgba(0,0,0,.12);
+  height: 36px; border-radius: 10px; background: #fff;
+}
+.qty-bounce { animation: bounce .28s ease; }
+
+/* Botones de acción (Eliminar / Favorito) */
+.item-actions { grid-area: act; display: flex; gap: 10px; align-items: center; }
+
+.item-actions .btn-remove {
+  border: none; background: transparent; 
+  color: var(--danger); /* Rojo Marca */
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+.item-actions .btn-remove:hover { color: var(--danger-hover); }
+
+.item-actions .fav {
+  border: none; background: transparent; color: #666; 
+  transition: transform .12s ease, color .2s ease;
+}
+.item-actions .fav:hover { transform: scale(1.1); color: var(--brand-accent-2); }
+.item-actions .fav.active { color: var(--brand-accent); transform: scale(1.15); }
+
+
+/* ---------- Botones Principales ---------- */
+
+/* Botón Vaciar Carrito (Rojo Marca) */
+#btnVaciar { color: var(--danger); border-color: var(--danger); }
+#btnVaciar:hover { background-color: var(--danger); color: #fff; }
+
+/* Botón IR A PAGAR (Marrón Marca) */
+#btnPagar {
+  background-color: #A04B00 !important;
+  border-color: #A04B00 !important;
+  color: #fff !important;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+#btnPagar:hover {
+  background-color: #7a3900 !important;
+  border-color: #7a3900 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(160, 75, 0, 0.3);
+}
+
+/* Botones Outline (Aplicar / Seguir Comprando) - Marrón */
+.btn-outline-primary {
+  color: #A04B00 !important;
+  border-color: #A04B00 !important;
+}
+.btn-outline-primary:hover {
+  background-color: #A04B00 !important;
+  color: #fff !important;
+  border-color: #A04B00 !important;
+}
+
+#btnAplicarCupon {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* Enlaces de Texto (Calcular envío, Ver más beneficios)*/
+.btn-link, 
+a[data-bs-toggle="collapse"] {
+  color: #0d6efd !important; /* Azul Bootstrap por defecto */
+  text-decoration: none;
+  font-weight: 600;
+}
+.btn-link:hover,
+a[data-bs-toggle="collapse"]:hover {
+  color: #0a58ca !important; /* Azul más oscuro al pasar el mouse */
+  text-decoration: underline;
+}
+
+
+/* ---------- CORRECCIÓN: ESTADO VACÍO ---------- */
+
+#estadoVacio h2 {
+  font-family: 'Fredoka', sans-serif !important;
+  color: #111;
+}
+
+/* El botón "Ir al catálogo" ahora es Marrón */
+#estadoVacio .btn-primary { 
+  background-color: #A04B00 !important;
+  border-color: #A04B00 !important;
+  color: #fff;
+  font-weight: 700;
+  padding: 12px 30px;
+  animation: none;
+  transition: all 0.3s ease;
+}
+#estadoVacio .btn-primary:hover {
+  background-color: #7a3900 !important;
+  border-color: #7a3900 !important;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(160, 75, 0, 0.3);
+}
+#estadoVacio .btn-primary:active {
+  transform: none;
+}
+
+.empty-emoji {
+  font-size: 3rem;
+}
+
+
+/* ---------- Carrusel y Recomendaciones ---------- */
+
+@media (min-width: 992px) {
+    .reco-section .carousel-control-prev { left: -50px; }
+    .reco-section .carousel-control-next { right: -50px; }
+}
+
+.card-reco { transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #eee; }
+.card-reco:hover { transform: translateY(-5px); box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; }
+
+/* Estilo Tarjetas Carrusel (Igual Catálogo) */
+.card-carrusel {
+    border: none;
+    border-radius: 1.25rem;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    height: 100%;
+    overflow: hidden;
+}
+.card-carrusel:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+
+.card-carrusel img {
+    width: 100%; height: 200px; object-fit: contain;
+    background-color: #fff; padding: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+.card-carrusel .titulo-producto {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 500; color: #8A7C60; font-size: 1.1rem;
+}
+
+.card-carrusel .precio-producto {
+    color: #F3A412; font-weight: 700; font-size: 1.2rem;
+    font-family: "Roboto", sans-serif;
+}
+
+.btn-carrusel {
+    background: #FDEDD0; color: #F3A515; border: 1px solid #F3A515;
+    border-radius: 0.6rem; font-weight: 600; transition: all 0.2s ease;
+}
+.btn-carrusel:hover { background: #F3A412; color: #fff; }
+
+
+/* ---------- Utilidades y Feedback ---------- */
+
+/* Iconos de confianza (Camión/Escudo) - Verde Marca */
+.bi-truck, .bi-shield-check { color: var(--ok); font-size: 1.1em; }
+
+/* Badge contador - Rojo Marca */
+#miniCount { background-color: var(--danger) !important; }
+
+.pay-badge {
+  padding: .25rem .5rem; border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px; font-size: .75rem; background: #fff;
+}
+
+button:focus-visible, a:focus-visible, .qty-input:focus-visible, input:focus-visible {
+  outline: 3px solid rgba(149, 166, 23, 0.4); /* Verde foco */
+  outline-offset: 2px;
+}
+
+.d-none { display: none !important; }
+.opacity-75 { opacity: .75; }
+#hintMostrando { font-size: .95rem; }
+.form-text.error { color: var(--danger); }
+.form-text.ok { color: var(--ok); }
+
+/* Barra de Progreso - Naranja Marca */
+.progress-bar {
+  background-image: linear-gradient(
+    90deg,
+    var(--bs-primary) 0%,
+    #F3A412 25%, 
+    var(--bs-primary) 50%,
+    #F3A412 75%, 
+    var(--bs-primary) 100%
+  );
+  background-size: 200% 100%;
+  animation: fillFlow 3s linear infinite;
+}
+
+@keyframes fillFlow {
+  0% { background-position: 0% 0; }
+  100% { background-position: -200% 0; }
+}

@@ -51,6 +51,25 @@ public class Producto {
     @JsonIgnore
     private List<CarritoDetalle> detallesCarrito = new ArrayList<>();
 
+
+    //
+
+    public Producto(Integer idProducto, String nombre, String descripcion, BigDecimal precio, String categoria, Integer stock, String imagenUrl, String tamano, String sabor, Boolean activo, List<CarritoDetalle> detallesCarrito) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.categoria = categoria;
+        this.stock = stock;
+        this.imagenUrl = imagenUrl;
+        this.tamano = tamano;
+        this.sabor = sabor;
+        this.activo = activo;
+        this.detallesCarrito = detallesCarrito;
+    }
+
+    public Producto() {  }
+
     // ====== Getters y Setters ======
 
     public String getTamano() {

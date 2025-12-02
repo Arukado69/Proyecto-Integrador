@@ -1,0 +1,189 @@
+/* =================================
+   1. RESET Y CONTENEDOR
+   ================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.pug-orbit-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 1 / 1;
+  margin: 10rem auto;
+  display: grid;
+  place-items: center;
+}
+
+/* =================================
+   2. EL PERRITO CENTRAL
+   ================================= */
+.pug-static-image {
+  width: 300px;
+  height: 300px;
+  z-index: 10;
+  border-radius: 0%;
+  overflow: hidden;
+
+}
+
+.pug-static-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* =================================
+   3. ÓRBITA GIRATORIA
+   ================================= */
+.rotating-orbit {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  animation: rotateOrbit 45s linear infinite;
+  transform-origin: center center;
+}
+
+/* =================================
+   4. SPOKES E ITEMS
+   ================================= */
+.orbit-spoke {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  margin: -75px 0 0 -75px;
+  transform-origin: center center;
+}
+
+/* 🍽️ Los cuadros ahora son platos circulares */
+.orbit-item {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  padding: 0; /* <-- Cambiado a 0 */
+
+  
+}
+
+.shadow{
+    box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    inset 0 4px 6px rgba(255, 255, 255, 0.2),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* ✨ Pequeño brillo para simular reflejo del plato */
+.orbit-item::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at top left, rgba(255,255,255,0.25), transparent 70%);
+  pointer-events: none;
+}
+.size-ingredients{
+    width: 180px;
+}
+
+
+/* =================================
+   5. POSICIONES EN LA ÓRBITA
+   ================================= */
+.spoke-1 { transform: rotate(0deg) translateY(-340px); }
+.spoke-2 { transform: rotate(60deg) translateY(-340px); }
+.spoke-3 { transform: rotate(120deg) translateY(-340px); }
+.spoke-4 { transform: rotate(180deg) translateY(-340px); }
+.spoke-5 { transform: rotate(240deg) translateY(-340px); }
+.spoke-6 { transform: rotate(300deg) translateY(-340px); }
+
+/* ✅ Rotación inversa para mantener texto derecho */
+.spoke-1 .orbit-item { transform: rotate(-120deg); }
+.spoke-2 .orbit-item { transform: rotate(-120deg); }
+.spoke-3 .orbit-item { transform: rotate(-120deg); }
+.spoke-4 .orbit-item { transform: rotate(-120deg); }
+.spoke-5 .orbit-item { transform: rotate(-120deg); }
+.spoke-6 .orbit-item { transform: rotate(-120deg); }
+
+/* =================================
+   6. COLORES Y TEXTOS
+   ================================= */
+.item-one { background-color: #59635b; border: 3px solid #2f4833; }
+
+.item-three { background-color: #59635b; border: 3px solid #2b4035; }
+
+.item-six { background-color: #59635b; border: 3px solid #4a6b49; }
+
+.item-five h2, .item-five p { color: #2c3e50; }
+
+.orbit-item h2 {
+  margin-bottom: 0.3rem;
+  font-size: 1.2rem;
+}
+.orbit-item p {
+  font-size: 0.8rem;
+  line-height: 1.1rem;
+}
+
+/* =================================
+   7. ANIMACIONES
+   ================================= */
+@keyframes rotateOrbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ✨ Flotación suave (arriba-abajo) */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* =================================
+   8. HOVER: PAUSAR ANIMACIÓN
+   ================================= */
+.pug-orbit-container:hover .rotating-orbit {
+  animation-play-state: paused;
+}
+.pug-orbit-container:hover .orbit-item {
+  animation-play-state: paused;
+}
+
+/* =================================
+   9. RESPONSIVE
+   ================================= */
+@media (max-width: 900px) {
+ .pug-orbit-container {
+    display: none !important;
+  }
+}
+
+/* =================================
+   10. EFECTO HOVER EN PLATITOS 🍽️
+   ================================= */
+.orbit-item {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.orbit-item:hover {
+  transform: scale(1.15) translateY(-5px); /* se agranda un poco */
+
+  z-index: 20; /* para que quede encima de los demás */
+  
+}
+.shadow:hover{
+    box-shadow: 
+    0 6px 18px rgba(0, 0, 0, 0.3),
+    inset 0 6px 8px rgba(255, 255, 255, 0.25),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.25);
+}
