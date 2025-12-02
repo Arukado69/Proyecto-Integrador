@@ -51,6 +51,20 @@ public class Usuario {
     @JsonBackReference
     private Carrito carrito;
 
+    public Usuario(Integer idUsuario, String nombre, String apellidos, String email, String password, String telefono, LocalDateTime fechaCreacion, LocalDate fechaNacimiento, Rol rol, Carrito carrito) {
+        this.idUsuario = idUsuario;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.password = password;
+        this.telefono = telefono;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaNacimiento = fechaNacimiento;
+        this.rol = rol;
+        this.carrito = carrito;
+    }
+
+    public Usuario () { }
 
     // ====== Getters y Setters ======
 

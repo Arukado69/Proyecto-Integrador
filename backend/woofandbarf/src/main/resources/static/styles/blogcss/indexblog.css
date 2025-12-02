@@ -1,0 +1,143 @@
+body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #f8f9fa;
+            background-image: url('/assets/imagenes/perritos-varios/fondo-web.jpg'); 
+ 
+        }
+
+       
+        /* ----- Estilos de Marca "Woof & Barf" ----- */
+        :root {
+            --wb-primary: #95A617; 
+            --wb-dark: black;   
+        }
+
+        /* ----- ESTILOS GENERALES DEL BLOG ----- */
+        .section-title {
+            color: var(--wb-dark);
+            border-bottom: 3px solid var(--wb-primary);
+            padding-bottom: 10px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        /* ============================================= */
+        /* ----- ANIMACIÓN AL HACER SCROLL ----- */
+        /* ============================================= */
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ----- ESTILO TARJETA DE ARTÍCULO (Destacados y Recientes) ----- */
+        .article-card {
+            border: 1px solid #ddd;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            border-radius: 0.5rem; 
+            overflow: hidden; /* Para que la imagen redondeada se vea bien */
+            text-decoration: none;
+            color: #212529; /* Color de texto por defecto */
+        }
+        .article-card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+            color: #212529;
+        }
+       
+        /* Esto cambia el color del enlace <a> dentro del título */
+        .article-card .card-title a {
+            color: var(--wb-dark); 
+            transition: color 0.2s ease;
+            font-weight: 500;
+        }
+        
+        /*Hacemos que se oscurezca al pasar el mouse */
+        .article-card .card-title a:hover {
+            color: var(--wb-primary); 
+        }
+        .article-card .article-image img {
+            transition: transform 0.3s ease;
+        }
+        .article-card:hover .article-image img {
+            transform: scale(1.05); /* Efecto zoom sutil a la imagen */
+        }
+
+        /* ----- ESTILO PARA UNIFICAR IMÁGENES DE CARDS ----- */
+
+        /* 1. Dale una altura fija al contenedor de la imagen */
+        .article-image {
+            height: 220px; /* <-- ¡Ajusta esta altura si quieres! */
+            overflow: hidden; 
+        }
+
+        /* 2. Haz que la imagen llene el 100% de ese contenedor */
+        .article-image .card-img-top {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* La magia para que no se deforme */
+            transition: transform 0.3s ease; /* Mantenemos tu efecto */
+        }
+        
+        /* ----- ESTILO DE FILTROS (Pestañas de Categoría) ----- */
+        .category-nav .nav-link {
+            color: var(--wb-dark);
+            font-weight: 500;
+            border: 1px solid var(--wb-primary);
+            margin: 0.25rem;
+            border-radius: 2rem; /* Píldoras */
+        }
+        .category-nav .nav-link.active,
+        .category-nav .nav-link:hover {
+            background-color: var(--wb-primary);
+            color: white;
+            border-color: var(--wb-primary);
+        }
+
+        /* ----- ESTILO TARJETA RECIENTE (Horizontal) ----- */
+        .post-item {
+            position: relative; /* Necesario para stretched-link */
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .post-item .post-image {
+            width: 100%;
+            height: 150px; /* Altura fija para la imagen */
+            object-fit: cover;
+        }
+        /* En pantallas grandes (md) la imagen es vertical */
+        @media (min-width: 768px) {
+            .post-item .post-image {
+                height: 100%; 
+            }
+        }
+        .post-item .card-title {
+            color: var(--wb-dark);
+            font-weight: 700;
+        }
+        /* Botón de la marca */
+        .btn-brand {
+            background-color: var(--wb-primary);
+            border-color: var(--wb-primary);
+            color: white;
+            font-weight: 500;
+        }
+        .btn-brand:hover {
+            background-color: var(--wb-dark);
+            border-color: var(--wb-dark);
+            color: white;
+        }
+/* Forzar Roboto específicamente en los enlaces del menú del Blog */
+.navbar-center, 
+.navbar-center a, 
+.nav-link-custom, 
+.navbar-brand {
+    font-family: 'Roboto', sans-serif !important;
+    font-weight: 500;
+}

@@ -1,0 +1,10 @@
+:root {
+--color-primary: #f2a413;
+--color-secondary: #95a617;
+--color-accent: #f27405;
+--color-dark: #bf0413;
+--color-light: #fef6e7;
+
+--font-heading: 'Fredoka', sans-serif;
+--font-body: 'Roboto', sans-serif;
+}

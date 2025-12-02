@@ -6,6 +6,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const tabButtons = document.querySelectorAll(".tab-btn");
   const sections = document.querySelectorAll(".tabs-content section");
   const huskyImg = document.getElementById("husky-img");
+  const alertContainer = document.getElementById("alertContainer");
+
+  // Inputs del formulario
+  const inputNombre = document.getElementById("nombre");
+  const inputApellido = document.getElementById("apellido");
+  const inputCorreo = document.getElementById("correo") || document.getElementById("email");
+  const inputDireccion = document.getElementById("direccion");
+  const inputNumero = document.getElementById("numero");
+  const inputFecha = document.getElementById("fecha");
+  const inputPassword = document.getElementById("password");
+  const inputConfirm = document.getElementById("confirmar");
+
+  // Requisitos
+  const reqList = document.getElementById("password-requirements");
+  const confirmReq = document.getElementById("confirm-requirements");
 
   const huskyImages = {
     registro: "../assets/imagenes/perritos-varios/Huscky1.png",
@@ -127,9 +142,71 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       const id = btn.dataset.target;
       const input = document.getElementById(id);
-      if (input) {
-        input.type = input.type === "text" ? "password" : "text";
-        btn.textContent = input.type === "text" ? "Ocultar" : "Ver";
+      if (!input) return;
+
+      const showing = input.type === "text";
+      input.type = showing ? "password" : "text";
+      btn.textContent = showing ? "Ver" : "Ocultar";
+      input.focus();
+    });
+  });
+
+  /* -------------------------
+     7) REGISTRO → POST AL BACKEND
+     ------------------------- */
+  const btnRegistro = document.getElementById("btnRegistro");
+
+  if (btnRegistro) {
+    btnRegistro.addEventListener("click", async () => {
+      const n = (inputNombre?.value || "").trim();
+      const a = (inputApellido?.value || "").trim();
+      const c = (inputCorreo?.value || "").trim();
+      const d = (inputDireccion?.value || "").trim();
+      const tel = (inputNumero?.value || "").trim();
+      const f = (inputFecha?.value || "").trim();
+      const p1 = (inputPassword?.value || "").trim();
+      const p2 = (inputConfirm?.value || "").trim();
+
+      const errores = [];
+      if (!nameRx.test(n)) errores.push("Nombre inválido.");
+      if (!nameRx.test(a)) errores.push("Apellido inválido.");
+      if (!c) errores.push("Correo obligatorio.");
+      if (!telefonoValido(tel)) errores.push("Número inválido.");
+      if (!d) errores.push("La dirección es obligatoria.");
+      if (!f) errores.push("La fecha es obligatoria.");
+      if (!passStrongRx.test(p1)) errores.push("La contraseña no cumple los requisitos.");
+      if (p1 !== p2) errores.push("Las contraseñas no coinciden.");
+
+      if (errores.length) {
+        showAlert("warning", errores.join("<br>"));
+        return;
+      }
+
+      try {
+        const resp = await fetch("http://localhost:8080/api/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nombre: n,
+            apellido: a,
+            correo: c,
+            telefono: tel,
+            fechaNacimiento: f,
+            password: p1
+          })
+        });
+
+        if (!resp.ok) {
+          showAlert("danger", "Hubo un error al registrar el usuario.");
+          return;
+        }
+
+        clearAlert();
+        activateTab("exito");
+
+      } catch (err) {
+        console.error(err);
+        showAlert("danger", "Error de conexión al servidor.");
       }
     });
   });
