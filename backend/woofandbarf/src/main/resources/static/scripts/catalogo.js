@@ -106,7 +106,8 @@ function createProductCard(item) {
           <div style="height: 250px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff;" class="rounded-top-5">
               <img src="${imgFinal}" 
                    alt="${nombre}" 
-                   class="img-fluid" 
+                   class="img-fluid"
+                   loading="lazy"
                    style="max-height: 100%; object-fit: contain;"
                    onerror="this.src='../assets/imagenes/iconos/logo-default.png'">
           </div>
