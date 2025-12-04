@@ -20,7 +20,7 @@
 .navbar-center {
   width: 100%;
   background-color: rgba(255, 255, 255, 0);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
   z-index: 999;
@@ -28,15 +28,15 @@
 }
 
 .navbar-center.navbar-scrolled {
-  background-color: var(--amarillo-400); 
+  background-color: var(--amarillo-400);
   box-shadow: 0 2px 12px rgba(224, 241, 71, 0.479);
 }
 
 .navbar-center .container {
-  max-width: 1200px;       
-  margin: 0 auto;          
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-between;
   align-items: center;
   padding: 1px 2px;
 }
@@ -64,21 +64,22 @@
   padding: 8px 12px;
   border-radius: 0%;
   font-weight: 500;
+  font-family: 'Roboto', sans-serif;
   transition: all 0.3s ease;
 }
 
 .nav-link-custom:hover {
   color: var(--amarillo-0);
   text-shadow: 0 0 6px var(--amarillo-400),
-               0 0 12px var(--amarillo-400),
-               0 0 24px var(--amarillo-400);
+    0 0 12px var(--amarillo-400),
+    0 0 24px var(--amarillo-400);
   transform: translateY(-1px);
 }
 
 .nav-link-custom:active {
   color: var(--amarillo-0);
   text-shadow: 0 0 8px var(--amarillo-400),
-               0 0 16px var(--amarillo-400);
+    0 0 16px var(--amarillo-400);
   transform: scale(0.97);
 }
 
@@ -148,20 +149,21 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  position: relative; /* importante para el menú desplegable */
+  position: relative;
+  /* importante para el menú desplegable */
 }
 
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 650px) {
-  
+
   /* La barra superior se mantiene naranja sólida */
   .navbar-center {
-    background-color: var(--amarillo-400); 
+    background-color: var(--amarillo-400);
     box-shadow: 0 2px 12px rgba(224, 241, 71, 0.479);
   }
 
   .navbar-toggler-custom {
-    display: flex; 
+    display: flex;
   }
 
   .iconos-hamburguesa {
@@ -173,18 +175,21 @@
     display: none;
     flex-direction: column;
     position: absolute;
-    top: 50px;          
-    right: 0;           
-    
+    top: 50px;
+    right: 0;
+
     /* CAMBIO: Color naranja (242, 164, 19) con 0.95 de opacidad (casi sólido, ligera transparencia) */
-    background-color: rgba(242, 164, 19, 0.95); 
-    
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    border-radius: 0 0 10px 10px; /* Bordes redondeados solo abajo */
+    background-color: rgba(242, 164, 19, 0.95);
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 10px 10px;
+    /* Bordes redondeados solo abajo */
     padding: 10px;
-    width: 200px; /* Un poco más ancho para que se vea mejor */
+    width: 200px;
+    /* Un poco más ancho para que se vea mejor */
     z-index: 20;
   }
+
   /* ----------------------------------------------------- */
 
   .navbar-nav-custom.show {
@@ -200,7 +205,7 @@
     display: block;
     padding: 10px;
     text-decoration: none;
-    color: var(--neutral-800); 
+    color: var(--neutral-800);
     border-radius: 8px;
     transition: background 0.3s;
     font-weight: 600;
@@ -210,9 +215,10 @@
   .navbar-nav-custom a:hover,
   .navbar-nav-custom a:active {
     background-color: rgba(255, 255, 255, 0.2);
-    color: #fff; 
+    color: #fff;
   }
 }
+
 /* Opcional: fondo semitransparente tipo glass */
 @media (max-width: 650px) {
   .navbar-nav-custom {
@@ -220,4 +226,3 @@
        backdrop-filter: blur(6px); */
   }
 }
-
