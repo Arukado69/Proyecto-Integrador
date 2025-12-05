@@ -94,31 +94,27 @@ async function cargarInventarioCarrusel() {
 }
 
 // ==========================================
-// C. RENDERIZADO (Con tus correcciones)
+// C. RENDERIZADO
 // ==========================================
 
 function renderizarCarritoUI(detalles) {
     const contenedorItems = document.getElementById('listaItems');
     const estadoVacio = document.getElementById('estadoVacio');
     const actionsBar = document.getElementById('actionsBar');
-    const hintMostrando = document.getElementById('hintMostrando'); // Referencia al texto
+    const hintMostrando = document.getElementById('hintMostrando');
 
-    // 1. ESTADO VACÍO
     if (!detalles || detalles.length === 0) {
         if(estadoVacio) estadoVacio.classList.remove('d-none');
         if(contenedorItems) contenedorItems.innerHTML = '';
         if(actionsBar) actionsBar.classList.add('d-none');
-        if(hintMostrando) hintMostrando.innerText = 'Mostrando 0 artículos'; // Actualizar texto
+        if(hintMostrando) hintMostrando.innerText = 'Mostrando 0 artículos';
         actualizarTotales({ total: 0 }); 
         return;
     }
 
-    // 2. ESTADO CON PRODUCTOS
     if(estadoVacio) estadoVacio.classList.add('d-none');
     if(actionsBar) actionsBar.classList.remove('d-none');
 
-    // --- CORRECCIÓN 1: ACTUALIZAR EL TEXTO DEL HEADER ---
-    // Sumamos las cantidades de todos los items
     const totalUnidades = detalles.reduce((acc, item) => acc + item.cantidad, 0);
     if(hintMostrando) {
         hintMostrando.innerText = `Mostrando ${totalUnidades} artículos`;
@@ -126,7 +122,6 @@ function renderizarCarritoUI(detalles) {
 
     contenedorItems.innerHTML = '';
     
-    // 3. GENERAR CARDS
     detalles.forEach(detalle => {
         const producto = detalle.producto; 
         const totalItem = detalle.subtotal; 
@@ -142,7 +137,6 @@ function renderizarCarritoUI(detalles) {
             <div class="card shadow-sm border-light mb-2"> 
                 <div class="card-body p-3">
                     <div class="row align-items-center g-3">
-                        
                         <div class="col-4 col-md-2 text-center">
                             <img src="${rutaImg}" alt="${producto.nombre}" class="img-fluid rounded" 
                                  style="max-height: 80px;" onerror="this.src='../assets/imagenes/iconos/logo-default.png'">
@@ -160,11 +154,9 @@ function renderizarCarritoUI(detalles) {
                                         onclick="window.restarUnidad(${producto.idProducto}, ${detalle.cantidad}, ${detalle.idCarritoDetalle})">
                                     <i class="bi bi-dash"></i>
                                 </button>
-                                
                                 <span class="form-control text-center bg-white px-0 fw-bold">
                                     ${detalle.cantidad}
                                 </span>
-                                
                                 <button class="btn btn-outline-secondary" 
                                         onclick="window.agregarAlCarrito(${producto.idProducto})">
                                     <i class="bi bi-plus"></i>
@@ -179,7 +171,6 @@ function renderizarCarritoUI(detalles) {
                                 <i class="bi bi-trash3"></i> Eliminar
                             </button>
                         </div>
-
                     </div>
                 </div>
             </div>`;
@@ -287,9 +278,41 @@ function renderizarCarrusel(productos) {
     }
 }
 
+// --- FUNCIÓN CORREGIDA: AGREGAR DESDE CARRUSEL CON MODAL ---
 window.agregarDesdeCarrusel = async function(idProducto) {
-    // Reutilizamos la lógica principal de agregar
-    window.agregarAlCarrito(idProducto);
+    const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    
+    if(!usuarioLogueado) {
+        mostrarModalBootstrap({ title: 'Aviso', text: 'Inicia sesión para comprar.', confirmText: 'Ok' });
+        return;
+    }
+
+    try {
+        const res = await fetch(`${API_URL}/carrito/agregar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idUsuario: usuarioLogueado.id, idProducto: idProducto, cantidad: 1 })
+        });
+
+        if (res.ok) {
+            // 1. Recargar Carrito
+            cargarCarritoDelServidor();
+            
+            // 2. Mostrar Modal con Datos
+            const prod = inventarioCompleto.find(p => p.idProducto === idProducto);
+            let rutaImg = prod ? prod.imagenUrl : null;
+            if(rutaImg && rutaImg.startsWith('..')) rutaImg = rutaImg.replace('..', '');
+
+            mostrarModalBootstrap({
+                title: '¡Agregado!',
+                text: `${prod ? prod.nombre : 'Producto'} se añadió al carrito.`,
+                imageUrl: rutaImg,
+                confirmText: 'Genial'
+            });
+        } else {
+            mostrarModalBootstrap({ title: 'Error', text: 'No se pudo agregar.' });
+        }
+    } catch(e) { console.error(e); }
 };
 
 // ==========================================
@@ -310,36 +333,29 @@ window.agregarAlCarrito = async function(idProducto) {
                 cantidad: 1 
             })
         });
-        // Recargamos sin mostrar modal intrusivo (solo refresco)
-        cargarCarritoDelServidor();
+        cargarCarritoDelServidor(); // Recarga silenciosa para el botón +
     } catch(e) { console.error(e); }
 };
 
-// --- NUEVA FUNCIÓN: RESTAR UNIDAD ---
 window.restarUnidad = async function(idProducto, cantidadActual, idDetalle) {
-    // 1. Si solo queda 1, preguntamos si quiere eliminar la fila
     if (cantidadActual <= 1) {
         window.eliminarItem(idDetalle);
         return;
     }
-
     const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
     
     try {
-        // 2. Si hay más de 1, enviamos -1 al endpoint de agregar (Truco común)
         await fetch(`${API_URL}/carrito/agregar`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 idUsuario: usuarioLogueado.id, 
                 idProducto: idProducto, 
-                cantidad: -1 // RESTAMOS 1
+                cantidad: -1 
             })
         });
         cargarCarritoDelServidor();
-    } catch(e) { 
-        console.error("Error al restar:", e); 
-    }
+    } catch(e) { console.error("Error al restar:", e); }
 };
 
 window.eliminarItem = function(idDetalle) {
@@ -375,7 +391,6 @@ window.vaciarCarrito = function() {
     });
 };
 
-// --- PUENTE DE PAGO ---
 window.irAPagar = function() {
     if (!carritoActual.detalles || carritoActual.detalles.length === 0) {
         mostrarModalBootstrap({ title: 'Carrito vacío', text: 'No hay productos.', confirmText: 'Ok' });

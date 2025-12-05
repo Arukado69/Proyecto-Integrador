@@ -41,38 +41,40 @@ async function cargarProductos() {
 // 2. LÓGICA DE FILTROS (ROBUSTA & SEGURA)
 // ======================================================
 
-function getRadioValue(name) {
-    const el = document.querySelector(`input[name="${name}"]:checked`);
-    // Convertimos a string y minúsculas para comparar seguro
-    return el ? String(el.value).trim().toLowerCase() : "";
-}
-
 function applyFilters() {
-    // 1. Obtenemos valores
+    // 1. Obtenemos valores de los inputs
     const term = (searchInput.value || '').trim().toLowerCase();
     
-    const selectedFlavor = getRadioValue('flavor');
-    const selectedCategory = getRadioValue('category');
-    const selectedSize = getRadioValue('size');
+    // Helper para leer radio buttons
+    const getRadio = (name) => {
+        const el = document.querySelector(`input[name="${name}"]:checked`);
+        return el ? String(el.value).trim().toLowerCase() : "";
+    };
+
+    const selectedFlavor = getRadio('flavor');
+    const selectedCategory = getRadio('category');
+    const selectedSize = getRadio('size');
 
     console.log("Filtros activos:", { term, selectedFlavor, selectedCategory, selectedSize });
 
     // 2. Filtramos la lista
     filtered = listaDeProductos.filter(p => {
-        // --- PROTECCIÓN CONTRA NULOS ---
-        // Usamos String() y || '' para evitar errores si el backend manda null
+        // --- MAPEO EXACTO CON TU BACKEND (JAVA) ---
+        // Usamos String(p.variable || '') para evitar errores si viene null del servidor
+        
         const pNombre = String(p.nombre || '').toLowerCase();
         const pDesc   = String(p.descripcion || '').toLowerCase();
         const pSabor  = String(p.sabor || '').toLowerCase(); 
         const pCat    = String(p.categoria || '').toLowerCase();
-        const pTamano = String(p.tamano || '').toLowerCase();
+        const pTamano = String(p.tamano || '').toLowerCase(); // Ojo: Java manda "tamano" (sin ñ)
 
         // --- COMPARACIONES ---
 
         // A) Texto
         const matchText = !term || pNombre.includes(term) || pDesc.includes(term);
         
-        // B) Sabor (Coincidencia parcial o exacta)
+        // B) Sabor
+        // Usamos .includes() para ser flexibles (ej: "Pollo" encuentra "Pollo y Arroz")
         const matchFlavor = !selectedFlavor || pSabor.includes(selectedFlavor);
         
         // C) Categoría
@@ -85,7 +87,7 @@ function applyFilters() {
         return matchText && matchFlavor && matchCategory && matchSize;
     });
 
-    // 3. Renderizar resultados filtrados (siempre desde página 1)
+    // 3. Renderizar resultados
     renderPage(1);
 }
 
