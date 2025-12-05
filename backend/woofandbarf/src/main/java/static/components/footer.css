@@ -1,0 +1,197 @@
+/* --- FOOTER GENERAL --- */
+.footer {
+  width: 100%;
+  background-color: #f2a413;
+  padding: 24px 16px 16px;
+  position: relative;
+  clear: both;
+  z-index: 0;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Grid principal */
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  align-items: flex-start;
+  justify-items: start;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Uniformar altura interna de columnas */
+.footer-content > .footer-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6px;
+  text-align: left;
+  width: 100%;
+}
+
+/* Evitar que la primera columna se estire */
+.footer-brand {
+  align-self: start;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .footer-content {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-social-section {
+    justify-self: flex-start;
+    text-align: left;
+  }
+
+  .footer-social {
+    align-items: flex-start;
+  }
+}
+
+/* Títulos */
+.footer-section h3 {
+  font-size: 18px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+  color: #4b2e05;
+  margin-bottom: 10px;
+}
+
+/* Logo */
+.footer-brand .footer-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 12px;
+}
+
+/* Listas */
+.footer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.footer ul li {
+  margin-bottom: 6px;
+  padding-left: 1rem;
+  text-indent: -1rem; /* sangría francesa */
+}
+
+/* Viñetas */
+.footer ul li::before {
+  content: "• ";
+  color: #4b2e05;
+  margin-right: 3px;
+}
+
+/* Enlaces */
+.footer a {
+  font-size: 14px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  color: #4b2e05;
+  text-decoration: none !important;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.footer a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Síguenos */
+.footer-social-section {
+  justify-self: flex-end;
+  text-align: right;
+}
+
+.footer-social {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+/* Iconos sociales */
+.footer-social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.footer-social-icon img {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+.footer-social-icon:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Franja inferior */
+.footer-bottom {
+  text-align: center;
+  padding-top: 12px;
+  border-top: 1px solid #d88408;
+}
+
+.footer-bottom p {
+  font-size: 13px;
+  font-family: "Roboto", sans-serif;
+  color: #4b2e05;
+  margin: 2px 0;
+}
+
+.footer-bottom .team-credits {
+  font-weight: 500;
+}
+
+/* Redes sociales horizontales centradas */
+.footer-social-horizontal {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+/* Título de redes sociales horizontales */
+.footer-social-title {
+  font-size: 18px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+  color: #4b2e05;
+  margin: 0 0 10px 0;
+  text-align: center;
+}

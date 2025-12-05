@@ -1,0 +1,10 @@
+/* BODY */
+body {
+  margin: 0;
+  background: #f7f7f700;
+  font-family: var(--font-fredoka);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}

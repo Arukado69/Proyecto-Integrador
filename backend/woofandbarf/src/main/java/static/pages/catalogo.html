@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tienda | Woof & BARF</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+  <!-- Estilos del sitio -->
+  <link rel="stylesheet" href="../components/Navbar.css" />
+  <link rel="stylesheet" href="../components/footer.css" />
+  <link rel="stylesheet" href="../styles/catalogo.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
+  <!-- icono de la pestaña -->
+<link rel="icon" type="image/png" href="../assets/imagenes/icono-pestana/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="../assets/imagenes/icono-pestana/favicon.svg" />
+<link rel="shortcut icon" href="../assets/imagenes/icono-pestana/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/imagenes/icono-pestana/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="Woof and BARF" />
+<link rel="manifest" href="../assets/imagenes/icono-pestana/site.webmanifest" />
+  <!-- icono de la pestaña -->
+</head>
+
+<body class="catalogo-body-color">
+  <!-- NAVBAR -->
+  <nav class="navbar-center">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">
+        <img src="../assets/imagenes/iconos/logo-default.png" alt="Logo" id="logo" class="logo" />
+      </a>
+
+      <ul class="navbar-nav-custom" id="navbarNav">
+        <li><a class="nav-link-custom" href="../index.html">Inicio</a></li>
+        <li><a class="nav-link-custom" href="./catalogo.html">Tienda</a></li>
+        <li><a class="nav-link-custom" href="./nosotros.html">Nosotros</a></li>
+        <li><a class="nav-link-custom" href="./blog.html">Blog</a></li>
+        <li><a class="nav-link-custom" href="./contacto.html">Contáctanos</a></li>
+      </ul>
+
+      <div class="iconos-hamburguesa">
+        <button class="navbar-toggler-custom" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon-custom"></span>
+          <span class="navbar-toggler-icon-custom"></span>
+          <span class="navbar-toggler-icon-custom"></span>
+        </button>
+        <a href="./iniciosesion.html"><button class="user-btn" id="userBtn"><img src="../assets/imagenes/iconos/user-dark.png" alt="Usuario" id="userIcon" /></button></a>
+        <a href="./carrito.html" aria-label="Carrito">
+          <button class="user-btn position-relative">
+            <img src="../assets/imagenes/iconos/compras-dark.png" alt="Compras" width="28" height="28">
+             <span class="position-absolute badge rounded-pill bg-danger d-none" 
+                    id="miniCount" 
+                    style="top: -5px; right: -5px; border: 2px solid #fff;">
+                  0
+             </span>
+          </button>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="catalogo-main-padding catalogo-header-size text-center mt-3">
+    <h1 class="catalogo-fredoka-h1">Nuestro catálogo de productos</h1>
+    <h4 class="catalogo-h4-color catalogo-fredoka-h4">Alimentos BARF</h4>
+  </header>
+
+  <!-- MAIN -->
+  <main class="catalogo-main-padding">
+    <section>
+      <div class="container-fluid">
+        <div class="row g-4">
+          <!-- SIDEBAR (Filtros) -->
+          <aside class="col-12 col-lg-3 col-xl-2">
+            <div class="border catalogo-bg-sidebar rounded-5 p-3">
+              <form action="javascript:void(0)" id="filtersForm">
+                <!-- Buscar -->
+                <div class="input-group mb-3 mt-1">
+                  <input id="searchInput" type="text" class="form-control rounded-4 catalogo-h4-color" placeholder="🔍 Buscar por nombre..." />
+                </div>
+
+
+                <!-- Sabor del producto -->
+                <p class="form-label catalogo-roboto-primary-label ms-1 mb-2">Sabor del producto</p>
+                <div class="ms-1 mb-4 d-flex flex-column gap-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flavor" id="flavorAll" value="" checked>
+                    <label class="form-check-label catalogo-roboto-secundary-label" for="flavorAll">Todos</label>
+                  </div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="flavor" id="flavorRes" value="Res"><label class="form-check-label catalogo-roboto-secundary-label" for="flavorRes">Res</label></div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="flavor" id="flavorPollo" value="Pollo"><label class="form-check-label catalogo-roboto-secundary-label" for="flavorPollo">Pollo</label></div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="flavor" id="flavorCerdo" value="Cerdo"><label class="form-check-label catalogo-roboto-secundary-label" for="flavorCerdo">Cerdo</label></div>
+                </div>
+                
+                <!-- Categoría del producto -->
+                 <p class="form-label catalogo-roboto-primary-label ms-1 mb-2">Categoría del producto</p>
+                 <div class="ms-1 mb-4 d-flex flex-column gap-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="category" id="categoryAll" value="" checked>
+                    <label class="form-check-label catalogo-roboto-secundary-label" for="categoryAll">Todos</label>
+                  </div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="category" id="categoryAlimento" value="Alimento"><label class="form-check-label catalogo-roboto-secundary-label" for="categoryAlimento">Alimento</label></div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="category" id="categoryAccesorio" value="Accesorio"><label class="form-check-label catalogo-roboto-secundary-label" for="categoryAccesorio">Accesorios</label></div>
+                </div>
+
+
+                <!-- Tamaño -->
+                <p class="form-label catalogo-roboto-primary-label ms-1 mb-2">Tamaño de porción</p>
+                <div class="ms-1 mb-3 d-flex flex-column gap-2">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="size" id="sizeAll" value="" checked>
+                    <label class="form-check-label catalogo-roboto-secundary-label" for="sizeAll">Todos</label>
+                  </div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="size" id="size500" value="500g"><label class="form-check-label catalogo-roboto-secundary-label" for="size500">500g</label></div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="size" id="size1k" value="1kg"><label class="form-check-label catalogo-roboto-secundary-label" for="size1k">1kg</label></div>
+                  <div class="form-check"><input class="form-check-input" type="radio" name="size" id="size2k" value="2kg"><label class="form-check-label catalogo-roboto-secundary-label" for="size2k">2kg</label></div>
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                  <button id="applyFiltersBtn" class="btn rounded-4 catalogo-primary-button-color text-white fw-bold" type="button">Aplicar filtros</button>
+                </div>
+              </form>
+            </div>
+          </aside>
+
+          <section class="col-12 col-lg-9 col-xl-10">
+            <!-- Grid de productos -->
+             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="product-row"></div>
+             <!-- Indicador de resultados centrado debajo del grid -->
+              <div id="results-info" class="text-center text-muted small my-2"></div>
+              <!-- Paginación -->
+               <div id="pagination-container" class="my-4"></div>
+              </section>
+
+        </div>
+      </div>
+    </section>
+  </main>
+  
+<!--alerta productos agregados al carrito-->
+  <div class="modal fade" id="modalWoof" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      
+        <div class="modal-header border-0 pb-0">
+          <h5 class="modal-title fw-bold" id="modalTitulo">Aviso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body text-center p-4">
+          <img id="modalImagen" src="" alt="Producto" class="img-fluid rounded mb-3 d-none" style="max-height: 150px;">
+          <p id="modalMensaje" class="text-muted mb-0 fs-5">Mensaje</p>
+        </div>
+
+        <div class="modal-footer border-0 justify-content-center pb-4">
+          <button type="button" id="btnCancelar" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" id="btnConfirmar" class="btn btn-dark rounded-pill px-4">Aceptar</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer></footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="../components/footer.js"></script>
+  <script src="../components/Navbar.js"></script>
+  <script src="../scripts/catalogo.js"></script>
+</body>
+</html>
