@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     
     // CORRECCIÓN 1: La ruta base correcta incluye /v1
-    const API_URL = 'http://localhost:8080/api/v1'; 
+    const API_URL = 'http://52.15.203.222:8080/api/v1'; // Conexión para que funcione minicount de carrito y catálogo 
 
     // --- 1. UTILIDADES DE IMÁGENES ---
     const dirOf = (url) => new URL(url, location.href).href.replace(/[^/]+$/, '');
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================================================
-    //  3. LÓGICA DEL BADGE DEL CARRITO (CORREGIDA)
+    //  3. LÓGICA DEL BADGE DEL CARRITO (función de minicount, NO borrar)
     // ============================================================
     
     window.actualizarBadgeNavbar = async function() {

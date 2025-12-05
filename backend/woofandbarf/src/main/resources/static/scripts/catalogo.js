@@ -12,8 +12,7 @@ const productRow   = document.getElementById('product-row');
 const paginationEl = document.getElementById('pagination-container');
 const resultsInfo  = document.getElementById('results-info');
 const searchInput  = document.getElementById('searchInput');
-const applyBtn     = document.getElementById('applyFiltersBtn');
-const filtersForm  = document.getElementById('filtersForm');
+const filtersForm  = document.getElementById('filtersForm'); // Quitamos applyBtn porque es automático
 
 // ======================================================
 // 1. CARGA DE DATOS (GET)
@@ -26,110 +25,121 @@ async function cargarProductos() {
             listaDeProductos = await response.json();
             console.log("Inventario cargado:", listaDeProductos); 
             
-            // Inicializamos mostrando todo
+            // Inicializar filtros
             filtered = [...listaDeProductos];
-            // Llamamos a renderPage directamente la primera vez para asegurar que se vea algo
-            renderPage(1); 
+            applyFilters(); 
         } else {
-            productRow.innerHTML = '<div class="col-12 text-center"><p>No se pudo cargar el inventario.</p></div>';
+            productRow.innerHTML = '<div class="col-12 text-center py-5"><p>No se pudo cargar el inventario.</p></div>';
         }
     } catch (e) {
         console.error("Error:", e);
-        productRow.innerHTML = '<div class="col-12 text-center text-danger"><p>Error de conexión con el servidor.</p></div>';
+        productRow.innerHTML = '<div class="col-12 text-center py-5 text-danger"><p>Error de conexión con el servidor.</p></div>';
     }
 }
 
 // ======================================================
-// 2. LÓGICA DE FILTROS
+// 2. LÓGICA DE FILTROS (ROBUSTA & SEGURA)
 // ======================================================
 
+function getRadioValue(name) {
+    const el = document.querySelector(`input[name="${name}"]:checked`);
+    // Convertimos a string y minúsculas para comparar seguro
+    return el ? String(el.value).trim().toLowerCase() : "";
+}
+
 function applyFilters() {
-    // 1. Obtenemos valores de los inputs
+    // 1. Obtenemos valores
     const term = (searchInput.value || '').trim().toLowerCase();
     
-    // Función auxiliar para leer los radio buttons de forma segura
-    const getRadio = (name) => {
-        const el = document.querySelector(`input[name="${name}"]:checked`);
-        return el ? el.value.toLowerCase() : "";
-    };
+    const selectedFlavor = getRadioValue('flavor');
+    const selectedCategory = getRadioValue('category');
+    const selectedSize = getRadioValue('size');
 
-    const selectedFlavor = getRadio('flavor');
-    const selectedCategory = getRadio('category');
-    const selectedSize = getRadio('size');
+    console.log("Filtros activos:", { term, selectedFlavor, selectedCategory, selectedSize });
 
-    console.log("Filtrando por:", { term, selectedFlavor, selectedCategory, selectedSize });
-
-    // 2. Filtramos la lista usando las PROPIEDADES EN ESPAÑOL (Backend)
+    // 2. Filtramos la lista
     filtered = listaDeProductos.filter(p => {
-        // Datos del producto (protegidos contra nulos)
-        const pNombre = (p.nombre || '').toLowerCase();
-        const pDesc   = (p.descripcion || '').toLowerCase();
-        const pSabor  = (p.sabor || '').toLowerCase();
-        const pCat    = (p.categoria || '').toLowerCase();
-        const pTamano = (p.tamano || '').toLowerCase();
+        // --- PROTECCIÓN CONTRA NULOS ---
+        // Usamos String() y || '' para evitar errores si el backend manda null
+        const pNombre = String(p.nombre || '').toLowerCase();
+        const pDesc   = String(p.descripcion || '').toLowerCase();
+        const pSabor  = String(p.sabor || '').toLowerCase(); 
+        const pCat    = String(p.categoria || '').toLowerCase();
+        const pTamano = String(p.tamano || '').toLowerCase();
 
-        // A) Filtro Texto (Nombre o Descripción)
+        // --- COMPARACIONES ---
+
+        // A) Texto
         const matchText = !term || pNombre.includes(term) || pDesc.includes(term);
         
-        // B) Filtro Sabor
-        const matchFlavor = !selectedFlavor || pSabor === selectedFlavor || pSabor.includes(selectedFlavor);
+        // B) Sabor (Coincidencia parcial o exacta)
+        const matchFlavor = !selectedFlavor || pSabor.includes(selectedFlavor);
         
-        // C) Filtro Categoría
-        const matchCategory = !selectedCategory || pCat === selectedCategory;
+        // C) Categoría
+        const matchCategory = !selectedCategory || pCat.includes(selectedCategory);
         
-        // D) Filtro Tamaño
-        const matchSize = !selectedSize || pTamano === selectedSize;
+        // D) Tamaño
+        const matchSize = !selectedSize || pTamano.includes(selectedSize);
 
+        // Deben cumplirse TODAS las condiciones
         return matchText && matchFlavor && matchCategory && matchSize;
     });
 
-    // 3. Renderizar resultados filtrados
+    // 3. Renderizar resultados filtrados (siempre desde página 1)
     renderPage(1);
 }
 
 // ======================================================
-// 3. RENDERIZADO (Cards con Estilo Fijo)
+// 3. RENDERIZADO (CARDS ALINEADAS)
 // ======================================================
 
 function createProductCard(item) {
     const { idProducto, nombre, precio, imagenUrl, descripcion, sabor, tamano, categoria } = item;
     
-    // Fallback de imagen si viene vacía o nula
-    // Asegúrate de que esta ruta local exista en tu proyecto
+    // Fallback de imagen
     const imgFinal = imagenUrl && imagenUrl.trim() !== '' 
         ? imagenUrl 
         : '../assets/imagenes/iconos/logo-default.png';
 
     return `
-      <div class="col d-flex align-items-stretch"> <div class="card card-producto rounded-5 shadow-sm hover-zoom w-100 h-100 border-0">
+      <div class="col d-flex align-items-stretch">
+        <div class="card card-producto rounded-5 shadow-sm hover-zoom w-100 h-100 border-0">
           
           <div style="height: 250px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff;" class="rounded-top-5">
               <img src="${imgFinal}" 
                    alt="${nombre}" 
-                   class="img-fluid"
+                   class="img-fluid" 
                    loading="lazy"
                    style="max-height: 100%; object-fit: contain;"
                    onerror="this.src='../assets/imagenes/iconos/logo-default.png'">
           </div>
           
           <div class="card-body text-center d-flex flex-column p-4">
-            <h5 class="card-title catalogo-roboto-h4 mb-2 text-dark">${nombre}</h5>
             
-            <p class="text-muted small mb-3 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-                ${descripcion || 'Sin descripción disponible.'}
+            <h5 class="card-title catalogo-roboto-h4 mb-2 text-dark text-truncate" title="${nombre}">
+                ${nombre}
+            </h5>
+            
+            <p class="text-muted small mb-3 flex-grow-0" 
+               style="min-height: 40px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                ${descripcion || ''}
             </p>
             
-            <div class="mb-3 d-flex justify-content-center gap-2 flex-wrap">
+            <div class="mb-3 d-flex justify-content-center gap-2 flex-wrap" style="min-height: 26px;">
                 ${sabor ? `<span class="badge bg-light text-dark border">${sabor}</span>` : ''}
                 ${tamano ? `<span class="badge bg-light text-dark border">${tamano}</span>` : ''}
+                ${categoria ? `<span class="badge bg-light text-dark border">${categoria}</span>` : ''}
             </div>
             
-            <h4 class="catalogo-price-color catalogo-roboto-h4 mb-3 fw-bold">$${precio.toFixed(2)}</h4>
-            
-            <button class="btn w-100 rounded-4 catalogo-secundary-button-color catalogo-roboto-primary-label py-2" 
-                    onclick="window.agregarAlCarrito(${idProducto})">
-                Añadir al carrito
-            </button>
+            <div class="mt-auto">
+                <h4 class="catalogo-price-color catalogo-roboto-h4 mb-3 fw-bold">$${precio.toFixed(2)}</h4>
+                
+                <button class="btn w-100 rounded-4 catalogo-secundary-button-color catalogo-roboto-primary-label py-2" 
+                        onclick="window.agregarAlCarrito(${idProducto})">
+                    Añadir al carrito
+                </button>
+            </div>
+
           </div>
         </div>
       </div>`;
@@ -142,15 +152,15 @@ function renderPage(page = 1) {
           <div class="col-12 text-center py-5">
               <p class="fs-1">🔍</p>
               <h3 class="h5 text-muted">No encontramos productos</h3>
-              <p class="small text-muted">Intenta con otros filtros o términos de búsqueda.</p>
-              <button class="btn btn-outline-dark btn-sm mt-2" onclick="limpiarFiltros()">Ver todo el catálogo</button>
+              <p class="small text-muted">Intenta con otros filtros.</p>
+              <button class="btn btn-outline-dark btn-sm mt-2" onclick="limpiarFiltros()">Ver todo</button>
           </div>`;
         resultsInfo.textContent = '';
         paginationEl.innerHTML = '';
         return;
     }
 
-    // Lógica Paginación
+    // Paginación
     const total = filtered.length;
     const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
     currentPage = Math.min(Math.max(1, page), totalPages);
@@ -188,23 +198,57 @@ window.renderPage = renderPage;
 window.limpiarFiltros = function() {
     if(filtersForm) {
         filtersForm.reset();
-        // Restablecer radio buttons manualmente si reset() falla visualmente
         const radios = filtersForm.querySelectorAll('input[type="radio"]');
-        radios.forEach(r => r.checked = r.defaultChecked);
+        radios.forEach(r => { if(r.value === "") r.checked = true; });
     }
     if(searchInput) searchInput.value = '';
     applyFilters();
 }
 
 // ======================================================
-// 4. AGREGAR AL CARRITO (POST)
+// 4. AGREGAR AL CARRITO (POST & MODAL)
 // ======================================================
+
+// Helper para Modal Bootstrap
+function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText }) {
+    const modalEl = document.getElementById('modalWoof');
+    if(!modalEl) { alert(text); return; }
+
+    document.getElementById('modalTitulo').innerText = title;
+    document.getElementById('modalMensaje').innerText = text;
+    
+    const imgEl = document.getElementById('modalImagen');
+    if (imageUrl) {
+        imgEl.src = imageUrl;
+        imgEl.classList.remove('d-none');
+    } else {
+        imgEl.classList.add('d-none');
+    }
+
+    const btnConfirm = document.getElementById('btnConfirmar');
+    const btnCancel = document.getElementById('btnCancelar');
+    
+    if(btnConfirm) btnConfirm.innerText = confirmText;
+    
+    if(btnCancel) {
+        btnCancel.innerText = cancelText || "Cancelar";
+        btnCancel.classList.remove('d-none');
+    }
+
+    const modal = new bootstrap.Modal(modalEl);
+    
+    // Sobrescribir evento confirmar para ocultar
+    btnConfirm.onclick = () => {
+        modal.hide();
+    };
+
+    modal.show();
+}
 
 window.agregarAlCarrito = async function(idProducto) {
     const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
     
     if (!usuarioLogueado) {
-        // Usamos modal bonito si no está logueado
         mostrarModalBootstrap({
             title: "Inicia Sesión",
             text: "Para agregar productos a tu carrito, necesitas ingresar a tu cuenta.",
@@ -212,7 +256,7 @@ window.agregarAlCarrito = async function(idProducto) {
             cancelText: "Cancelar"
         });
         
-        // Sobrescribimos el botón de confirmar para ir al login
+        // Sobrescribir botón confirmar
         const btnConfirm = document.getElementById('btnConfirmar');
         if(btnConfirm) {
             btnConfirm.onclick = () => window.location.href = "iniciosesion.html";
@@ -232,25 +276,23 @@ window.agregarAlCarrito = async function(idProducto) {
         });
 
         if(res.ok) {
-            // Mostrar Modal Éxito
+            // Buscar info del producto (para la foto)
+            const productoInfo = listaDeProductos.find(p => p.idProducto === idProducto);
+            let rutaImg = productoInfo ? (productoInfo.imagenUrl || productoInfo.imageURL) : null;
+            if(rutaImg && rutaImg.trim() === '') rutaImg = null;
+
             mostrarModalBootstrap({
                 title: "¡Producto Agregado!",
-                text: "Se añadió correctamente a tu carrito.",
+                text: `${productoInfo ? productoInfo.nombre : 'Producto'} se añadió a tu carrito.`,
+                imageUrl: rutaImg,
                 confirmText: "Seguir comprando",
                 cancelText: "Ir al carrito"
             });
             
-            // Lógica botones modal éxito
+            // Botón secundario -> ir al carrito
             const btnCancel = document.getElementById('btnCancelar');
             if(btnCancel) {
                 btnCancel.onclick = () => window.location.href = 'carrito.html';
-            }
-            const btnConfirm = document.getElementById('btnConfirmar');
-            if(btnConfirm) {
-                btnConfirm.onclick = () => {
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('modalWoof'));
-                    modal.hide();
-                };
             }
             
             // Actualizar badge
@@ -258,36 +300,13 @@ window.agregarAlCarrito = async function(idProducto) {
             
         } else {
             console.error("Error server:", await res.text());
-            alert("No se pudo agregar el producto. Intenta de nuevo.");
+            mostrarModalBootstrap({ title: 'Error', text: 'No se pudo agregar el producto. Intenta de nuevo.' });
         }
     } catch(e) { 
         console.error(e); 
-        alert("Error de conexión con el servidor.");
+        mostrarModalBootstrap({ title: 'Error', text: 'Error de conexión con el servidor.' });
     }
 };
-
-// Helper Modal (Debe coincidir con tu HTML)
-function mostrarModalBootstrap({ title, text, confirmText, cancelText }) {
-    const modalEl = document.getElementById('modalWoof');
-    if(!modalEl) return; 
-
-    document.getElementById('modalTitulo').innerText = title;
-    document.getElementById('modalMensaje').innerText = text;
-    
-    const btnConfirm = document.getElementById('btnConfirmar');
-    const btnCancel = document.getElementById('btnCancelar');
-    
-    if(btnConfirm) btnConfirm.innerText = confirmText;
-    
-    if(btnCancel) {
-        btnCancel.innerText = cancelText || "Cancelar";
-        btnCancel.classList.remove('d-none');
-    }
-
-    const modal = new bootstrap.Modal(modalEl);
-    modal.show();
-}
-
 
 // ======================================================
 // 5. INICIALIZACIÓN
@@ -295,13 +314,18 @@ function mostrarModalBootstrap({ title, text, confirmText, cancelText }) {
 document.addEventListener('DOMContentLoaded', () => {
     cargarProductos(); 
     
-    // Eventos Filtros
+    // Eventos Filtros (Buscador)
     if(searchInput) searchInput.addEventListener('keyup', applyFilters);
-    if(applyBtn) applyBtn.addEventListener('click', applyFilters);
     
+    // Eventos Filtros (Radio Buttons)
     if(filtersForm) {
         filtersForm.querySelectorAll('input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', applyFilters);
         });
+    }
+
+    // Sincronizar badge al entrar
+    if (typeof window.actualizarBadgeNavbar === 'function') {
+        window.actualizarBadgeNavbar();
     }
 });
