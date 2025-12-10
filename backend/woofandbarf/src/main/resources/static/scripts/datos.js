@@ -15,12 +15,13 @@ function esTelefonoValido(telefono) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. CARGAR DATOS
+    // 1. CARGAR DATOS DEL CARRITO
     const carrito = JSON.parse(localStorage.getItem('carritoWoofBarf')) || [];
     const resumenGuardado = JSON.parse(localStorage.getItem('resumenPedido'));
 
     if (carrito.length === 0) {
-        window.location.href = './carrito.html';
+        // Redirige al carrito si está vacío (ajustado a la ruta relativa correcta)
+        window.location.href = '../carrito.html'; 
         return;
     }
 
@@ -37,22 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA INTELIGENTE DE IMAGEN ---
             let rutaFinal = item.imageURL;
 
-            // 1. Verificamos si NO es una URL de internet (http/https)
+            // Verificamos si NO es una URL de internet
             if (!rutaFinal.startsWith('http')) {
-                // Es una ruta local antigua (ej: ../assets/...)
-                // La limpiamos para que sea absoluta desde la raíz
                 rutaFinal = rutaFinal.replace('..', '');
-                
-                // Aseguramos que empiece con / si no lo tiene
                 if (!rutaFinal.startsWith('/')) {
                     rutaFinal = '/' + rutaFinal;
                 }
             }
-            // Si SÍ empieza con http, la dejamos intacta (es lo que ingresaste en el form)
 
             contenedorItems.innerHTML += `
                 <div class="d-flex align-items-center py-2 border-bottom border-light">
-                    
                     <div style="width: 60px; height: 60px; flex-shrink: 0;" class="bg-white rounded border p-1">
                         <img src="${rutaFinal}" 
                              alt="${item.name}" 
@@ -90,7 +85,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. VALIDACIÓN Y ENVÍO (Lógica Corregida)
+    // ---------------------------------------------------------
+    // --- NUEVO: AUTOCOMPLETADO POR CP (API COPOMEX) ---
+    // ---------------------------------------------------------
+    const inputCP = document.getElementById('cp');
+    if (inputCP) {
+        inputCP.addEventListener('input', function() {
+            const cp = this.value;
+            
+            // Solo consultamos si tiene 5 dígitos exactos
+            if (cp.length === 5 && /^\d+$/.test(cp)) {
+                // Feedback visual de carga (opcional)
+                document.getElementById('estado').style.opacity = '0.5';
+
+                fetch(`https://api.copomex.com/query/info_cp/${cp}?token=pruebas`)
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('estado').style.opacity = '1';
+                        
+                        if (!data.error) {
+                            const estadoSelect = document.getElementById('estado');
+                            const estadoApi = data[0].response.estado; // Ej: "Ciudad de México"
+                            
+                            // Buscar la opción que coincida con el texto del API
+                            for (let i = 0; i < estadoSelect.options.length; i++) {
+                                // Comparamos ignorando mayúsculas/minúsculas y acentos si es necesario
+                                let opcionTexto = estadoSelect.options[i].text.toUpperCase();
+                                let apiTexto = estadoApi.toUpperCase();
+
+                                if (opcionTexto.includes(apiTexto) || apiTexto.includes(opcionTexto)) {
+                                    estadoSelect.selectedIndex = i;
+                                    // Quitamos error visual si existía
+                                    estadoSelect.classList.remove('is-invalid');
+                                    break;
+                                }
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al buscar CP:', error);
+                        document.getElementById('estado').style.opacity = '1';
+                    });
+            }
+        });
+    }
+    // ---------------------------------------------------------
+
+    // 3. VALIDACIÓN Y ENVÍO DEL FORMULARIO
     const formulario = document.getElementById('formDatosEnvio');
 
     formulario.addEventListener('submit', function(event) {
@@ -100,48 +141,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const direccionInput = document.getElementById('direccion');
         const coloniaInput = document.getElementById('colonia');
         const telefonoInput = document.getElementById('telefono');
+        const estadoInput = document.getElementById('estado'); // Agregado para validación
 
-        // --- PASO CLAVE: RESETEAR ERRORES PREVIOS ---
-        // Le decimos al navegador: "Por ahora, todo parece válido"
-        [nombreInput, apellidoInput, direccionInput, coloniaInput, telefonoInput].forEach(input => {
-            input.setCustomValidity(""); 
+        // --- RESETEAR ERRORES PREVIOS ---
+        [nombreInput, apellidoInput, direccionInput, coloniaInput, telefonoInput, estadoInput].forEach(input => {
+            if(input) input.setCustomValidity(""); 
         });
 
         // --- APLICAR VALIDACIONES JS ---
-        // Si falla JS, usamos setCustomValidity("Error"). 
-        // Esto obliga al navegador a marcarlo como inválido (X Roja).
-
-        if (!esTextoValido(nombreInput.value)) {
-            nombreInput.setCustomValidity("Nombre incoherente."); 
-        }
-
-        if (!esTextoValido(apellidoInput.value)) {
-            apellidoInput.setCustomValidity("Apellido incoherente.");
-        }
-
-        if (!esTextoValido(direccionInput.value)) {
-            direccionInput.setCustomValidity("Dirección incoherente.");
-        }
-
-        if (!esTextoValido(coloniaInput.value)) {
-            coloniaInput.setCustomValidity("Colonia incoherente.");
-        }
-
-        if (!esTelefonoValido(telefonoInput.value)) {
-            telefonoInput.setCustomValidity("Número de teléfono inválido.");
-        }
+        if (!esTextoValido(nombreInput.value)) nombreInput.setCustomValidity("Nombre incoherente."); 
+        if (!esTextoValido(apellidoInput.value)) apellidoInput.setCustomValidity("Apellido incoherente.");
+        if (!esTextoValido(direccionInput.value)) direccionInput.setCustomValidity("Dirección incoherente.");
+        if (!esTextoValido(coloniaInput.value)) coloniaInput.setCustomValidity("Colonia incoherente.");
+        if (!esTelefonoValido(telefonoInput.value)) telefonoInput.setCustomValidity("Número de teléfono inválido.");
+        if (estadoInput.value === "") estadoInput.setCustomValidity("Selecciona un estado.");
 
         // --- VERIFICACIÓN FINAL ---
-        // checkValidity() ahora revisará tanto el HTML (pattern) como nuestros CustomValidity
         if (!formulario.checkValidity()) {
             event.preventDefault();
             event.stopPropagation();
-            formulario.classList.add('was-validated'); // Esto activa los colores (Rojo si hay error, Verde si no)
+            formulario.classList.add('was-validated'); 
             return;
         }
 
         // SI PASA TODO, GUARDAMOS:
-        event.preventDefault(); // Detenemos submit real
+        event.preventDefault(); 
         
         const datosUsuario = {
             email: document.getElementById('email').value,
@@ -149,7 +173,8 @@ document.addEventListener('DOMContentLoaded', () => {
             apellido: apellidoInput.value.trim(),
             direccion: direccionInput.value.trim(),
             colonia: coloniaInput.value.trim(),
-            estado: document.getElementById('estado').value,
+            estado: estadoInput.value, // Ahora guardamos el valor del select
+            estadoTexto: estadoInput.options[estadoInput.selectedIndex].text, // Guardamos el nombre completo también por si acaso
             cp: document.getElementById('cp').value,
             telefono: telefonoInput.value.trim()
         };
@@ -162,21 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
         botonSubmit.disabled = true;
 
         setTimeout(() => {
-            window.location.href = './pago.html';
+            window.location.href = 'pago.html';
         }, 1000);
     });
 
     // LIMPIEZA EN TIEMPO REAL
-    // Cuando el usuario escribe, quitamos el error inmediatamente
-    ['nombre', 'apellido', 'direccion', 'colonia', 'telefono'].forEach(id => {
+    ['nombre', 'apellido', 'direccion', 'colonia', 'telefono', 'cp'].forEach(id => {
         const input = document.getElementById(id);
         if(input) {
             input.addEventListener('input', function() {
-                this.setCustomValidity(""); // Quitamos el error interno
-                // Opcional: si quieres que se quite el rojo visualmente al instante:
-                // formulario.classList.remove('was-validated'); 
+                this.setCustomValidity(""); 
             });
         }
     });
 });
-

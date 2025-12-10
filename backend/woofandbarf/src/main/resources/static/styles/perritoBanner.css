@@ -1,3 +1,5 @@
+@import url('variables.css');
+
 /* =================================
    1. RESET Y CONTENEDOR
    ================================= */
@@ -186,4 +188,267 @@
     0 6px 18px rgba(0, 0, 0, 0.3),
     inset 0 6px 8px rgba(255, 255, 255, 0.25),
     inset 0 -4px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================
+   NUEVO LAYOUT DOS COLUMNAS
+   ============================ */
+.husky-two-columns {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3rem 5%;
+  padding-left: 7%;
+  gap: 1rem;
+}
+
+
+.husky-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Ajuste del contenedor izquierdo para centrar la tarjeta */
+.husky-left {
+  flex: 1;
+  max-width: 600px; /* Controlamos el ancho máximo de la tarjeta */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estilos de la tarjeta personalizada */
+.promo-bootstrap-card {
+  border: none;
+  border-radius: 20px; /* Bordes bien redondeados */
+  width: 100%;
+  overflow: hidden; /* Esto es clave para que la imagen no se salga de los bordes redondeados */
+  background-color: #fff; /* Fondo blanco para resaltar sobre el fondo de la web */
+  transition: transform 0.3s ease;
+}
+
+.promo-bootstrap-card:hover {
+  transform: translateY(-5px); /* Pequeña elevación al pasar el mouse */
+}
+
+/* Contenedor de la imagen para darle un fondo o ajuste si es PNG */
+.card-img-wrapper {
+  background-color: #fbd4b2; /* Color naranja suave de fondo para la imagen */
+  padding: 0; /* CAMBIO: Se eliminó el padding para que la imagen llegue a los bordes */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 250px; /* Altura fija para la imagen */
+  width: 100%; /* CAMBIO: Asegura que el contenedor ocupe todo el ancho */
+}
+
+.card-img-top {
+  height: 100%; /* CAMBIO: La imagen toma toda la altura del contenedor */
+  width: 100%; /* CAMBIO: La imagen toma todo el ancho del contenedor */
+  object-fit: cover; /* CAMBIO: 'cover' hace que la imagen llene el contenedor, recortándose si es necesario */
+  /* Se eliminó el drop-shadow porque ya no se notaría bien al cubrir toda el área */
+}
+
+/* Tipografía dentro de la tarjeta */
+.promo-card-title {
+  font-family: 'Fredoka', sans-serif;
+  color: #883a0c; /* Tu color café de marca */
+  font-weight: 600;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.promo-card-text {
+  font-family: 'Roboto', sans-serif;
+  color: #eb9245; /* Naranja fuerte */
+  font-weight: 500;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.promo-card-subtext {
+  font-family: 'Roboto', sans-serif;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* =======================================================
+   CORRECCIÓN DE RESPONSIVE (Escalado de la Órbita)
+   ======================================================= */
+
+/* Rango 1: Primer ajuste cuando empieza a tocar los bordes (aprox 1675px) */
+@media (max-width: 1680px) {
+  .husky-two-columns {
+    padding-top: 2rem;
+    padding-left: 2%; /* Reducimos el padding lateral general */
+    padding-right: 2%;
+    gap: 0; /* Quitamos espacio extra entre columnas */
+  }
+
+  .pug-orbit-container {
+    /* Encoge la animación al 75% de su tamaño original */
+    transform: scale(0.75); 
+    /* Ajustamos márgenes negativos para compensar el espacio vacío que deja el scale */
+    margin-top: 5rem; 
+    margin-bottom: 5rem;
+    position: relative;
+    left: 30px;
+  }
+}
+
+/* Rango 2: Ajuste para pantallas medianas (laptops estándar) */
+@media (max-width: 1400px) {
+  .pug-orbit-container {
+    transform: scale(0.7); /* Encoge al 70% */
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    left: -20px; /* Movemos un poco a la izquierda para centrar visualmente */
+  }
+  
+  .husky-left {
+    max-width: 400px;
+    padding-top: 10rem; /* Hacemos la tarjeta un poco más compacta */
+  }
+}
+
+/* Rango 3: Tabletas grandes o pantallas muy estrechas antes de que desaparezca */
+@media (max-width: 1150px) {
+  .husky-two-columns {
+    flex-direction: column-reverse; /* Ponemos el perro ARRIBA y la tarjeta ABAJO */
+    gap: 3rem;
+    padding-top: 15rem;
+  }
+
+
+  .pug-orbit-container {
+    transform: scale(0.8); /* Recuperamos un poco de tamaño ya que ahora está solo arriba */
+    margin: 0 auto;
+    left: 0;
+  }
+
+  .husky-left {
+    max-width: 100%; /* La tarjeta puede ocupar todo el ancho ahora */
+    width: 100%;
+  }
+  
+  .promo-bootstrap-card {
+    max-width: 500px; /* Pero le ponemos un límite para que no se vea gigante */
+    margin: 0 auto;
+  }
+}
+
+/* =======================================================
+   CORRECCIÓN FINAL: SIN HUECOS Y RESPONSIVE
+   ======================================================= */
+
+/* 1. SEGURO GLOBAL */
+body, html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* 2. CONTENEDOR PRINCIPAL */
+.husky-two-columns {
+    width: 100%;
+    overflow: hidden; 
+    position: relative;
+    box-sizing: border-box;
+    /* Reducimos el padding general del contenedor */
+    padding-top: 2rem; 
+    padding-bottom: 2rem;
+}
+
+/* RANGO: PANTALLAS GRANDES (1400px - 1680px) */
+@media (max-width: 1680px) {
+  .husky-right {
+    /* Quitamos el padding gigante, dejamos solo un poco para que no toque el borde */
+    padding-top: 2rem; 
+  }
+
+  .pug-orbit-container {
+    transform: scale(0.85); 
+    /* Margen negativo para subir al perro y quitar espacio muerto */
+    margin-top: -3rem; 
+    margin-bottom: 0;
+  }
+}
+
+/* RANGO: LAPTOPS (1200px - 1400px) */
+@media (max-width: 1400px) {
+  .husky-right {
+    padding-top: 1rem; 
+  }
+
+  .pug-orbit-container {
+    transform: scale(0.70);
+    /* Al ser más pequeño (0.7), deja más hueco, así que "tiramos" más hacia arriba */
+    margin-top: -6rem; 
+    margin-bottom: -4rem; 
+    left: -20px;
+  }
+}
+
+/* RANGO: TABLETS Y PANTALLAS ESTRECHAS (900px - 1200px) */
+/* Aquí es donde se apilan (columna) */
+@media (max-width: 1200px) {
+  .husky-two-columns {
+    flex-direction: column-reverse; /* Perro arriba, tarjeta abajo */
+    gap: 1rem; /* Gap pequeño porque los márgenes del perro ya separan */
+    padding: 2rem 1rem; 
+    align-items: center;
+  }
+
+  .husky-right {
+    padding-top: 0; /* Sin padding extra */
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* Altura fija para evitar que ocupe espacio fantasma verticalmente */
+    height: 450px; 
+    align-items: center;
+  }
+
+  .husky-left {
+    width: 100%;
+    max-width: 500px;
+    padding-top: 1rem;
+  }
+
+  .pug-orbit-container {
+    transform: scale(0.6); 
+    /* Márgenes muy negativos para centrarlo verticalmente en su caja */
+    margin-top: 0; 
+    margin-bottom: 0;
+    width: 100%;
+    left: 0;
+  }
+  
+  /* Ajuste de textos */
+  .orbit-item h2 { font-size: 1.4rem; }
+  .orbit-item p { font-size: 1rem; }
+}
+
+/* RANGO: MÓVILES (Menos de 900px) */
+@media (max-width: 900px) {
+ .pug-orbit-container {
+    display: none !important; 
+  }
+  
+  .husky-two-columns {
+    padding: 2rem 1rem;
+    display: block;
+  }
+  
+  .husky-left {
+    max-width: 100%;
+  }
+  
+  /* Quitamos altura fija en móvil para que no quede hueco */
+  .husky-right {
+      height: auto;
+      padding: 0;
+  }
 }
