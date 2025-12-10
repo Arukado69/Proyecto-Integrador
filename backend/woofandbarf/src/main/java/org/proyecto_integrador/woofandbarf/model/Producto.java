@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Representa un producto del catálogo.
@@ -80,6 +81,10 @@ public class Producto {
         this.tamano = tamano;
     }
 
+    public String getSabor() {return sabor; }
+
+    public void setSabor(String sabor) {this.sabor = sabor; }
+
     public Integer getIdProducto() {
         return idProducto;
     }
@@ -151,5 +156,37 @@ public class Producto {
     public void setDetallesCarrito(List<CarritoDetalle> detallesCarrito) {
         this.detallesCarrito = detallesCarrito;
     }
+
+    //toString()
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "activo=" + activo +
+                ", idProducto=" + idProducto +
+                ", nombre='" + nombre +
+                ", descripcion='" + descripcion +
+                ", precio=" + precio +
+                ", categoria='" + categoria +
+                ", stock=" + stock +
+                ", imagenUrl='" + imagenUrl +
+                ", tamano='" + tamano +
+                ", sabor='" + sabor +
+                ", detallesCarrito=" + detallesCarrito +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Producto producto)) return false;
+        return Objects.equals(idProducto, producto.idProducto) && Objects.equals(nombre, producto.nombre) && Objects.equals(descripcion, producto.descripcion) && Objects.equals(precio, producto.precio) && Objects.equals(categoria, producto.categoria) && Objects.equals(stock, producto.stock) && Objects.equals(imagenUrl, producto.imagenUrl) && Objects.equals(tamano, producto.tamano) && Objects.equals(sabor, producto.sabor) && Objects.equals(activo, producto.activo) && Objects.equals(detallesCarrito, producto.detallesCarrito);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idProducto, nombre, descripcion, precio, categoria, stock, imagenUrl, tamano, sabor, activo, detallesCarrito);
+    }
 }
+
+
 

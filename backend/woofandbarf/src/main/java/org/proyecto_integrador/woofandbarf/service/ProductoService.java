@@ -59,7 +59,8 @@ public class ProductoService implements IProductoService {
         existente.setStock(producto.getStock());
         existente.setImagenUrl(producto.getImagenUrl());
         existente.setActivo(producto.getActivo());
-
+        existente.setTamano(producto.getTamano());
+        existente.setSabor(producto.getSabor());
         return productoRepository.save(existente);
     }
 
