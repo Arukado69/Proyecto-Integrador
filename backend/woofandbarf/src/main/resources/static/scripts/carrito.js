@@ -5,12 +5,11 @@ const API_URL = 'http://52.15.203.222:8080/api/v1';
 let carritoActual = { detalles: [], total: 0 }; 
 let inventarioCompleto = []; 
 
-// Variables para la lógica visual del Sidebar (Resumen)
-let descuentoAplicado = 0;   // 0.10 = 10%
-let costoEnvioManual = null; // null = usa tarifa automática
+let descuentoAplicado = 0;   
+let costoEnvioManual = null; 
 
 // ==========================================
-// A. UTILIDAD: MODAL BOOTSTRAP
+// A. UTILIDADES (MODAL)
 // ==========================================
 let modalInstancia = null; 
 
@@ -18,24 +17,19 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
     const modalEl = document.getElementById('modalWoof');
     if(!modalEl) return; 
 
-    // 1. Textos
     document.getElementById('modalTitulo').innerText = title || 'Aviso';
     document.getElementById('modalMensaje').innerText = text || '';
 
-    // 2. Imagen
     const imgEl = document.getElementById('modalImagen');
     if (imageUrl) {
-        // Limpieza de ruta por si acaso
         let cleanUrl = imageUrl;
         if(cleanUrl.startsWith('..')) cleanUrl = cleanUrl.replace('..', '');
-        
         imgEl.src = cleanUrl;
         imgEl.classList.remove('d-none');
     } else {
         imgEl.classList.add('d-none');
     }
 
-    // 3. Botones
     const btnConfirmar = document.getElementById('btnConfirmar');
     const btnCancelar = document.getElementById('btnCancelar');
 
@@ -48,14 +42,12 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
         btnCancelar.classList.add('d-none');
     }
 
-    // 4. Resetear eventos previos y asignar nuevo
     btnConfirmar.onclick = null; 
     btnConfirmar.onclick = function() {
         if (onConfirm) onConfirm(); 
         modalInstancia.hide();
     };
 
-    // 5. Mostrar
     if (!modalInstancia) {
         modalInstancia = new bootstrap.Modal(modalEl);
     }
@@ -63,38 +55,31 @@ function mostrarModalBootstrap({ title, text, imageUrl, confirmText, cancelText,
 }
 
 // ==========================================
-// B. CARGA DE DATOS (GET del Servidor)
+// B. CARGA DE DATOS
 // ==========================================
 
 async function cargarCarritoDelServidor() {
     const contenedorItems = document.getElementById('listaItems');
     const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
 
-    if (!usuarioLogueado) {
-        // Si no hay sesión, no cargamos nada o redirigimos
-        return;
-    }
+    if (!usuarioLogueado) return;
 
     try {
         const response = await fetch(`${API_URL}/carrito/usuario/${usuarioLogueado.id}`);
         
         if (response.ok) {
             carritoActual = await response.json();
-            
-            // Renderizamos lista y calculamos totales iniciales
             renderizarCarritoUI(carritoActual.detalles || []);
             actualizarTotales(carritoActual);
             
-            // Actualizar Badge del Navbar
             if(window.actualizarBadgeNavbar) window.actualizarBadgeNavbar();
-
         } else {
             console.error("Error al cargar carrito");
-            contenedorItems.innerHTML = '<p class="text-center">Carrito vacío o error de carga.</p>';
+            contenedorItems.innerHTML = '<p class="text-center">Error al cargar.</p>';
         }
     } catch (e) {
-        console.error("Error de conexión:", e);
-        contenedorItems.innerHTML = '<p class="text-center">Error de conexión con el servidor.</p>';
+        console.error(e);
+        contenedorItems.innerHTML = '<p class="text-center">Error de conexión.</p>';
     }
 }
 
@@ -105,41 +90,42 @@ async function cargarInventarioCarrusel() {
             inventarioCompleto = await response.json();
             renderizarCarrusel(inventarioCompleto);
         }
-    } catch (e) {
-        console.error("No se pudo cargar el carrusel:", e);
-    }
+    } catch (e) { console.error(e); }
 }
 
 // ==========================================
-// C. RENDERIZADO (Visual)
+// C. RENDERIZADO
 // ==========================================
 
 function renderizarCarritoUI(detalles) {
     const contenedorItems = document.getElementById('listaItems');
     const estadoVacio = document.getElementById('estadoVacio');
     const actionsBar = document.getElementById('actionsBar');
+    const hintMostrando = document.getElementById('hintMostrando');
 
-    // 1. Manejo de estado vacío
     if (!detalles || detalles.length === 0) {
         if(estadoVacio) estadoVacio.classList.remove('d-none');
         if(contenedorItems) contenedorItems.innerHTML = '';
         if(actionsBar) actionsBar.classList.add('d-none');
+        if(hintMostrando) hintMostrando.innerText = 'Mostrando 0 artículos';
         actualizarTotales({ total: 0 }); 
         return;
     }
 
-    // 2. Si hay productos
     if(estadoVacio) estadoVacio.classList.add('d-none');
     if(actionsBar) actionsBar.classList.remove('d-none');
 
+    const totalUnidades = detalles.reduce((acc, item) => acc + item.cantidad, 0);
+    if(hintMostrando) {
+        hintMostrando.innerText = `Mostrando ${totalUnidades} artículos`;
+    }
+
     contenedorItems.innerHTML = '';
     
-    // 3. Crear las cards
     detalles.forEach(detalle => {
         const producto = detalle.producto; 
         const totalItem = detalle.subtotal; 
         
-        // Ajuste de ruta de imagen (Inteligente)
         let rutaImg = producto.imagenUrl;
         if(rutaImg && rutaImg.startsWith('..')) {
             rutaImg = rutaImg.replace('..', '');
@@ -163,12 +149,25 @@ function renderizarCarritoUI(detalles) {
                         </div>
                         
                         <div class="col-6 col-md-3 d-flex justify-content-center">
-                            <span class="fw-bold">Cant: ${detalle.cantidad}</span>
+                            <div class="input-group input-group-sm" style="width: 110px;">
+                                <button class="btn btn-outline-secondary" 
+                                        onclick="window.restarUnidad(${producto.idProducto}, ${detalle.cantidad}, ${detalle.idCarritoDetalle})">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                                <span class="form-control text-center bg-white px-0 fw-bold">
+                                    ${detalle.cantidad}
+                                </span>
+                                <button class="btn btn-outline-secondary" 
+                                        onclick="window.agregarAlCarrito(${producto.idProducto})">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
                         </div>
                         
                         <div class="col-6 col-md-3 text-end">
                             <div class="fw-bold text-primary mb-1">$${totalItem.toFixed(2)}</div>
-                            <button class="btn btn-link text-danger p-0 small" onclick="window.eliminarItem(${detalle.idCarritoDetalle})">
+                            <button class="btn btn-link text-danger p-0 small text-decoration-none" 
+                                    onclick="window.eliminarItem(${detalle.idCarritoDetalle})">
                                 <i class="bi bi-trash3"></i> Eliminar
                             </button>
                         </div>
@@ -179,129 +178,59 @@ function renderizarCarritoUI(detalles) {
     });
 }
 
-// FUNCIÓN MATEMÁTICA CORREGIDA (Usa variables globales del sidebar)
 function actualizarTotales(carritoData) {
-    // Referencias DOM
     const elSub = document.getElementById('rSubtotal');
+    const elTot = document.getElementById('rTotal');
     const elDes = document.getElementById('rDescuento');
     const elEnv = document.getElementById('rEnvio');
     const elIva = document.getElementById('rIva');
-    const elTot = document.getElementById('rTotal');
 
     if (!elSub || !elTot) return;
 
-    // 1. Calcular Subtotal (Recalculado desde detalles para mayor precisión)
     let subtotal = 0;
-    if (carritoData.detalles && carritoData.detalles.length > 0) {
-        subtotal = carritoData.detalles.reduce((acc, d) => {
-            return acc + (d.producto.precio * d.cantidad);
-        }, 0);
+    if (carritoData.detalles) {
+        subtotal = carritoData.detalles.reduce((acc, d) => acc + (d.producto.precio * d.cantidad), 0);
     }
 
-    // 2. Aplicar Descuento (Cupón)
     const montoDescuento = subtotal * descuentoAplicado;
     const subtotalConDescuento = subtotal - montoDescuento;
 
-    // 3. Calcular Envío (Regla > 499 o Manual)
-    let costoEnvio = 0;
+    let envioFinal = 0;
     if (subtotalConDescuento >= 499) {
-        costoEnvio = 0; // Gratis
+        envioFinal = 0; 
     } else if (costoEnvioManual !== null) {
-        costoEnvio = costoEnvioManual; // Tarifa CP
+        envioFinal = costoEnvioManual; 
     } else {
-        costoEnvio = 150; // Default
+        envioFinal = 150; 
     }
 
-    // 4. Calcular IVA y Total
     const iva = subtotalConDescuento * 0.16;
-    const granTotal = subtotalConDescuento + iva + costoEnvio;
+    const granTotal = subtotalConDescuento + iva + envioFinal;
 
-    // 5. Pintar HTML
     const formato = new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' });
 
     elSub.innerText = formato.format(subtotal);
-
+    if(elIva) elIva.innerText = formato.format(iva);
+    
     if (elDes) {
         elDes.innerText = `-${formato.format(montoDescuento)}`;
-        if (montoDescuento > 0) {
-            elDes.classList.add('text-success', 'fw-bold');
-            elDes.classList.remove('text-muted');
-        } else {
-            elDes.classList.remove('text-success', 'fw-bold');
-            elDes.classList.add('text-muted');
-        }
+        montoDescuento > 0 ? elDes.classList.add('text-success') : elDes.classList.remove('text-success');
     }
 
     if (elEnv) {
-        if (costoEnvio === 0) {
+        if (envioFinal === 0) {
             elEnv.innerHTML = '<span class="text-success fw-bold">Gratis</span>';
         } else {
-            elEnv.innerText = formato.format(costoEnvio);
+            elEnv.innerText = formato.format(envioFinal);
         }
     }
 
-    if (elIva) elIva.innerText = formato.format(iva);
     elTot.innerText = formato.format(granTotal);
 }
 
 // ==========================================
-// D. LÓGICA DEL SIDEBAR (CUPONES Y ENVÍO)
+// D. LÓGICA DEL CARRUSEL
 // ==========================================
-
-window.aplicarCupon = function() {
-    const inputCupon = document.getElementById('cupon');
-    const feedback = document.getElementById('cuponFeedback');
-    
-    if(!inputCupon) return;
-
-    const codigo = inputCupon.value.trim().toUpperCase();
-
-    // Cupones simulados
-    const cuponesValidos = { 'WOOF10': 0.10, 'BARF20': 0.20, 'JO': 0.50 };
-
-    if (cuponesValidos[codigo]) {
-        descuentoAplicado = cuponesValidos[codigo];
-        feedback.innerHTML = `<span class="text-success small fw-bold"><i class="bi bi-check-circle"></i> Descuento aplicado!</span>`;
-        inputCupon.classList.add('is-valid');
-        inputCupon.classList.remove('is-invalid');
-        inputCupon.disabled = true;
-        document.getElementById('btnAplicarCupon').disabled = true;
-    } else {
-        descuentoAplicado = 0;
-        feedback.innerHTML = `<span class="text-danger small">Cupón no válido.</span>`;
-        inputCupon.classList.add('is-invalid');
-    }
-    // Recalcular con el nuevo estado
-    actualizarTotales(carritoActual);
-};
-
-window.calcularEnvioCP = function() {
-    const cpInput = document.getElementById('cp');
-    const resultado = document.getElementById('cpResultado');
-    if(!cpInput) return;
-
-    const cp = cpInput.value.trim();
-
-    if (cp.length === 5 && !isNaN(cp)) {
-        if (cp.startsWith('0') || cp.startsWith('1')) { 
-            costoEnvioManual = 100;
-            resultado.innerHTML = '<span class="text-success small fw-bold">Envío Local: $100</span>';
-        } else {
-            costoEnvioManual = 180;
-            resultado.innerHTML = '<span class="text-info small fw-bold">Envío Nacional: $180</span>';
-        }
-    } else {
-        resultado.innerHTML = '<span class="text-danger small">CP inválido</span>';
-        costoEnvioManual = null;
-    }
-    // Recalcular
-    actualizarTotales(carritoActual);
-};
-
-// ==========================================
-// E. CARRUSEL DE RECOMENDACIONES
-// ==========================================
-
 const contenedorCarrusel = document.getElementById('recoSlides');
 
 function renderizarCarrusel(productos) {
@@ -319,10 +248,7 @@ function renderizarCarrusel(productos) {
         const grupo = listaCarrusel.slice(i, i + itemsPorSlide);
         const claseActiva = i === 0 ? 'active' : '';
 
-        let slideHTML = `
-            <div class="carousel-item ${claseActiva}">
-                <div class="row justify-content-center g-3"> 
-        `;
+        let slideHTML = `<div class="carousel-item ${claseActiva}"><div class="row justify-content-center g-3">`;
 
         grupo.forEach(prod => {
             let rutaImg = prod.imagenUrl;
@@ -345,15 +271,14 @@ function renderizarCarrusel(productos) {
                             </button>
                         </div>
                     </div>
-                </div>
-            `;
+                </div>`;
         });
         slideHTML += `</div></div>`;
         contenedorCarrusel.innerHTML += slideHTML;
     }
 }
 
-// Agregar desde Carrusel (POST)
+// --- FUNCIÓN CORREGIDA: AGREGAR DESDE CARRUSEL CON MODAL ---
 window.agregarDesdeCarrusel = async function(idProducto) {
     const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
     
@@ -363,46 +288,88 @@ window.agregarDesdeCarrusel = async function(idProducto) {
     }
 
     try {
-        await fetch(`${API_URL}/carrito/agregar`, {
+        const res = await fetch(`${API_URL}/carrito/agregar`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idUsuario: usuarioLogueado.id, idProducto: idProducto, cantidad: 1 })
         });
-        // Recargar para ver reflejado
-        cargarCarritoDelServidor();
-        
-        // Modal Éxito
-        const prod = inventarioCompleto.find(p => p.idProducto === idProducto);
-        let rutaImg = prod ? prod.imagenUrl : null;
-        if(rutaImg && rutaImg.startsWith('..')) rutaImg = rutaImg.replace('..', '');
 
-        mostrarModalBootstrap({
-            title: '¡Agregado!',
-            text: 'Producto añadido al carrito.',
-            imageUrl: rutaImg,
-            confirmText: 'Genial'
-        });
+        if (res.ok) {
+            // 1. Recargar Carrito
+            cargarCarritoDelServidor();
+            
+            // 2. Mostrar Modal con Datos
+            const prod = inventarioCompleto.find(p => p.idProducto === idProducto);
+            let rutaImg = prod ? prod.imagenUrl : null;
+            if(rutaImg && rutaImg.startsWith('..')) rutaImg = rutaImg.replace('..', '');
 
+            mostrarModalBootstrap({
+                title: '¡Agregado!',
+                text: `${prod ? prod.nombre : 'Producto'} se añadió al carrito.`,
+                imageUrl: rutaImg,
+                confirmText: 'Genial'
+            });
+        } else {
+            mostrarModalBootstrap({ title: 'Error', text: 'No se pudo agregar.' });
+        }
     } catch(e) { console.error(e); }
 };
 
 // ==========================================
-// F. ACCIONES Y EL PUENTE DE PAGO
+// E. ACCIONES (Agregar, Restar, Eliminar)
 // ==========================================
+
+window.agregarAlCarrito = async function(idProducto) {
+    const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    if (!usuarioLogueado) return;
+
+    try {
+        await fetch(`${API_URL}/carrito/agregar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                idUsuario: usuarioLogueado.id, 
+                idProducto: idProducto, 
+                cantidad: 1 
+            })
+        });
+        cargarCarritoDelServidor(); // Recarga silenciosa para el botón +
+    } catch(e) { console.error(e); }
+};
+
+window.restarUnidad = async function(idProducto, cantidadActual, idDetalle) {
+    if (cantidadActual <= 1) {
+        window.eliminarItem(idDetalle);
+        return;
+    }
+    const usuarioLogueado = JSON.parse(localStorage.getItem("usuarioLogueado"));
+    
+    try {
+        await fetch(`${API_URL}/carrito/agregar`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                idUsuario: usuarioLogueado.id, 
+                idProducto: idProducto, 
+                cantidad: -1 
+            })
+        });
+        cargarCarritoDelServidor();
+    } catch(e) { console.error("Error al restar:", e); }
+};
 
 window.eliminarItem = function(idDetalle) {
     mostrarModalBootstrap({
-        title: '¿Eliminar?',
-        text: 'Se quitará este producto.',
+        title: '¿Eliminar producto?',
+        text: 'Se quitará este producto de tu carrito.',
         confirmText: 'Sí, eliminar',
         cancelText: 'Cancelar',
         onConfirm: async () => {
             try {
                 await fetch(`${API_URL}/carrito/detalle/${idDetalle}`, { method: 'DELETE' });
                 cargarCarritoDelServidor(); 
-            } catch (e) {
-                console.error(e);
-            }
+                if (window.actualizarBadgeNavbar) window.actualizarBadgeNavbar();
+            } catch (e) { console.error(e); }
         }
     });
 };
@@ -418,21 +385,18 @@ window.vaciarCarrito = function() {
             try {
                 await fetch(`${API_URL}/carrito/vaciar/${usuarioLogueado.id}`, { method: 'DELETE' });
                 cargarCarritoDelServidor(); 
-            } catch (e) {
-                console.error(e);
-            }
+                if (window.actualizarBadgeNavbar) window.actualizarBadgeNavbar();
+            } catch (e) { console.error(e); }
         }
     });
 };
 
-// --- EL PUENTE (IR A PAGAR) ---
 window.irAPagar = function() {
     if (!carritoActual.detalles || carritoActual.detalles.length === 0) {
-        mostrarModalBootstrap({ title: 'Carrito Vacío', text: 'No hay productos.', confirmText: 'Ok' });
+        mostrarModalBootstrap({ title: 'Carrito vacío', text: 'No hay productos.', confirmText: 'Ok' });
         return;
     }
 
-    // 1. Crear Snapshot Plana para Datos.html
     const snapshot = carritoActual.detalles.map(d => ({
         id: d.producto.idProducto,
         name: d.producto.nombre,
@@ -441,14 +405,51 @@ window.irAPagar = function() {
         imageURL: d.producto.imagenUrl || ''
     }));
 
-    // 2. Guardar en LocalStorage
     localStorage.setItem('carritoWoofBarf', JSON.stringify(snapshot));
-    
     const totalTexto = document.getElementById('rTotal').innerText;
     localStorage.setItem('resumenPedido', JSON.stringify({ totalString: totalTexto }));
 
-    // 3. Redirigir
     window.location.href = '/pages/carrito/datos.html'; 
+};
+
+// --- SIDEBAR ---
+window.aplicarCupon = function() {
+    const input = document.getElementById('cupon');
+    if(!input) return;
+    const codigo = input.value.trim().toUpperCase();
+    const cupones = { 'WOOF10': 0.10, 'BARF20': 0.20, 'JO': 0.50 };
+
+    if (cupones[codigo]) {
+        descuentoAplicado = cupones[codigo];
+        document.getElementById('cuponFeedback').innerHTML = `<span class="text-success small fw-bold">¡Descuento aplicado!</span>`;
+        input.classList.add('is-valid');
+    } else {
+        descuentoAplicado = 0;
+        document.getElementById('cuponFeedback').innerHTML = `<span class="text-danger small">No válido.</span>`;
+        input.classList.add('is-invalid');
+    }
+    actualizarTotales(carritoActual);
+};
+
+window.calcularEnvioCP = function() {
+    const cpInput = document.getElementById('cp');
+    const res = document.getElementById('cpResultado');
+    if(!cpInput) return;
+    const cp = cpInput.value.trim();
+
+    if (cp.length === 5 && !isNaN(cp)) {
+        if (cp.startsWith('0') || cp.startsWith('1')) { 
+            costoEnvioManual = 100;
+            res.innerHTML = '<span class="text-success small">Envío Local: $100</span>';
+        } else {
+            costoEnvioManual = 180;
+            res.innerHTML = '<span class="text-info small">Envío Nacional: $180</span>';
+        }
+    } else {
+        res.innerHTML = '<span class="text-danger small">CP inválido</span>';
+        costoEnvioManual = null;
+    }
+    actualizarTotales(carritoActual);
 };
 
 // ==========================================
@@ -458,14 +459,12 @@ document.addEventListener('DOMContentLoaded', () => {
     cargarCarritoDelServidor(); 
     cargarInventarioCarrusel(); 
     
-    // Listeners Botones Generales
     const btnVaciar = document.getElementById('btnVaciar');
     if(btnVaciar) btnVaciar.addEventListener('click', window.vaciarCarrito);
     
     const btnPagar = document.getElementById('btnPagar');
     if(btnPagar) btnPagar.addEventListener('click', window.irAPagar);
 
-    // Listeners Sidebar (Resumen)
     const btnCupon = document.getElementById('btnAplicarCupon');
     if(btnCupon) btnCupon.addEventListener('click', window.aplicarCupon);
 
@@ -474,7 +473,5 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('resize', () => {
-    if(inventarioCompleto.length > 0) {
-        renderizarCarrusel(inventarioCompleto);
-    }
+    if(inventarioCompleto.length > 0) renderizarCarrusel(inventarioCompleto);
 });
